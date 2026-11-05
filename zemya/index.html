@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Интерактивен урок по география за 5. клас: строеж на Земята с 3D модел.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Строеж на Земята</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Nunito:wght@500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: "the descent" — the page itself falls from space through the shells, crust and mantle down to the glowing core; a depth gauge rides along. Single deliberate look (no theme switch): every color set explicitly. */
+:root{
+  --space:#070B1F;       /* outer space */
+  --ink:#13203A;         /* card text */
+  --soft:#4A5878;
+  --paper:#FFFFFF;
+  --sky:#2F8FD8;         /* atmosphere */
+  --sea:#1BA3A0;         /* hydrosphere */
+  --leaf:#3E9E4F;        /* biosphere */
+  --soil:#8A5A2B;        /* pedosphere */
+  --rock:#6B6F7A;        /* lithosphere */
+  --magma:#E4572E;       /* mantle */
+  --gold:#FFC23D;        /* core */
+  --line:#DCE3EF;
+  --bad:#E23D4F;
+  --good:#2E9E5B;
+  --display:"Russo One","Trebuchet MS",sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;overflow-x:hidden;
+  background:linear-gradient(180deg,#070B1F 0%,#0E1A45 8%,#1E4FB8 15%,#3BA1E0 22%,#2BB3A3 30%,#4FAE54 38%,#8A6A43 47%,#6E6259 55%,#5A2A22 63%,#9E2F1E 74%,#D9521F 86%,#FFB52E 100%);background-color:#070B1F}
+.wrap{max-width:1060px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 80px;position:relative;z-index:1}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;line-height:1.12}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:8px}
+@keyframes pop{from{transform:scale(.5) rotate(-8deg)}}
+@keyframes shake{20%{transform:translateX(-7px) rotate(-2deg)}40%{transform:translateX(7px) rotate(2deg)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes slideDown{from{transform:translateY(-10px) scale(.96);opacity:.2}}
+
+/* starfield */
+#stars{position:absolute;left:0;top:0;width:100%;height:900px;z-index:0;pointer-events:none}
+
+/* gauge + tally */
+.tally{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;justify-content:space-between;gap:10px;padding-block:12px 0;pointer-events:none}
+.pill{pointer-events:auto;display:flex;align-items:center;gap:10px;background:rgba(7,11,31,.82);color:#fff;border:2px solid rgba(255,255,255,.25);border-radius:999px;padding:7px 14px;font-family:var(--mono);font-weight:700;font-size:13px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.pill .zone{font-family:var(--display);font-size:14px;color:var(--gold)}
+.tally-star{color:var(--gold);font-size:18px;display:inline-block}
+.tally-star.pop{animation:starpop .6s}
+@keyframes starpop{40%{transform:scale(1.8) rotate(25deg)}}
+.icon-btn{background:#fff;color:var(--ink);border:0;border-radius:999px;width:30px;height:30px;display:grid;place-items:center;font-size:15px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.3fr .9fr;gap:24px;align-items:center;padding-block:40px 30px;color:#fff;min-height:0}
+.eyebrow{display:inline-block;font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;border:2px solid var(--gold);color:var(--gold);padding:5px 12px;border-radius:999px}
+.hero h1{font-size:clamp(44px,8.4vw,90px);margin-top:16px;letter-spacing:.01em}
+.hero h1 .ch{display:inline-block;animation:land .9s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes land{from{transform:translateY(-120px) scale(.3);opacity:0}}
+.hero h1 .w2{color:var(--gold)}
+.hero .q{font-size:20px;font-weight:800;font-style:italic;margin:14px 0 0;color:#BFD3FF}
+.hero p{max-width:34em;color:#D9E3FF;margin:10px 0 0}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.btn{border:3px solid var(--ink);background:var(--paper);border-radius:14px;padding:9px 16px;font-weight:900;box-shadow:0 5px 0 var(--ink);transition:transform .12s,box-shadow .12s;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;gap:8px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--ink)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.btn:disabled{opacity:.55;cursor:default;transform:none}
+.btn.gold{background:var(--gold);color:var(--ink)}
+.btn.magma{background:var(--magma);color:#fff}
+.btn.sky{background:var(--sky);color:#fff}
+.btn.ghost{background:transparent;color:#fff;border-color:#fff;box-shadow:0 5px 0 rgba(255,255,255,.5)}
+.mascot-box{display:grid;place-items:center}
+#mascot{width:min(210px,56vw);height:auto;animation:hover 3.2s ease-in-out infinite;overflow:visible}
+@keyframes hover{50%{transform:translateY(-14px) rotate(4deg)}}
+#mascot .eye{transform-origin:center;transform-box:fill-box;animation:blink 4.5s infinite}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+#mascot .drill{transform-origin:center;transform-box:fill-box;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#mascot.happy{animation:jump .8s cubic-bezier(.3,1.6,.5,1)}
+@keyframes jump{40%{transform:translateY(-40px) rotate(-12deg) scale(1.08)}}
+#mascot.sad{animation:shake .5s}
+.bubble{background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:18px;padding:10px 14px;font-weight:800;max-width:270px;text-align:center;position:relative;margin-bottom:10px;box-shadow:0 4px 0 var(--ink);min-height:52px}
+.bubble::after{content:"";position:absolute;left:50%;bottom:-12px;width:18px;height:18px;background:#fff;border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:translateX(-50%) rotate(45deg)}
+.bubble.talk{animation:talk .4s}
+@keyframes talk{50%{transform:scale(1.07)}}
+
+/* section heads on the gradient */
+section{margin-top:64px}
+.sec-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.sec-head h2{font-size:clamp(24px,4.4vw,38px);color:#fff;background:rgba(7,11,31,.78);padding:8px 18px;border-radius:16px}
+.depth-tag{font-family:var(--mono);font-size:12px;font-weight:700;background:var(--gold);color:var(--ink);border-radius:999px;padding:4px 10px}
+.card{background:var(--paper);border:3px solid var(--ink);border-radius:24px;padding:20px;box-shadow:0 6px 0 rgba(7,11,31,.85);min-width:0}
+.card p{margin:0 0 10px;max-width:68ch}.card p:last-child{margin-bottom:0}
+.card h3{font-size:20px;margin-bottom:10px}
+.lead{font-weight:700;color:var(--soft)}
+mark{background:none;color:inherit;font-weight:900;box-shadow:inset 0 -.45em 0 color-mix(in srgb,var(--gold) 55%,transparent)}
+
+/* shells */
+.shells{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:16px}
+.shell{border:3px solid var(--ink);border-radius:20px;padding:12px 10px;text-align:center;color:#fff;box-shadow:0 5px 0 var(--ink);display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .25s;animation:pop .6s both}
+.shell:hover{transform:translateY(-5px) rotate(-1.5deg)}
+.shell .em{font-size:38px;line-height:1;animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-5px)}}
+.shell b{font-family:var(--display);font-weight:400;font-size:17px}
+.shell small{font-size:13px;font-weight:700;line-height:1.3;opacity:.95}
+.s-atm{background:var(--sky)}.s-hyd{background:var(--sea)}.s-bio{background:var(--leaf)}.s-ped{background:var(--soil)}.s-lit{background:var(--rock)}
+
+/* web */
+.web-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;align-items:center}
+#web{width:100%;max-width:440px;height:auto;display:block;margin:0 auto;touch-action:manipulation}
+#web .edge{stroke:var(--line);stroke-width:3;stroke-dasharray:6 7;transition:stroke .4s}
+#web .edge.found{stroke:var(--gold);stroke-dasharray:none;stroke-width:5;animation:dash 1s}
+@keyframes dash{from{stroke-width:12}}
+#web .node{cursor:pointer}
+#web .node circle{stroke:var(--ink);stroke-width:3;transition:transform .2s;transform-box:fill-box;transform-origin:center}
+#web .node.sel circle{stroke:var(--gold);stroke-width:7;transform:scale(1.12)}
+#web .node text{font-family:var(--body);font-weight:900;fill:#fff;font-size:12px;text-anchor:middle;pointer-events:none}
+#web .node .e{font-size:22px}
+.web-info{background:#F3F7FF;border-radius:18px;padding:14px 16px;min-height:110px;border:2px solid var(--line)}
+.web-info .pair{font-family:var(--display);font-size:16px;color:var(--sky);margin-bottom:4px}
+.counter{font-family:var(--mono);font-weight:700;margin-top:10px}
+
+/* sorter */
+.tray{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.item{border:3px solid var(--ink);background:#fff;border-radius:14px;padding:6px 10px;font-weight:800;box-shadow:0 3px 0 var(--ink);display:inline-flex;gap:6px;align-items:center;transition:transform .15s}
+.item[aria-pressed="true"]{background:var(--gold);transform:translateY(-4px) rotate(-3deg)}
+.item.gone{animation:fly .45s forwards}
+@keyframes fly{to{transform:scale(.2) translateY(40px);opacity:0}}
+.bins{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.bin{border:3px dashed var(--ink);border-radius:18px;min-height:120px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:6px;color:#fff;font-weight:900;transition:transform .2s}
+.bin .bt{font-family:var(--display);font-weight:400;font-size:14px}
+.bin .got{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;font-size:22px}
+.bin .got span{animation:pop .4s both}
+.bin.no{animation:shake .45s}
+.bin.yes{transform:scale(1.04)}
+
+/* 3D earth */
+.lab{display:grid;grid-template-columns:1.5fr 1fr;gap:20px}
+.stage{position:relative;border:3px solid var(--ink);border-radius:26px;overflow:hidden;box-shadow:0 6px 0 rgba(7,11,31,.85);background:radial-gradient(circle at 50% 40%,#16245A,#070B1F 70%);height:470px;min-width:0}
+#three{width:100%;height:100%;display:block;touch-action:none}
+.lbl{position:absolute;left:0;top:0;pointer-events:none;font-weight:900;font-size:13px;color:#fff;background:rgba(7,11,31,.85);border:2px solid #fff;border-radius:10px;padding:2px 8px;white-space:nowrap;transform:translate(-50%,-50%);transition:opacity .3s}
+.lbl::before{content:"";position:absolute;left:50%;bottom:-8px;width:6px;height:6px;border-radius:50%;background:#fff;transform:translateX(-50%)}
+.stage-hint{position:absolute;left:12px;bottom:12px;max-width:calc(100% - 24px);background:#fff;color:var(--ink);font-weight:800;font-size:13px;border-radius:999px;padding:6px 12px;pointer-events:none;animation:nudge 2s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateX(8px)}}
+.nogl{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;font-weight:800;color:#fff}
+.panel{display:flex;flex-direction:column;gap:12px}
+.layer-info{border-radius:18px;padding:14px;background:#F3F7FF;border:2px solid var(--line);min-height:150px}
+.layer-info h3{display:flex;gap:8px;align-items:center}
+.layer-info .sw{width:18px;height:18px;border-radius:5px;border:2px solid var(--ink);flex:none}
+.layer-info.flash{animation:slideDown .4s}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:14.5px;margin-top:8px}
+.facts dt{font-weight:900}.facts dd{margin:0}
+.depth{display:flex;flex-direction:column;gap:6px}
+.depth label{font-weight:900}
+#depth{width:100%;accent-color:var(--magma)}
+.depth-read{font-family:var(--mono);font-weight:700;font-size:14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.thermo{height:12px;border-radius:8px;background:linear-gradient(90deg,#3BA1E0,#FFC23D,#E4572E,#B0161E);position:relative}
+.thermo i{position:absolute;top:-5px;width:6px;height:22px;border-radius:3px;background:var(--ink);transform:translateX(-50%);transition:left .2s}
+.row-btns{display:flex;gap:8px;flex-wrap:wrap}
+.row-btns .btn{padding:6px 12px;font-size:14.5px}
+
+/* crust motion */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+#crust{width:100%;height:auto;display:block}
+#crust .blkR{transition:transform .8s cubic-bezier(.3,1.4,.5,1)}
+#crust.up .blkR{transform:translateY(-22px)}
+#crust.down .blkR{transform:translateY(22px)}
+#crust.quake{animation:shake .5s 2}
+.lava{transition:opacity .3s}
+.puff{animation:puff 1.6s ease-out forwards}
+@keyframes puff{from{transform:translate(0,0) scale(.4);opacity:1}to{transform:translate(var(--dx),-90px) scale(1.6);opacity:0}}
+.quake-card.rumble{animation:shake .35s 4}
+#seismo{width:100%;height:120px;display:block;background:#F7F9FD;border-radius:14px;border:2px solid var(--line)}
+.factlist{margin:10px 0 0;padding-left:20px}
+.factlist li{margin-bottom:6px}
+.tip{font-size:14.5px;font-weight:800;color:var(--soft)}
+
+/* tasks */
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.task{position:relative}
+.t-num{position:absolute;top:-16px;left:18px;font-family:var(--display);font-size:16px;background:var(--gold);border:3px solid var(--ink);border-radius:10px;padding:1px 10px;transform:rotate(-4deg)}
+.t-stamp{position:absolute;top:-18px;right:16px;font-size:28px;transform:scale(0);transition:transform .5s cubic-bezier(.3,1.8,.5,1)}
+.solved .t-stamp{transform:scale(1) rotate(12deg)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{border:3px solid var(--ink);background:#fff;border-radius:14px;padding:6px 12px;font-weight:900;box-shadow:0 3px 0 var(--ink)}
+.chip[aria-pressed="true"]{background:var(--gold);transform:translateY(-3px)}
+.chip.used{opacity:.35;pointer-events:none}
+.chip.bad{background:var(--bad);color:#fff;animation:shake .45s}
+.order-out{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.order-out div{border-radius:12px;padding:6px 12px;font-weight:900;color:#fff;animation:slideDown .4s}
+#scheme{width:100%;max-width:330px;height:auto;display:block;margin:6px auto 0}
+#scheme .ring{cursor:pointer;stroke:var(--ink);stroke-width:2.5}
+#scheme .ring.no{animation:shake .45s}
+#scheme text{font-family:var(--body);font-weight:900;font-size:13px;fill:#fff;text-anchor:middle;pointer-events:none}
+.explain{margin-top:12px;background:#F3F7FF;border-radius:14px;padding:10px 14px;font-size:15px;border:2px solid var(--line);animation:slideDown .5s}
+
+/* quiz */
+.quiz{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.q{position:relative;background:#fff;border:3px solid var(--ink);border-radius:22px;padding:18px 16px 14px;box-shadow:0 5px 0 rgba(7,11,31,.85);min-width:0}
+.q-num{position:absolute;top:-15px;left:16px;font-family:var(--display);font-size:15px;background:var(--sky);color:#fff;border:3px solid var(--ink);border-radius:10px;padding:0 10px;transform:rotate(-4deg)}
+.q .t-stamp{top:-16px}
+.q.solved .t-stamp{transform:scale(1) rotate(12deg)}
+.q h3{font-family:var(--body);font-weight:800;font-size:16.5px;margin:6px 0 12px;line-height:1.4}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{border:3px solid var(--ink);background:#F3F7FF;border-radius:12px;padding:8px 10px;font-weight:800;font-size:15px;text-align:left;box-shadow:0 3px 0 var(--ink)}
+.opt span{color:var(--soft);margin-right:4px}
+.opt:hover:not(:disabled){background:#E3ECFF}
+.opt.right{background:var(--good);color:#fff;animation:pop .5s}.opt.right span{color:#fff}
+.opt.wrong{background:var(--bad);color:#fff;animation:shake .45s;opacity:.8}.opt.wrong span{color:#fff}
+.opt:disabled{cursor:default}
+.q .why{margin:10px 0 0;font-size:14.5px;font-weight:700;color:var(--soft);animation:slideDown .4s}
+
+/* verne + words */
+.verne{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:#13203A;color:#E9EEFA;border-color:#fff}
+.verne .book{font-size:64px;animation:hover 3s ease-in-out infinite}
+.verne h3{color:var(--gold)}
+.kw{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.kw span{background:var(--ink);color:#fff;border-radius:999px;padding:4px 12px;font-weight:800;font-size:14px;animation:pop .5s both}
+
+/* finale */
+.finale{text-align:center;background:#13203A;color:#fff;border:3px solid #fff;border-radius:30px;padding:30px 20px;box-shadow:0 8px 0 rgba(7,11,31,.85)}
+.finale h2{font-size:clamp(26px,5vw,42px)}
+.big-stars{font-size:clamp(22px,5.5vw,36px);letter-spacing:4px;margin:14px 0;color:rgba(255,255,255,.3);word-break:break-all}
+.big-stars .on{color:var(--gold);display:inline-block;animation:pop .5s both}
+.finale p{font-weight:800;font-size:18px;margin:0 0 16px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50;width:100%;height:100%}
+footer{margin-top:40px;text-align:center;color:#3A1A05;font-weight:800;font-size:14px}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr}
+  .mascot-box{order:-1}
+  #mascot{width:130px}
+  .shells{grid-template-columns:repeat(3,1fr)}
+  .web-grid,.lab,.two,.tasks,.quiz{grid-template-columns:1fr}
+  .bins{grid-template-columns:repeat(3,1fr)}
+  .stage{height:380px}
+}
+@media (max-width:520px){
+  .shells{grid-template-columns:repeat(2,1fr)}
+  .shells .shell:last-child{grid-column:1/-1}
+  .bins{grid-template-columns:repeat(2,1fr)}
+  .bins .bin:last-child{grid-column:1/-1}
+  .opts{grid-template-columns:1fr}
+  .verne{grid-template-columns:1fr}
+  .pill{padding:6px 10px;font-size:12px}
+  .pill .zone{font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars" aria-hidden="true"></canvas>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <div class="tally">
+    <div class="pill" aria-live="polite"><span>📍</span><span class="zone" id="zone">Космос</span><span id="alt">400 km височина</span></div>
+    <div class="pill"><span class="tally-star" id="tallyStar">★</span><span><span id="score">0</span> / 14</span><button class="icon-btn" id="soundBtn" aria-label="Звук: включен" title="Звук">🔊</button></div>
+  </div>
+
+  <header class="hero">
+    <div>
+      <span class="eyebrow">География · 5. клас</span>
+      <h1 id="title" aria-label="Строеж на Земята">Строеж на Земята</h1>
+      <p class="q">Как си взаимодействат обвивките на Земята?</p>
+      <p>Представи си, че си в Космоса и започваш да се спускаш към Земята. Скролвай надолу: ще минеш през въздуха, водата и живите същества, после през земната кора и мантията чак до ядрото. По пътя събери 14 звезди.</p>
+      <div class="hero-cta">
+        <a class="btn gold" href="#outer">🚀 Започни спускането</a>
+        <a class="btn ghost" href="#inside">🌍 3D Земята</a>
+      </div>
+    </div>
+    <div class="mascot-box">
+      <div class="bubble" id="bubble">Здрасти! Аз съм сондата Гео. Ще пробием до центъра на Земята!</div>
+      <svg id="mascot" viewBox="0 0 200 230" role="img" aria-label="Гео, весела сонда със свредел">
+        <ellipse cx="100" cy="222" rx="50" ry="7" fill="#000" opacity=".25"/>
+        <path d="M70 20 Q100 -6 130 20 L138 60 L62 60 Z" fill="#FFC23D" stroke="#13203A" stroke-width="6" stroke-linejoin="round"/>
+        <rect x="46" y="56" width="108" height="100" rx="26" fill="#E9EEFA" stroke="#13203A" stroke-width="6"/>
+        <rect x="62" y="74" width="76" height="44" rx="20" fill="#2F8FD8" stroke="#13203A" stroke-width="5"/>
+        <g class="eye"><circle cx="86" cy="96" r="10" fill="#fff"/><circle id="pupilL" cx="88" cy="97" r="5" fill="#13203A"/></g>
+        <g class="eye"><circle cx="114" cy="96" r="10" fill="#fff"/><circle id="pupilR" cx="116" cy="97" r="5" fill="#13203A"/></g>
+        <path id="mouth" d="M88 134 Q100 146 112 134" fill="none" stroke="#13203A" stroke-width="5" stroke-linecap="round"/>
+        <rect x="30" y="92" width="18" height="34" rx="8" fill="#E4572E" stroke="#13203A" stroke-width="5"/>
+        <rect x="152" y="92" width="18" height="34" rx="8" fill="#E4572E" stroke="#13203A" stroke-width="5"/>
+        <g class="drill"><path d="M70 156 L130 156 L100 214 Z" fill="#9AA3B5" stroke="#13203A" stroke-width="6" stroke-linejoin="round"/><path d="M78 170 L122 166 M84 184 L116 180 M90 198 L110 194" stroke="#13203A" stroke-width="4"/></g>
+      </svg>
+    </div>
+  </header>
+
+  <!-- OUTER SHELLS -->
+  <section id="outer">
+    <div class="sec-head"><h2>Външни обвивки на Земята</h2><span class="depth-tag">↓ спускаме се</span></div>
+    <div class="card">
+      <p class="lead">Какво би видял, докато се приближаваш към повърхността? Ледените бели шапки на полюсите, равнини, гори и ливади, пясъчни пустини, планински вериги, градове, села и обработени земи. А между облаците проблясват реките, океаните, моретата и езерата.</p>
+      <p>Всичко, през което минаваш, образува <mark>външните обвивки на Земята</mark>. Те са пет:</p>
+      <div class="shells">
+        <div class="shell s-atm" style="animation-delay:.05s"><span class="em">☁️</span><b>атмосфера</b><small>въздушната обвивка</small></div>
+        <div class="shell s-hyd" style="animation-delay:.15s"><span class="em">🌊</span><b>хидросфера</b><small>водната обвивка: океани, морета, реки, езера, ледници</small></div>
+        <div class="shell s-bio" style="animation-delay:.25s"><span class="em">🦊</span><b>биосфера</b><small>живата обвивка: растения, животни, хора</small></div>
+        <div class="shell s-ped" style="animation-delay:.35s"><span class="em">🟫</span><b>педосфера</b><small>почвите</small></div>
+        <div class="shell s-lit" style="animation-delay:.45s"><span class="em">🪨</span><b>литосфера</b><small>твърдите скали на сушата и океанското дъно</small></div>
+      </div>
+      <p style="margin-top:16px">Хората изучават външните обвивки от дълбока древност. Описвали са въздуха, водите, скалите, почвите, растенията и животните около себе си. Тези знания и днес помагат в стопанската дейност на хората.</p>
+    </div>
+  </section>
+
+  <!-- WEB -->
+  <section id="web-sec">
+    <div class="sec-head"><h2>Мрежата на обвивките</h2><span class="depth-tag">Докосни две обвивки</span></div>
+    <div class="card web-grid task" id="tWeb">
+      <div class="t-stamp" aria-hidden="true">⭐</div>
+      <svg id="web" viewBox="0 0 400 370" role="group" aria-label="Мрежа от външните обвивки"></svg>
+      <div>
+        <p class="lead">Всички външни обвивки си влияят и проникват една в друга. Докосни една обвивка, после друга, и открий връзката между тях.</p>
+        <div class="web-info" id="webInfo" aria-live="polite"><div class="pair">Избери първата обвивка</div>Например докосни атмосферата и хидросферата.</div>
+        <div class="counter">Открити връзки: <span id="webCount">0</span> / 10</div>
+        <p class="tip" style="margin-top:10px">Затова трябва да опазваме всички обвивки. Само така животът на Земята ще се запази за бъдещето.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SORTER -->
+  <section id="sort-sec">
+    <div class="sec-head"><h2>Кое къде е?</h2><span class="depth-tag">Игра</span></div>
+    <div class="card task" id="tSort">
+      <div class="t-stamp" aria-hidden="true">⭐</div>
+      <p class="lead">Избери нещо отгоре, после докосни обвивката, към която принадлежи.</p>
+      <div class="tray" id="tray" role="group" aria-label="Неща за подреждане"></div>
+      <div class="bins" id="bins"></div>
+    </div>
+  </section>
+
+  <!-- INSIDE -->
+  <section id="inside">
+    <div class="sec-head"><h2>Вътрешен строеж на Земята</h2><span class="depth-tag">Върти с пръст</span></div>
+    <div class="lab">
+      <div class="stage" id="stage">
+        <canvas id="three" aria-label="3D модел на Земята с изрязан сектор, който показва земната кора, мантията и ядрото"></canvas>
+        <span class="lbl" id="lblCrust">Земна кора</span>
+        <span class="lbl" id="lblMantle">Мантия</span>
+        <span class="lbl" id="lblCore">Ядро</span>
+        <div class="stage-hint" id="stageHint">☝ Плъзни, за да завъртиш · докосни слой</div>
+      </div>
+      <div class="panel">
+        <div class="card layer-info" id="layerInfo"></div>
+        <div class="card depth">
+          <label for="depth">Пътешествие до центъра: <span id="depthKm" style="font-family:var(--mono)">0 km</span></label>
+          <input type="range" id="depth" min="0" max="6371" step="1" value="0">
+          <div class="thermo" aria-hidden="true"><i id="thermoI" style="left:0%"></i></div>
+          <div class="depth-read"><span id="depthLayer">Земна кора</span><span id="depthTemp">около 15 °C</span></div>
+        </div>
+        <div class="row-btns">
+          <button class="btn gold" id="btnLabels" aria-pressed="true">🏷 Надписи</button>
+          <button class="btn sky" id="btnSpin" aria-pressed="true">⟳ Въртене</button>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <p>Ако продължим пътуването си навътре в планетата, ще разберем, че там също има <mark>вътрешни обвивки</mark>. Нашата планета съществува от около 5 милиарда години. За вътрешния ѝ строеж е известно малко.</p>
+      <p>Според учените във вътрешността на планетата ни се разполага <mark>ядро</mark>. То е заобиколено от <mark>мантия</mark> (от латински думата означава „покривало“). Над мантията се разполага <mark>земната кора</mark>, най-твърдата обвивка, изградена от различни скали.</p>
+      <p>Веществото под земната кора, в мантията, е под по-голямо налягане и при по-висока температура, която се повишава към ядрото. В мантията веществото е както в твърдо, така и в разтопено състояние. Най-тежкото и плътно вещество се намира в ядрото.</p>
+    </div>
+  </section>
+
+  <!-- CRUST MOTION + QUAKES -->
+  <section id="moves">
+    <div class="sec-head"><h2>Подвижната земна кора</h2><span class="depth-tag">Натисни бутоните</span></div>
+    <div class="two">
+      <div class="card">
+        <p>Земната кора е подвижна. В нея протичат различни процеси: <mark>изригване на вулкани, земетресения, издигане, потъване, разместване и нагъване</mark>.</p>
+        <svg id="crust" viewBox="0 0 320 190" role="img" aria-label="Блокова диаграма на земната кора с вулкан">
+          <g class="blkL">
+            <rect x="10" y="70" width="150" height="26" fill="#C99A5B"/><rect x="10" y="96" width="150" height="26" fill="#9C6B3F"/><rect x="10" y="122" width="150" height="26" fill="#D8B27A"/><rect x="10" y="148" width="150" height="30" fill="#7A5A44"/>
+            <path d="M10 70 L160 70" stroke="#3E9E4F" stroke-width="8"/>
+            <path d="M40 70 L70 26 L100 70 Z" fill="#6B6F7A" stroke="#13203A" stroke-width="3" stroke-linejoin="round"/>
+            <path class="lava" id="lava" d="M62 38 L70 26 L78 38 Q74 50 70 44 Q66 52 62 38 Z" fill="#E4572E" opacity="0"/>
+            <rect x="10" y="70" width="150" height="108" fill="none" stroke="#13203A" stroke-width="3"/>
+          </g>
+          <g class="blkR">
+            <rect x="160" y="70" width="150" height="26" fill="#C99A5B"/><rect x="160" y="96" width="150" height="26" fill="#9C6B3F"/><rect x="160" y="122" width="150" height="26" fill="#D8B27A"/><rect x="160" y="148" width="150" height="30" fill="#7A5A44"/>
+            <path d="M160 70 L310 70" stroke="#3E9E4F" stroke-width="8"/>
+            <text x="235" y="60" font-size="20" text-anchor="middle">🏠🌳</text>
+            <rect x="160" y="70" width="150" height="108" fill="none" stroke="#13203A" stroke-width="3"/>
+          </g>
+          <g id="puffs"></g>
+        </svg>
+        <div class="row-btns" style="margin-top:10px">
+          <button class="btn magma" id="mvErupt">🌋 Изригване</button>
+          <button class="btn" id="mvUp">⬆ Издигане</button>
+          <button class="btn" id="mvDown">⬇ Потъване</button>
+        </div>
+      </div>
+      <div class="card quake-card" id="quakeCard">
+        <h3>Още нещо за земетресенията</h3>
+        <canvas id="seismo" aria-label="Сеизмограф"></canvas>
+        <div class="row-btns" style="margin-top:10px"><button class="btn magma" id="mvQuake">💥 Разтърси!</button></div>
+        <ul class="factlist">
+          <li>Земетресенията са сред най-опасните природни явления. Хората отдавна ги изучават.</li>
+          <li>Всеки ден по света стават земетресения с различна сила. Учените знаят районите с най-чести земетресения.</li>
+          <li>За да ги предвиждат, изграждат специални <b>сеизмични станции</b>. У нас първата е създадена през <b>1882 г. в София</b>.</li>
+          <li>Едно от най-силните земетресения в България е <b>Кресненското през 1904 г.</b> Силно е било и <b>Чирпанското през 1928 г.</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- TASKS -->
+  <section id="tasks">
+    <div class="sec-head"><h2>Въпроси и задачи</h2><span class="depth-tag">Дълбоко в мантията</span></div>
+    <div class="tasks">
+      <div class="card task" id="tOrder">
+        <div class="t-num">2</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>Какъв е строежът на Земята от повърхността към центъра?</h3>
+        <p class="lead">Докосни слоевете в правилния ред, започвайки от повърхността.</p>
+        <div class="chips" id="orderChips"></div>
+        <div class="order-out" id="orderOut"></div>
+      </div>
+      <div class="card task" id="tLabel">
+        <div class="t-num">3</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>Схема на вътрешния строеж на Земята: обозначи слоевете.</h3>
+        <p class="lead">Избери надпис, после докосни слоя в схемата.</p>
+        <div class="chips" id="labelChips"></div>
+        <svg id="scheme" viewBox="0 0 300 160" role="group" aria-label="Схема на половин Земя"></svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz-sec">
+    <div class="sec-head"><h2>Провери знанията</h2><span class="depth-tag">10 въпроса · 10 звезди</span></div>
+    <div class="quiz" id="quiz"></div>
+  </section>
+
+  <!-- VERNE + WORDS -->
+  <section id="more">
+    <div class="sec-head"><h2>Какво ново знам и мога</h2><span class="depth-tag">Почти в ядрото</span></div>
+    <div class="card verne">
+      <div class="book" aria-hidden="true">📕</div>
+      <div>
+        <h3>Задача 4: Прочети „Пътешествие до центъра на Земята“</h3>
+        <p>Френският писател Жул Верн е написал тази книга през 1864 г. Героите ѝ слизат в кратера на вулкан в Исландия и излизат през вулкана Стромболи в Италия. Прочети я и я обсъди със съучениците си.</p>
+        <p>Знаеш ли? Най-дълбоката дупка, пробита от хората, е около 12 km. Това е по-малко от една петстотна от пътя до центъра на Земята!</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <p><b>Знам:</b> Възрастта на Земята е около 5 милиарда години. Знам кои са външните обвивки на Земята и че те са взаимносвързани. Знам вътрешния строеж на Земята.</p>
+      <div class="kw"><span>обвивки на Земята</span><span>атмосфера</span><span>хидросфера</span><span>биосфера</span><span>литосфера</span><span>педосфера</span><span>ядро</span><span>мантия</span><span>земна кора</span></div>
+    </div>
+  </section>
+
+  <section id="finale">
+    <div class="finale">
+      <h2 id="finTitle">Стигна до ядрото!</h2>
+      <div class="big-stars" id="bigStars"></div>
+      <p id="finText">Събери всички 14 звезди по пътя.</p>
+      <button class="btn gold" id="resetBtn">↺ Започни отначало</button>
+    </div>
+  </section>
+  <footer>География и икономика · 5. клас · Строеж на Земята</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const NS='http://www.w3.org/2000/svg';
+
+/* stars */
+(function(){const c=$('#stars'),g=c.getContext('2d');function draw(){c.width=innerWidth;c.height=900;g.clearRect(0,0,c.width,900);
+  for(let i=0;i<160;i++){const y=Math.random()*900;g.globalAlpha=Math.max(0,1-y/800)*Math.random();g.fillStyle='#fff';g.beginPath();g.arc(Math.random()*c.width,y,Math.random()*1.6+.3,0,7);g.fill();}}
+  draw();addEventListener('resize',draw);})();
+
+/* title */
+const t=$('#title');let ci=0;
+t.innerHTML=t.textContent.split(' ').map((w,wi)=>`<span style="white-space:nowrap" class="${wi===2?'w2':''}">${[...w].map(c=>`<span class="ch" aria-hidden="true" style="animation-delay:${(ci++)*0.05}s">${c}</span>`).join('')}</span>`).join(' ');
+
+/* sound */
+let soundOn=true,actx=null;
+function beep(type){if(!soundOn)return;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+  const notes=type==='good'?[523,659,784,1047]:type==='tap'?[600,800]:type==='rumble'?[70,60,55,50]:[220,180];
+  notes.forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain();o.type=type==='bad'||type==='rumble'?'sawtooth':'triangle';o.frequency.value=f;const t0=actx.currentTime+i*(type==='rumble'?0.15:0.08);
+    g.gain.setValueAtTime(0.0001,t0);g.gain.exponentialRampToValueAtTime(type==='rumble'?0.18:0.11,t0+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t0+(type==='rumble'?0.3:0.2));o.connect(g).connect(actx.destination);o.start(t0);o.stop(t0+0.32);});}catch(e){}}
+$('#soundBtn').addEventListener('click',e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?'🔊':'🔇';e.currentTarget.setAttribute('aria-label','Звук: '+(soundOn?'включен':'изключен'));});
+
+/* mascot */
+const mascot=$('#mascot'),bubble=$('#bubble'),mouth=$('#mouth');
+const SMILE='M88 134 Q100 146 112 134',FROWN='M88 140 Q100 130 112 140';
+const cheers=['Браво! 🎉','Точно така!','Супер геолог си!','Право в целта!','Уау, вярно!'];
+const oops=['Опа! Опитай пак.','Почти! Още веднъж.','Не се отказвай!'];
+function say(txt,mood){bubble.textContent=txt;bubble.classList.remove('talk');void bubble.offsetWidth;bubble.classList.add('talk');
+  mascot.classList.remove('happy','sad');void mascot.getBoundingClientRect();if(mood)mascot.classList.add(mood);
+  mouth.setAttribute('d',mood==='sad'?FROWN:SMILE);clearTimeout(say._t);say._t=setTimeout(()=>{mouth.setAttribute('d',SMILE);mascot.classList.remove('happy','sad');},1400);}
+document.addEventListener('pointermove',e=>{const r=mascot.getBoundingClientRect();if(!r.width)return;
+  const dx=Math.max(-1,Math.min(1,(e.clientX-r.left-r.width/2)/300)),dy=Math.max(-1,Math.min(1,(e.clientY-r.top-r.height/2)/300));
+  $('#pupilL').setAttribute('cx',86+dx*4);$('#pupilL').setAttribute('cy',96+dy*4);$('#pupilR').setAttribute('cx',114+dx*4);$('#pupilR').setAttribute('cy',96+dy*4);});
+
+/* confetti */
+const cv=$('#confetti'),cx=cv.getContext('2d');let parts=[],confRaf=0;
+function sizeConf(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;}sizeConf();addEventListener('resize',sizeConf);
+function confetti(x,y,n){if(reduce)return;const cols=['#FFC23D','#E4572E','#2F8FD8','#3E9E4F','#1BA3A0'];
+  for(let i=0;i<(n||60);i++){const a=Math.random()*Math.PI*2,sp=4+Math.random()*9;parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-6,r:4+Math.random()*5,c:cols[i%5],rot:Math.random()*6,vr:(Math.random()-.5)*.4,life:90+Math.random()*40});}
+  if(!confRaf)confRaf=requestAnimationFrame(confTick);}
+function confTick(){const d=devicePixelRatio;cx.clearRect(0,0,cv.width,cv.height);parts=parts.filter(p=>p.life-->0);
+  for(const p of parts){p.vy+=0.28;p.vx*=0.985;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;cx.save();cx.translate(p.x*d,p.y*d);cx.rotate(p.rot);cx.fillStyle=p.c;cx.globalAlpha=Math.min(1,p.life/30);
+    cx.beginPath();cx.moveTo(0,-p.r*d);for(let k=1;k<5;k++){const a=k*Math.PI*0.8;cx.lineTo(Math.sin(a)*p.r*d,-Math.cos(a)*p.r*d);}cx.closePath();cx.fill();cx.restore();}
+  confRaf=parts.length?requestAnimationFrame(confTick):0;if(!confRaf)cx.clearRect(0,0,cv.width,cv.height);}
+
+/* score */
+const KEYS=['web','sort','order','label','q0','q1','q2','q3','q4','q5','q6','q7','q8','q9'];
+const won=new Set();
+function award(key,el){if(won.has(key))return;won.add(key);
+  if(el){el.classList.add('solved');const r=el.getBoundingClientRect();confetti(r.left+r.width/2,r.top+Math.min(r.height/2,200),70);}
+  beep('good');say(cheers[Math.floor(Math.random()*cheers.length)],'happy');updateScore(true);}
+function fail(){beep('bad');say(oops[Math.floor(Math.random()*oops.length)],'sad');}
+function updateScore(pop){const s=won.size;$('#score').textContent=s;
+  if(pop){const ts=$('#tallyStar');ts.classList.remove('pop');void ts.offsetWidth;ts.classList.add('pop');}
+  $('#bigStars').innerHTML=KEYS.map((k,i)=>won.has(k)?`<span class="on" style="animation-delay:${i*0.04}s">★</span>`:'★').join('');
+  if(s===KEYS.length){$('#finTitle').textContent='Ти стигна до ядрото! 🏆';$('#finText').textContent='Събра всички 14 звезди. Истински изследовател на Земята!';
+    setTimeout(()=>{confetti(innerWidth*.25,innerHeight*.4,90);confetti(innerWidth*.75,innerHeight*.4,90);},300);say('Стигнахме до ядрото! Браво!','happy');}
+  else{$('#finTitle').textContent='Стигна до ядрото!';$('#finText').textContent=`Събрани звезди: ${s} от 14.`;}}
+
+/* depth gauge */
+const ZONES=[[0,'Космос'],[.1,'Атмосфера'],[.2,'Хидросфера'],[.27,'Биосфера'],[.36,'Педосфера']];
+function gauge(){const max=document.documentElement.scrollHeight-innerHeight;const p=max>0?Math.min(1,scrollY/max):0;
+  let z='Космос';ZONES.forEach(([v,n])=>{if(p>=v)z=n;});$('#zone').textContent=z;
+  let txt;if(p<.36){txt=Math.round(400*(1-p/.36))+' km височина';}else if(p<.42){txt='на повърхността';}else{const d=Math.round(6371*Math.pow((p-.42)/.58,1.6));txt=d.toLocaleString('bg-BG')+' km дълбочина';z=d<35?'Земна кора':d<2900?'Мантия':'Ядро';$('#zone').textContent=z;}
+  $('#alt').textContent=txt;}
+addEventListener('scroll',gauge,{passive:true});gauge();
+
+/* ---------- web ---------- */
+const SH=[{id:'atm',n:'атмосфера',e:'☁️',c:'#2F8FD8'},{id:'bio',n:'биосфера',e:'🦊',c:'#3E9E4F'},{id:'ped',n:'педосфера',e:'🟫',c:'#8A5A2B'},{id:'lit',n:'литосфера',e:'🪨',c:'#6B6F7A'},{id:'hyd',n:'хидросфера',e:'🌊',c:'#1BA3A0'}];
+const LINKS={
+ 'atm-hyd':'Водата от моретата се изпарява и образува облаци. Дъждът връща водата обратно на Земята.',
+ 'atm-bio':'Растенията отделят кислород във въздуха, а животните и хората го дишат.',
+ 'atm-lit':'Вятърът, жегата и студът постепенно рушат скалите.',
+ 'atm-ped':'Въздухът прониква в почвата и помага на корените на растенията да дишат.',
+ 'bio-hyd':'Във водата живеят риби, раци и делфини, а всички живи същества пият вода.',
+ 'hyd-lit':'Реките издълбават долини в скалите, а морските вълни рушат бреговете.',
+ 'hyd-ped':'Дъждът навлажнява почвата и растенията получават вода от нея.',
+ 'bio-lit':'Корените на дърветата се вклиняват в пукнатините и разрушават скалите.',
+ 'bio-ped':'Растенията са впили корени в почвата и получават от нея хранителни вещества. Падналите листа я правят плодородна.',
+ 'lit-ped':'Почвата се образува от раздробени скали, смесени с останки от растения.'
+};
+const web=$('#web'),CXY=[200,190],RAD=138;
+const pos=SH.map((s,i)=>{const a=-Math.PI/2+i*2*Math.PI/5;return [CXY[0]+RAD*Math.cos(a),CXY[1]+RAD*Math.sin(a)];});
+const pk=(a,b)=>[a,b].sort().join('-');
+let wh=`<circle cx="200" cy="190" r="34" fill="#2F8FD8" stroke="#13203A" stroke-width="3"/><text x="200" y="198" font-size="26" text-anchor="middle">🌍</text>`;
+for(let i=0;i<5;i++)for(let j=i+1;j<5;j++)wh+=`<line class="edge" data-k="${pk(SH[i].id,SH[j].id)}" x1="${pos[i][0]}" y1="${pos[i][1]}" x2="${pos[j][0]}" y2="${pos[j][1]}"/>`;
+SH.forEach((s,i)=>{wh+=`<g class="node" data-id="${s.id}" tabindex="0" role="button" aria-label="${s.n}"><circle cx="${pos[i][0]}" cy="${pos[i][1]}" r="40" fill="${s.c}"/><text class="e" x="${pos[i][0]}" y="${pos[i][1]+2}">${s.e}</text><text x="${pos[i][0]}" y="${pos[i][1]+22}">${s.n}</text></g>`;});
+web.innerHTML=wh;
+let firstNode=null;const foundLinks=new Set();
+function pickNode(g){
+  const id=g.dataset.id;beep('tap');
+  if(!firstNode||firstNode===id){firstNode=id;$$('#web .node').forEach(n=>n.classList.toggle('sel',n.dataset.id===id));
+    $('#webInfo').innerHTML=`<div class="pair">${SH.find(s=>s.id===id).n} + ?</div>Сега докосни втора обвивка.`;return;}
+  const k=pk(firstNode,id);const a=SH.find(s=>s.id===firstNode).n,b=SH.find(s=>s.id===id).n;
+  $$('#web .node').forEach(n=>n.classList.remove('sel'));firstNode=null;
+  const isNew=!foundLinks.has(k);foundLinks.add(k);
+  const e=web.querySelector(`.edge[data-k="${k}"]`);e.classList.add('found');
+  $('#webInfo').innerHTML=`<div class="pair">${a} ↔ ${b}${isNew?' · нова връзка!':''}</div>${LINKS[k]}`;
+  $('#webInfo').classList.remove('flash');void $('#webInfo').offsetWidth;
+  $('#webCount').textContent=foundLinks.size;
+  if(foundLinks.size===10)award('web',$('#tWeb'));else if(isNew)say('Нова връзка! Има още.','happy');
+}
+$$('#web .node').forEach(g=>{g.addEventListener('click',()=>pickNode(g));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickNode(g);}});});
+
+/* ---------- sorter ---------- */
+const ITEMS=[['☁️','облак','atm'],['💨','вятър','atm'],['🌊','океан','hyd'],['🧊','ледник','hyd'],['🏞️','езеро','hyd'],['🐻','мечка','bio'],['🌲','смърч','bio'],['🍄','гъба','bio'],['🟫','почва','ped'],['⬛','чернозем','ped'],['🪨','скала','lit'],['⛰️','планина','lit'],['🌋','вулкан','lit']];
+const order=ITEMS.map((_,i)=>i).sort(()=>Math.random()-.5);
+$('#tray').innerHTML=order.map(i=>`<button class="item" data-i="${i}" aria-pressed="false">${ITEMS[i][0]} ${ITEMS[i][1]}</button>`).join('');
+$('#bins').innerHTML=['atm','hyd','bio','ped','lit'].map(id=>{const s=SH.find(x=>x.id===id);return `<button class="bin" data-id="${id}" style="background:${s.c}"><span class="bt">${s.n}</span><span class="got"></span></button>`;}).join('');
+let pickedItem=null,sorted=0;
+$('#tray').addEventListener('click',e=>{const b=e.target.closest('.item');if(!b||b.classList.contains('gone'))return;pickedItem=b;$$('.item').forEach(x=>x.setAttribute('aria-pressed',x===b));beep('tap');});
+$('#bins').addEventListener('click',e=>{const bin=e.target.closest('.bin');if(!bin)return;
+  if(!pickedItem){say('Първо избери нещо отгоре!');return;}
+  const it=ITEMS[+pickedItem.dataset.i];
+  if(it[2]===bin.dataset.id){const sp=document.createElement('span');sp.textContent=it[0];sp.title=it[1];bin.querySelector('.got').appendChild(sp);
+    const done=pickedItem;done.classList.add('gone');setTimeout(()=>{done.hidden=true;},450);pickedItem=null;sorted++;beep('tap');
+    bin.classList.add('yes');setTimeout(()=>bin.classList.remove('yes'),300);
+    if(sorted===ITEMS.length)award('sort',$('#tSort'));}
+  else{bin.classList.remove('no');void bin.offsetWidth;bin.classList.add('no');fail();}
+});
+
+/* ---------- layers data ---------- */
+const LAYERS={
+  crust:{n:'Земна кора',c:'#8A5A2B',t:'Най-горната и най-твърдата обвивка, изградена от различни скали. В нея стават земетресения и изригват вулкани.',f:[['Дебелина','от около 5 до 70 km'],['Състояние','твърда'],['Интересно','под океаните е по-тънка, под планините е най-дебела']]},
+  mantle:{n:'Мантия',c:'#D9452A',t:'„Мантия“ на латински означава „покривало“. Тя покрива ядрото. Веществото в нея е както твърдо, така и разтопено.',f:[['Стига до','около 2900 km дълбочина'],['Температура','расте навътре: до около 3700 °C'],['Интересно','най-дебелата обвивка']]},
+  core:{n:'Ядро',c:'#FFB52E',t:'Центърът на Земята. Тук е най-тежкото и плътно вещество. Външното ядро е течно, а вътрешното е твърдо.',f:[['Дълбочина','от 2900 до 6371 km'],['Температура','около 5000 °C и повече'],['Интересно','горещо е колкото повърхността на Слънцето']]},
+  surface:{n:'Повърхността',c:'#2F8FD8',t:'Отгоре виждаш външните обвивки: океаните (хидросфера), облаците (атмосфера), сушата с почви, гори и животни. Завърти Земята и погледни в изрязания сектор!',f:[['Радиус на Земята','около 6371 km']]}
+};
+function showLayer(k){const L=LAYERS[k],el=$('#layerInfo');
+  el.innerHTML=`<h3><span class="sw" style="background:${L.c}"></span>${L.n}</h3><p style="margin:0">${L.t}</p><dl class="facts">${L.f.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>`;
+  el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
+showLayer('surface');
+
+/* depth journey */
+const TEMP=[[0,15],[35,600],[2900,3700],[5150,5000],[6371,5400]];
+function tempAt(d){for(let i=1;i<TEMP.length;i++){if(d<=TEMP[i][0]){const [d0,t0]=TEMP[i-1],[d1,t1]=TEMP[i];return t0+(t1-t0)*(d-d0)/(d1-d0);}}return 5400;}
+function layerAt(d){return d<35?'crust':d<2900?'mantle':'core';}
+let probeDepth=0;let lastDepthLayer='crust';
+$('#depth').addEventListener('input',e=>{const d=+e.target.value;probeDepth=d;
+  $('#depthKm').textContent=d.toLocaleString('bg-BG')+' km';
+  const k=layerAt(d);$('#depthLayer').textContent=LAYERS[k].n+(d>=5150?' (вътрешно, твърдо)':d>=2900?' (външно, течно)':'');
+  const tp=Math.round(tempAt(d)/10)*10;$('#depthTemp').textContent='около '+tp.toLocaleString('bg-BG')+' °C';
+  $('#thermoI').style.left=(tempAt(d)/5400*100)+'%';
+  if(k!==lastDepthLayer){lastDepthLayer=k;showLayer(k);beep('tap');say(k==='mantle'?'Влизаме в мантията! Става горещо.':k==='core'?'Ядрото! Тук е най-горещо и най-плътно.':'Обратно в земната кора.','happy');}
+  if(d===6371)say('Стигнахме центъра на Земята, 6371 km!','happy');
+});
+
+/* ---------- 3D Earth ---------- */
+(function(){
+  const stage=$('#stage'),canvas=$('#three');
+  const lbls={crust:$('#lblCrust'),mantle:$('#lblMantle'),core:$('#lblCore')};
+  if(!window.THREE){Object.values(lbls).forEach(l=>l.hidden=true);stage.insertAdjacentHTML('beforeend','<div class="nogl">3D моделът не можа да се зареди. Провери интернет връзката и презареди страницата.</div>');return;}
+  let renderer;try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});}catch(e){Object.values(lbls).forEach(l=>l.hidden=true);stage.insertAdjacentHTML('beforeend','<div class="nogl">Устройството не поддържа 3D графика (WebGL).</div>');return;}
+  renderer.setPixelRatio(Math.min(2,devicePixelRatio||1));
+  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,0.1,100);
+  scene.add(new THREE.AmbientLight(0xffffff,0.55));const sun=new THREE.DirectionalLight(0xffffff,0.85);sun.position.set(-6,5,-4);scene.add(sun);
+  const R=2,PHI=1.5*Math.PI;
+  // procedural earth texture
+  function earthTex(){const W=1024,H=512,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');const img=g.createImageData(W,H);
+    const waves=[];let seed=7;const rnd=()=>{seed=(seed*9301+49297)%233280;return seed/233280;};
+    for(let i=0;i<9;i++)waves.push([1+Math.floor(rnd()*5),1+rnd()*4,rnd()*6.28,rnd()*6.28,1/(i+1.5)]);
+    for(let y=0;y<H;y++){const lat=(y/H-.5)*Math.PI;for(let x=0;x<W;x++){const lon=x/W*2*Math.PI;let f=0;
+      for(const [k,m,p,q,a] of waves)f+=a*Math.sin(k*lon+p)*Math.cos(m*lat+q);
+      const i=(y*W+x)*4;const ice=Math.abs(lat)>1.25;let r,gg,b;
+      if(ice){r=240;gg=246;b=255;}
+      else if(f>0.32){const desert=Math.abs(Math.abs(lat)-0.4)<0.15&&f<0.7;if(desert){r=214;gg=184;b=120;}else{const s=Math.min(1,(f-.32)*1.6);r=60+40*s;gg=140-30*s;b=60;}}
+      else{const dpt=Math.max(0,Math.min(1,(0.32-f)*1.4));r=30-15*dpt;gg=120-50*dpt;b=200-40*dpt;}
+      img.data[i]=r;img.data[i+1]=gg;img.data[i+2]=b;img.data[i+3]=255;}}
+    g.putImageData(img,0,0);return new THREE.CanvasTexture(c);}
+  function cloudTex(){const W=512,H=256,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
+    for(let i=0;i<220;i++){const x=Math.random()*W,y=H*0.15+Math.random()*H*0.7,r=6+Math.random()*22;const gr=g.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,'rgba(255,255,255,.75)');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;g.fillRect(x-r,y-r,2*r,2*r);}
+    return new THREE.CanvasTexture(c);}
+  function cutTex(){const S=512,c=document.createElement('canvas');c.width=c.height=S;const g=c.getContext('2d'),m=S/2;
+    const rings=[[1,'#8A5A2B'],[0.93,'#E4572E'],[0.75,'#C2361F'],[0.546,'#FF9A2E'],[0.19,'#FFE066']];
+    rings.forEach(([r,col])=>{g.beginPath();g.arc(m,m,r*m,0,7);g.fillStyle=col;g.fill();g.lineWidth=3;g.strokeStyle='rgba(19,32,58,.45)';g.stroke();});
+    const gr=g.createRadialGradient(m,m,0,m,m,0.3*m);gr.addColorStop(0,'rgba(255,255,255,.7)');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;g.beginPath();g.arc(m,m,0.3*m,0,7);g.fill();
+    return new THREE.CanvasTexture(c);}
+  const earth=new THREE.Group();scene.add(earth);
+  const surf=new THREE.Mesh(new THREE.SphereGeometry(R,96,64,0,PHI),new THREE.MeshStandardMaterial({map:earthTex(),roughness:.8,side:THREE.DoubleSide}));earth.add(surf);
+  const clouds=new THREE.Mesh(new THREE.SphereGeometry(R*1.025,64,48,0,PHI),new THREE.MeshStandardMaterial({map:cloudTex(),transparent:true,depthWrite:false}));earth.add(clouds);
+  const ct=cutTex();const cutMat=new THREE.MeshStandardMaterial({map:ct,roughness:.7,side:THREE.DoubleSide,emissive:0x331100,emissiveIntensity:.35});
+  const planes=[0,PHI].map(phi=>{const m=new THREE.Mesh(new THREE.CircleGeometry(R*0.999,96,-Math.PI/2,Math.PI),cutMat);m.rotation.y=Math.PI+phi;m.userData.cut=true;earth.add(m);return m;});
+  // probe
+  const probe=new THREE.Mesh(new THREE.SphereGeometry(0.07,16,12),new THREE.MeshBasicMaterial({color:0x2F8FD8}));earth.add(probe);
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(0.11,0.02,8,24),new THREE.MeshBasicMaterial({color:0xffffff}));probe.add(ring);
+  // directions on plane 0 (rotation PI): outward +x maps to (cos b,0,-sin b)
+  function planePoint(pi,rho,elev){const b=Math.PI+[0,PHI][pi];const d=new THREE.Vector3(Math.cos(b),0,-Math.sin(b));return d.multiplyScalar(rho*Math.cos(elev)).add(new THREE.Vector3(0,rho*Math.sin(elev),0));}
+  const gapDir=new THREE.Vector3(-Math.cos(1.75*Math.PI),0,Math.sin(1.75*Math.PI)).normalize();
+  camera.position.copy(gapDir.clone().multiplyScalar(7.6)).add(new THREE.Vector3(0,2.6,0));
+  const controls=THREE.OrbitControls?new THREE.OrbitControls(camera,canvas):null;
+  if(controls){controls.enableDamping=true;controls.dampingFactor=.08;controls.enablePan=false;controls.minDistance=3.6;controls.maxDistance=12;controls.autoRotate=!reduce;controls.autoRotateSpeed=0.9;
+    controls.addEventListener('start',()=>{$('#stageHint').hidden=true;});}
+  else camera.lookAt(0,0,0);
+  let spin=!reduce;
+  $('#btnSpin').addEventListener('click',e=>{spin=!spin;if(controls)controls.autoRotate=spin;e.currentTarget.setAttribute('aria-pressed',spin);});
+  let showL=true;$('#btnLabels').addEventListener('click',e=>{showL=!showL;e.currentTarget.setAttribute('aria-pressed',showL);});
+  // tap
+  const ray=new THREE.Raycaster(),mv=new THREE.Vector2();let down=null;
+  canvas.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY};});
+  canvas.addEventListener('pointerup',e=>{if(!down)return;const mvd=Math.hypot(e.clientX-down.x,e.clientY-down.y);down=null;if(mvd>8)return;
+    const r=canvas.getBoundingClientRect();mv.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);ray.setFromCamera(mv,camera);
+    const hits=ray.intersectObjects([surf,...planes],false);if(!hits.length)return;const cutHit=hits.find(h=>h.object.userData.cut);const hit=(cutHit&&cutHit.distance-hits[0].distance<0.35)?cutHit:hits[0];
+    if(hit.object.userData.cut){const rr=hit.point.length()/R;const k=rr>0.93?'crust':rr>0.546?'mantle':'core';showLayer(k);beep('tap');
+      say(k==='crust'?'Това е земната кора!':k==='mantle'?'Мантията: покривалото на ядрото.':'Ядрото: най-горещото място!','happy');}
+    else{showLayer('surface');beep('tap');}
+    $('#stageHint').hidden=true;});
+  function resize(){const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+  new ResizeObserver(resize).observe(stage);resize();
+  const anchors={crust:[0.965,0.9],mantle:[0.75,0.5],core:[0.3,0.2]};
+  const v=new THREE.Vector3();
+  function loop(now){
+    clouds.rotation.y=now*0.00003;
+    if(controls)controls.update();
+    // which cut plane faces the camera more
+    const cam=camera.position.clone().normalize();const facingGap=cam.dot(gapDir);
+    const n0=new THREE.Vector3(Math.sin(Math.PI),0,Math.cos(Math.PI)),n1=new THREE.Vector3(Math.sin(Math.PI+PHI),0,Math.cos(Math.PI+PHI));
+    const pi=Math.abs(cam.dot(n0))>Math.abs(cam.dot(n1))?0:1;
+    const w=stage.clientWidth,h=stage.clientHeight;
+    Object.entries(anchors).forEach(([k,[rho,el]])=>{const p=planePoint(pi,rho*R,el);v.copy(p).project(camera);
+      const l=lbls[k];l.style.left=((v.x+1)/2*w)+'px';l.style.top=((1-v.y)/2*h-14)+'px';l.style.opacity=(showL&&facingGap>-0.05)?1:0;});
+    // probe on plane facing camera, along a 10° line
+    const pp=planePoint(pi,R*(1-probeDepth/6371)+0.0001,0.17);probe.position.copy(pp);ring.lookAt(camera.position);
+    probe.visible=facingGap>-0.05;
+    renderer.render(scene,camera);requestAnimationFrame(loop);}
+  requestAnimationFrame(loop);
+  window.__earth={camera,planes,R};
+})();
+
+/* ---------- crust motion ---------- */
+const crust=$('#crust');
+function setMove(cls){crust.classList.remove('up','down','quake');void crust.getBoundingClientRect();if(cls)crust.classList.add(cls);}
+$('#mvUp').addEventListener('click',()=>{setMove(crust.classList.contains('up')?'':'up');beep('tap');say('Земната кора се издига!');});
+$('#mvDown').addEventListener('click',()=>{setMove(crust.classList.contains('down')?'':'down');beep('tap');say('А сега потъва надолу.');});
+$('#mvErupt').addEventListener('click',()=>{beep('rumble');$('#lava').style.opacity=1;setTimeout(()=>$('#lava').style.opacity=0,1800);
+  const pf=$('#puffs');for(let i=0;i<9;i++){const c=document.createElementNS(NS,'circle');c.setAttribute('cx',70);c.setAttribute('cy',24);c.setAttribute('r',6+Math.random()*6);
+    c.setAttribute('fill',i%3?'#9AA3B5':'#E4572E');c.setAttribute('class','puff');c.style.setProperty('--dx',((Math.random()-.5)*60)+'px');c.style.animationDelay=(i*0.08)+'s';c.style.transformBox='fill-box';pf.appendChild(c);setTimeout(()=>c.remove(),2400);}
+  say('Вулканът изригна! 🌋','happy');});
+
+/* seismograph */
+const sc=$('#seismo'),sg=sc.getContext('2d');let amp=0,phase=0,trace=[];
+function sizeSeis(){sc.width=sc.clientWidth*devicePixelRatio;sc.height=sc.clientHeight*devicePixelRatio;}sizeSeis();addEventListener('resize',sizeSeis);
+function seisLoop(){const W=sc.width,H=sc.height;phase++;amp*=0.975;
+  trace.push(H/2+(Math.random()-.5)*(4*devicePixelRatio+amp*H*0.9));if(trace.length>W/(2*devicePixelRatio))trace.shift();
+  sg.clearRect(0,0,W,H);sg.strokeStyle='rgba(74,88,120,.2)';sg.lineWidth=1;for(let y=H/4;y<H;y+=H/4){sg.beginPath();sg.moveTo(0,y);sg.lineTo(W,y);sg.stroke();}
+  sg.strokeStyle='#E4572E';sg.lineWidth=2*devicePixelRatio;sg.beginPath();trace.forEach((y,i)=>{const x=i*2*devicePixelRatio;i?sg.lineTo(x,y):sg.moveTo(x,y);});sg.stroke();
+  requestAnimationFrame(seisLoop);}
+if(!reduce)requestAnimationFrame(seisLoop);else{sg.fillStyle='#4A5878';sg.font='14px sans-serif';sg.fillText('Сеизмограф',10,20);}
+$('#mvQuake').addEventListener('click',()=>{amp=1;beep('rumble');const q=$('#quakeCard');q.classList.remove('rumble');void q.offsetWidth;q.classList.add('rumble');setMove('quake');say('Земетресение! Сеизмографът го записа.','sad');});
+
+/* ---------- task 2 order ---------- */
+const ORDER=['Земна кора','Мантия','Ядро'],OC=['#8A5A2B','#D9452A','#FFB52E'];
+let ordStep=0;
+$('#orderChips').innerHTML=['Ядро','Земна кора','Мантия'].map(n=>`<button class="chip" data-n="${n}">${n}</button>`).join('');
+$('#orderChips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b||won.has('order'))return;
+  if(b.dataset.n===ORDER[ordStep]){b.classList.add('used');$('#orderOut').insertAdjacentHTML('beforeend',`<div style="background:${OC[ordStep]};${ordStep===2?'color:#13203A':''}">${ordStep+1}. ${ORDER[ordStep]}</div>`);ordStep++;beep('tap');
+    if(ordStep===3){award('order',$('#tOrder'));$('#tOrder').insertAdjacentHTML('beforeend','<div class="explain">От повърхността към центъра: земна кора → мантия → ядро.</div>');}}
+  else{b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');setTimeout(()=>b.classList.remove('bad'),500);fail();}
+});
+
+/* ---------- task 3 label ---------- */
+const SC=[['crust',150,'#8A5A2B'],['mantle',132,'#D9452A'],['core',70,'#FFB52E']];
+$('#scheme').innerHTML=SC.map(([k,r,c])=>`<path class="ring" data-k="${k}" d="M${150-r} 155 A${r} ${r} 0 0 1 ${150+r} 155 Z" fill="${c}"/>`).join('')+
+  `<text id="sl-crust" x="150" y="16" style="font-size:11px">?</text><text id="sl-mantle" x="150" y="60">?</text><text id="sl-core" x="150" y="130" style="fill:#13203A">?</text>`;
+$('#labelChips').innerHTML=[['mantle','Мантия'],['core','Ядро'],['crust','Земна кора']].map(([k,n])=>`<button class="chip" data-k="${k}" aria-pressed="false">${n}</button>`).join('');
+let pickedLabel=null,labelled=0;
+$('#labelChips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;pickedLabel=b;$$('#labelChips .chip').forEach(x=>x.setAttribute('aria-pressed',x===b));beep('tap');});
+$('#scheme').addEventListener('click',e=>{const r=e.target.closest('.ring');if(!r||won.has('label'))return;
+  if(!pickedLabel){say('Първо избери надпис!');return;}
+  if(pickedLabel.dataset.k===r.dataset.k){$('#sl-'+r.dataset.k).textContent=pickedLabel.textContent;pickedLabel.classList.add('used');pickedLabel.setAttribute('aria-pressed','false');pickedLabel=null;labelled++;beep('tap');
+    if(labelled===3)award('label',$('#tLabel'));}
+  else{r.classList.remove('no');void r.getBoundingClientRect();r.classList.add('no');fail();}
+});
+
+/* ---------- quiz ---------- */
+const L=['А','Б','В','Г'];
+const Q=[
+ ['Коя е въздушната обвивка на Земята?',['атмосфера','хидросфера','литосфера','педосфера'],0,'Атмосферата е газообразната въздушна обвивка.'],
+ ['Почвите образуват:',['биосферата','педосферата','литосферата','атмосферата'],1,'Почвите образуват педосферата.'],
+ ['Твърдите скали на сушата и на дъното на океаните образуват:',['хидросферата','биосферата','литосферата','педосферата'],2,'Литосферата е изградена от твърдите скали.'],
+ ['Какво означава думата „мантия“ на латински?',['огън','камък','покривало','център'],2,'Мантията е като покривало около ядрото.'],
+ ['Къде е най-тежкото и плътно вещество на Земята?',['в земната кора','в мантията','в атмосферата','в ядрото'],3,'Най-тежкото и плътно вещество е в ядрото.'],
+ ['Как се променя температурата, когато слизаме към ядрото?',['понижава се','повишава се','не се променя','става 0 °C'],1,'Температурата и налягането се повишават към ядрото.'],
+ ['На колко години е Земята според учебника?',['около 5 хиляди','около 5 милиона','около 5 милиарда','около 5 трилиона'],2,'Земята съществува от около 5 милиарда години (учените уточняват: около 4,6 милиарда).'],
+ ['Кога и къде е създадена първата сеизмична станция в България?',['1882 г. в София','1904 г. в Кресна','1928 г. в Пловдив','1990 г. във Варна'],0,'Първата станция е създадена през 1882 г. в София.'],
+ ['Растенията са впили корени в почвата. Това е връзка между:',['атмосфера и хидросфера','биосфера и педосфера','литосфера и атмосфера','хидросфера и литосфера'],1,'Растенията (биосфера) получават храна от почвата (педосфера).'],
+ ['Кое от тези НЕ е процес в земната кора?',['изригване на вулкан','земетресение','нагъване','дъжд'],3,'Дъждът е процес в атмосферата и хидросферата. Другите стават в земната кора.']
+];
+$('#quiz').innerHTML=Q.map(([q,o],i)=>`<article class="q" id="q${i}"><div class="q-num">${i+1}</div><div class="t-stamp" aria-hidden="true">⭐</div><h3>${q}</h3><div class="opts">${o.map((v,k)=>`<button class="opt" data-k="${k}"><span>${L[k]})</span>${v}</button>`).join('')}</div></article>`).join('');
+const qTries=Q.map(()=>0);
+Q.forEach(([,,a,why],i)=>{$$(`#q${i} .opt`).forEach(b=>b.addEventListener('click',()=>{
+  if(b.disabled)return;const ok=+b.dataset.k===a;qTries[i]++;
+  if(ok){b.classList.add('right');$$(`#q${i} .opt`).forEach(x=>x.disabled=true);$('#q'+i).insertAdjacentHTML('beforeend',`<p class="why">${why}</p>`);
+    if(qTries[i]===1)award('q'+i,$('#q'+i));else{$('#q'+i).querySelector('.t-stamp').textContent='✅';$('#q'+i).classList.add('solved');beep('good');say('Вярно! Този път без звезда.','happy');}}
+  else{b.classList.add('wrong');b.disabled=true;fail();}
+}));});
+
+/* reset */
+$('#resetBtn').addEventListener('click',()=>{location.hash='';location.reload();});
+updateScore(false);
+window.__geo={won:()=>won.size,foundLinks:()=>foundLinks.size};
+})();
+</script>
+</body>
+</html>
