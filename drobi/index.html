@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Интерактивен урок по математика за 5. клас: обикновени дроби, 3D торта и 11 задачи.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Обикновени дроби · Урок 25</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Nunito:wght@500;700;800;900&display=swap">
+<style>
+/* Layout: "the fraction bakery" — a 3D cake counter up top, order tickets for each task, a sprinkle-star tally on the shelf */
+:root{
+  --bg:#EAF5E6;          /* pistachio milk */
+  --bg2:#D5EBCD;
+  --ink:#3A1E17;         /* chocolate */
+  --ink-soft:#7A5A50;
+  --paper:#FFFFFF;
+  --berry:#FF4F79;       /* strawberry */
+  --lemon:#FFD23F;       /* lemon */
+  --blue:#4C6FFF;        /* blueberry */
+  --pist:#4FAE54;        /* pistachio */
+  --line:#CBE2C2;
+  --bad:#E5404F;
+  --display:"Balsamiq Sans","Nunito","Comic Sans MS",sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1F1512;--bg2:#2D1F1A;--ink:#FFF1EA;--ink-soft:#D4B9AD;--paper:#35241F;
+    --berry:#FF6E90;--lemon:#FFD94F;--blue:#7D93FF;--pist:#6CCB6F;--line:#4B3630;--bad:#FF6E7A;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1F1512;--bg2:#2D1F1A;--ink:#FFF1EA;--ink-soft:#D4B9AD;--paper:#35241F;
+  --berry:#FF6E90;--lemon:#FFD94F;--blue:#7D93FF;--pist:#6CCB6F;--line:#4B3630;--bad:#FF6E7A;color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;overflow-x:hidden}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 80px;position:relative;z-index:1}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:8px}
+
+/* falling sprinkles */
+#sprinkles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#sprinkles i{position:absolute;top:-20px;width:6px;height:18px;border-radius:4px;opacity:.55;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(115vh) rotate(540deg)}}
+
+/* fraction typography */
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.05;font-weight:900;font-variant-numeric:tabular-nums;margin:0 2px}
+.fr b{padding:0 3px}
+.fr b:first-child{border-bottom:2.5px solid currentColor}
+.fin{display:inline-flex;flex-direction:column;align-items:center;gap:4px;vertical-align:middle}
+.fin input,.nin{width:58px;text-align:center;font:900 20px var(--body);padding:4px 2px;border:3px solid var(--ink);border-radius:10px;background:var(--bg);color:var(--ink);font-variant-numeric:tabular-nums}
+.fin.wide input{width:108px}
+.fin i{display:block;width:100%;height:3px;background:var(--ink);border-radius:2px}
+.fin.ok input,.nin.ok{border-color:var(--pist);background:color-mix(in srgb,var(--pist) 22%,var(--bg))}
+.fin.bad input,.nin.bad{border-color:var(--bad);animation:shake .45s}
+.fin input:disabled,.nin:disabled{opacity:1;color:var(--ink)}
+@keyframes shake{20%{transform:translateX(-7px) rotate(-3deg)}40%{transform:translateX(7px) rotate(3deg)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes pop{from{transform:scale(.5) rotate(-8deg)}}
+
+/* tally */
+.tally{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;justify-content:flex-end;padding-block:12px 0;pointer-events:none}
+.tally-in{pointer-events:auto;display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--bg);border-radius:999px;padding:8px 8px 8px 16px;box-shadow:0 6px 0 var(--berry);font-family:var(--display);font-weight:700;font-size:15px}
+.tally-star{display:inline-block;color:var(--lemon);font-size:20px}
+.tally-star.pop{animation:starpop .6s}
+@keyframes starpop{40%{transform:scale(1.8) rotate(25deg)}}
+.tally-bar{width:90px;height:10px;border-radius:9px;background:color-mix(in srgb,var(--bg) 25%,transparent);overflow:hidden}
+.tally-bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,var(--lemon) 0 8px,var(--berry) 8px 16px);transition:width .6s cubic-bezier(.3,1.6,.5,1)}
+.icon-btn{background:var(--bg);color:var(--ink);border:0;border-radius:999px;width:34px;height:34px;display:grid;place-items:center;font-size:16px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.35fr .85fr;gap:24px;align-items:center;padding-block:24px 10px}
+.eyebrow{display:inline-block;font-weight:900;font-size:13px;letter-spacing:.08em;text-transform:uppercase;background:var(--berry);color:#fff;padding:6px 14px;border-radius:999px;transform:rotate(-2deg);animation:wobble 4s ease-in-out infinite}
+@keyframes wobble{50%{transform:rotate(2deg)}}
+.hero h1{font-size:clamp(44px,8.6vw,92px);font-weight:700;margin-top:14px;letter-spacing:-.01em}
+.hero h1 .ch{display:inline-block;animation:drop .8s cubic-bezier(.3,1.7,.5,1) both}
+.hero h1 .ch.c2{color:var(--berry)}
+@keyframes drop{from{transform:translateY(-80px) rotate(-20deg);opacity:0}}
+.hero p{font-size:19px;max-width:34em;color:var(--ink-soft);margin:14px 0 0}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.btn{border:3px solid var(--ink);background:var(--paper);border-radius:16px;padding:10px 18px;font-weight:900;box-shadow:0 5px 0 var(--ink);transition:transform .12s,box-shadow .12s;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;gap:8px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--ink)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.btn:disabled{opacity:.5;cursor:default;transform:none}
+.btn.lemon{background:var(--lemon);color:#3A1E17}
+.btn.berry{background:var(--berry);color:#fff}
+.btn.blue{background:var(--blue);color:#fff}
+.mascot-box{display:grid;place-items:center}
+#mascot{width:min(230px,62vw);height:auto;animation:float 3.5s ease-in-out infinite;overflow:visible}
+@keyframes float{50%{transform:translateY(-12px) rotate(3deg)}}
+#mascot .eye{transform-origin:center;transform-box:fill-box;animation:blink 4.5s infinite}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+#mascot.happy{animation:jump .8s cubic-bezier(.3,1.6,.5,1)}
+@keyframes jump{40%{transform:translateY(-40px) rotate(-10deg) scale(1.08)}}
+#mascot.sad{animation:shake .5s}
+.bubble{background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:10px 14px;font-weight:800;max-width:260px;text-align:center;position:relative;margin-bottom:8px;box-shadow:0 4px 0 var(--ink);min-height:52px}
+.bubble::after{content:"";position:absolute;left:50%;bottom:-12px;width:18px;height:18px;background:var(--paper);border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:translateX(-50%) rotate(45deg)}
+.bubble.talk{animation:talk .4s}
+@keyframes talk{50%{transform:scale(1.07)}}
+
+/* sections */
+section{margin-top:56px}
+.sec-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.sec-head h2{font-size:clamp(28px,4.6vw,42px);font-weight:700}
+.sec-tag{font-weight:900;font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:2px dashed var(--ink-soft);color:var(--ink-soft);border-radius:999px;padding:4px 10px}
+.lead{color:var(--ink-soft);max-width:62ch;margin:-6px 0 20px}
+
+/* 3D cake */
+.lab{display:grid;grid-template-columns:1.5fr 1fr;gap:20px}
+.stage{position:relative;border:3px solid var(--ink);border-radius:28px;overflow:hidden;box-shadow:0 6px 0 var(--ink);background:radial-gradient(circle at 50% 35%,var(--paper),var(--bg2) 75%);height:440px;min-width:0}
+#three{width:100%;height:100%;display:block;touch-action:none}
+.stage-hint{position:absolute;left:12px;bottom:12px;right:12px;width:max-content;max-width:calc(100% - 24px);background:var(--ink);color:var(--bg);font-weight:800;font-size:13px;border-radius:999px;padding:6px 12px;pointer-events:none;animation:nudge 2s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateX(8px)}}
+.nogl{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;font-weight:800}
+.panel{background:var(--paper);border:3px solid var(--ink);border-radius:28px;padding:18px;box-shadow:0 6px 0 var(--ink);display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel h3{font-size:18px}
+.dens{display:flex;flex-wrap:wrap;gap:6px}
+.den{border:2px solid var(--ink);background:var(--bg);border-radius:12px;min-width:40px;padding:4px 8px;font-weight:900}
+.den[aria-pressed="true"]{background:var(--berry);color:#fff;transform:translateY(-2px);box-shadow:0 3px 0 var(--ink)}
+.readout{display:flex;align-items:center;gap:16px;background:var(--bg);border-radius:20px;padding:12px 14px}
+.readout .fr{font-size:46px;color:var(--berry)}
+.readout .fr.bump{animation:pop .4s}
+.readout .words{font-family:var(--display);font-weight:700;font-size:20px}
+.readout small{display:block;font-family:var(--body);font-size:14px;color:var(--ink-soft);font-weight:700}
+.legend{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:14.5px;font-weight:700;color:var(--ink-soft)}
+.legend b{color:var(--ink)}
+
+/* anatomy */
+.anatomy{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:var(--ink);color:var(--bg);border-radius:28px;padding:22px 26px;margin-top:22px}
+.big-fr{display:grid;grid-template-columns:auto auto;gap:6px 14px;align-items:center;font-family:var(--display)}
+.big-fr .n,.big-fr .d{font-size:64px;font-weight:700;color:var(--lemon);text-align:center;line-height:1}
+.big-fr .bar{height:7px;background:var(--berry);border-radius:4px;animation:grow 1.2s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes grow{from{transform:scaleX(0)}}
+.big-fr span{font-family:var(--body);font-weight:900;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.anatomy p{margin:0 0 8px;max-width:58ch}
+.anatomy p:last-child{margin:0}
+.anatomy em{font-style:normal;color:var(--lemon);font-weight:900}
+
+/* pie gallery */
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.pie-card{background:var(--paper);border:3px solid var(--ink);border-radius:22px;padding:12px 10px;box-shadow:0 5px 0 var(--ink);text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s}
+.pie-card:hover{transform:translateY(-4px) rotate(-1deg)}
+.pie-card svg{width:96px;height:96px}
+.pie-card .w{font-family:var(--display);font-weight:700;font-size:17px;line-height:1.2}
+.pie-card small{color:var(--ink-soft);font-weight:700;font-size:13px;line-height:1.3}
+.pie-card .fr{font-size:22px}
+.sec{transition:fill .35s}
+
+/* tasks */
+.tasks{display:flex;flex-direction:column;gap:30px}
+.task{position:relative;background:var(--paper);border:3px solid var(--ink);border-radius:26px;padding:24px 22px 20px;box-shadow:0 6px 0 var(--ink);min-width:0}
+.task:nth-child(odd){transform:rotate(-.4deg)}.task:nth-child(even){transform:rotate(.4deg)}
+.t-num{position:absolute;top:-18px;left:18px;font-family:var(--display);font-weight:700;font-size:19px;background:var(--lemon);color:#3A1E17;border:3px solid var(--ink);border-radius:12px;padding:1px 12px;transform:rotate(-4deg)}
+.task:nth-child(3n+2) .t-num{background:var(--berry);color:#fff}
+.task:nth-child(3n) .t-num{background:var(--pist);color:#fff}
+.t-try{position:absolute;top:-16px;left:76px;background:var(--blue);color:#fff;font-weight:900;font-size:12px;border:3px solid var(--ink);border-radius:10px;padding:2px 8px;transform:rotate(3deg)}
+.t-stamp{position:absolute;top:-18px;right:18px;font-size:30px;transform:scale(0);transition:transform .5s cubic-bezier(.3,1.8,.5,1)}
+.task.solved .t-stamp{transform:scale(1) rotate(12deg)}
+.task h3{font-family:var(--body);font-weight:800;font-size:18px;line-height:1.45;margin:6px 0 16px}
+.t-foot{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:18px}
+.hint-btn{border:2px dashed var(--ink-soft);background:none;border-radius:999px;padding:5px 12px;font-weight:800;font-size:14px;color:var(--ink-soft)}
+.hint{font-size:15px;font-weight:800;color:var(--blue);margin:0;flex-basis:100%}
+.explain{margin-top:14px;background:var(--bg);border-radius:16px;padding:12px 16px;font-size:15.5px;border:2px solid var(--line);animation:slideDown .5s cubic-bezier(.3,1.4,.5,1)}
+@keyframes slideDown{from{transform:translateY(-10px) scale(.96);opacity:.2}}
+.row{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end}
+.item{display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:800;font-size:14.5px;text-align:center}
+.item label{max-width:150px;line-height:1.25}
+
+/* task 1 class */
+.klas{display:grid;grid-template-columns:repeat(8,26px);gap:6px;justify-content:start;padding:12px;border-radius:18px;background:var(--bg);width:max-content;max-width:100%;transition:all .4s}
+.kid{width:26px;height:26px;border-radius:50% 50% 40% 40%;background:var(--line);border:2.5px solid var(--ink);transition:background .35s,transform .35s;position:relative}
+.kid::after{content:"";position:absolute;left:6px;top:8px;width:10px;height:3px;border-bottom:2.5px solid var(--ink);border-radius:0 0 8px 8px}
+.kid.on{transform:translateY(-4px)}
+.t1-btns{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.t1-btns .btn{padding:6px 12px;font-size:15px}
+
+/* svg shapes */
+.shapes{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-end}
+.shape svg{width:110px;height:110px;display:block}
+.shape .tag{font-weight:900;color:var(--ink-soft)}
+.fig-stroke{stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round}
+.fill-on{fill:var(--blue)}
+.fill-off{fill:var(--paper)}
+
+/* task 5 grids */
+.tray{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{border:3px solid var(--ink);background:var(--bg);border-radius:14px;padding:4px 10px;font-size:19px;box-shadow:0 3px 0 var(--ink);transition:transform .15s}
+.chip[aria-pressed="true"]{background:var(--lemon);color:#3A1E17;transform:translateY(-4px) rotate(-3deg)}
+.chip.sel{background:var(--blue);color:#fff}
+.chip.good{background:var(--pist);color:#fff}
+.chip.wrongpick{background:var(--bad);color:#fff;animation:shake .45s}
+.grids{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.gcard{border:3px dashed var(--line);border-radius:18px;padding:8px;background:none;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:150px;transition:border-color .2s,transform .2s}
+.gcard:hover{border-color:var(--ink-soft)}
+.gcard svg{width:100%;max-width:96px;height:auto}
+.gcard .slot{min-height:46px;display:grid;place-items:center;font-size:20px;color:var(--ink-soft);font-weight:900}
+.gcard.done{border-style:solid;border-color:var(--pist)!important;transform:rotate(-2deg);animation:none}
+.gcard.no{animation:shake .45s;border-color:var(--bad)}
+
+/* task 6 circles */
+.whole{display:flex;flex-wrap:wrap;gap:20px}
+.whole .shape{display:flex;flex-direction:column;align-items:center;gap:6px}
+.whole svg path{cursor:pointer}
+.whole .res{font-weight:900;min-height:30px;font-size:18px}
+.whole .res.full{color:var(--pist);animation:pop .5s}
+
+/* task 4 choices */
+.choices{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.choice-q{font-weight:800;margin-top:10px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{border:3px solid var(--ink);background:var(--bg);border-radius:14px;padding:6px 12px;font-weight:800;font-size:15px;text-align:left}
+.opt[aria-pressed="true"]{background:var(--lemon);color:#3A1E17}
+.opt.ok{background:var(--pist);color:#fff}
+.opt.bad{background:var(--bad);color:#fff;animation:shake .45s}
+
+/* task 9 */
+.pick{border:3px solid var(--ink);background:var(--bg);border-radius:16px;padding:6px 12px;font-size:21px;box-shadow:0 3px 0 var(--ink);transition:transform .15s}
+.pick[aria-pressed="true"]{background:var(--blue);color:#fff;transform:translateY(-4px)}
+.pick.ok{background:var(--pist);color:#fff}
+.pick.bad{background:var(--bad);color:#fff;animation:shake .45s}
+.sub{font-weight:900;color:var(--berry);margin:12px 0 8px}
+
+/* flags */
+.flags{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:12px}
+.flag{display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:800;font-size:13px}
+.flag svg{width:100%;max-width:96px;height:auto;border:2px solid var(--ink);border-radius:6px;animation:wave 3s ease-in-out infinite;transform-origin:left center}
+.flag:nth-child(2) svg{animation-delay:.3s}.flag:nth-child(3) svg{animation-delay:.6s}.flag:nth-child(4) svg{animation-delay:.9s}.flag:nth-child(5) svg{animation-delay:1.2s}.flag:nth-child(6) svg{animation-delay:1.5s}
+@keyframes wave{50%{transform:skewY(-3deg) scaleX(.97)}}
+
+/* finale */
+.finale{text-align:center;background:var(--berry);color:#fff;border:3px solid var(--ink);border-radius:30px;padding:30px 20px;box-shadow:0 8px 0 var(--ink)}
+.finale h2{font-size:clamp(26px,5vw,44px)}
+.big-stars{font-size:clamp(24px,6vw,40px);letter-spacing:4px;margin:14px 0;color:rgba(255,255,255,.35);word-break:break-all}
+.big-stars .on{color:var(--lemon);display:inline-block;animation:pop .5s both}
+.finale p{font-weight:800;font-size:18px;margin:0 0 16px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50;width:100%;height:100%}
+footer{margin-top:40px;text-align:center;color:var(--ink-soft);font-size:14px}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr}
+  .mascot-box{order:-1}
+  #mascot{width:150px}
+  .lab{grid-template-columns:1fr}
+  .stage{height:360px}
+  .gallery{grid-template-columns:repeat(2,1fr)}
+  .grids{grid-template-columns:repeat(3,1fr)}
+  .flags{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:520px){
+  .anatomy{grid-template-columns:1fr}
+  .tally-bar{width:54px}
+  .klas{grid-template-columns:repeat(8,22px);gap:5px;padding:10px}
+  .kid{width:22px;height:22px}.kid::after{left:4px;top:6px;width:9px}
+  .grids{grid-template-columns:repeat(2,1fr)}
+  .task{padding:24px 14px 18px}
+  .shape svg{width:92px;height:92px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  #sprinkles{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="sprinkles" aria-hidden="true"></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <div class="tally">
+    <div class="tally-in" aria-live="polite">
+      <span class="tally-star" id="tallyStar">★</span>
+      <span><span id="score">0</span> / 11</span>
+      <span class="tally-bar"><i id="tallyBar"></i></span>
+      <button class="icon-btn" id="soundBtn" aria-label="Звук: включен" title="Звук">🔊</button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div>
+      <span class="eyebrow">Урок 25 · 5. клас</span>
+      <h1 id="title" aria-label="Обикновени дроби">Обикновени дроби</h1>
+      <p>Добре дошъл в сладкарницата на дробите! Режи торта в 3D, научи какво е числител и знаменател и събери 11 звезди.</p>
+      <div class="hero-cta">
+        <a class="btn lemon" href="#cake">🎂 3D торта</a>
+        <a class="btn" href="#tasks">Към задачите ↓</a>
+      </div>
+    </div>
+    <div class="mascot-box">
+      <div class="bubble" id="bubble">Здрасти! Аз съм Дробко, парче торта. Хапни една дроб!</div>
+      <svg id="mascot" viewBox="0 0 200 190" role="img" aria-label="Дробко, весело парче торта">
+        <ellipse cx="100" cy="180" rx="70" ry="8" fill="#3A1E17" opacity=".15"/>
+        <path d="M24 92 L176 60 L176 160 L24 166 Z" fill="#F3C27A" stroke="#3A1E17" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M24 122 L176 108 L176 120 L24 134 Z" fill="#FF8FB1" opacity=".9"/>
+        <path d="M24 92 L176 60 L176 78 Q160 92 150 78 Q138 96 124 84 Q110 102 96 90 Q82 108 66 96 Q52 112 40 100 Q32 108 24 104 Z" fill="#FF4F79" stroke="#3A1E17" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M24 92 L120 18 L176 60 Z" fill="#FFF4E6" stroke="#3A1E17" stroke-width="6" stroke-linejoin="round"/>
+        <circle cx="128" cy="30" r="14" fill="#E5233F" stroke="#3A1E17" stroke-width="5"/>
+        <path d="M128 17 Q134 2 146 0" fill="none" stroke="#3A1E17" stroke-width="4" stroke-linecap="round"/>
+        <g class="eye"><circle cx="76" cy="132" r="12" fill="#fff" stroke="#3A1E17" stroke-width="4"/><circle id="pupilL" cx="78" cy="134" r="5" fill="#3A1E17"/></g>
+        <g class="eye"><circle cx="124" cy="128" r="12" fill="#fff" stroke="#3A1E17" stroke-width="4"/><circle id="pupilR" cx="126" cy="130" r="5" fill="#3A1E17"/></g>
+        <path id="mouth" d="M88 148 Q100 162 114 147" fill="none" stroke="#3A1E17" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- 3D CAKE -->
+  <section id="cake">
+    <div class="sec-head"><h2>3D тортата на дробите</h2><span class="sec-tag">Върти и хапвай с пръст</span></div>
+    <p class="lead">Избери на колко равни парчета да разрежем тортата. Докосни парче, за да го вземеш. Дробта показва каква част от тортата си взел.</p>
+    <div class="lab">
+      <div class="stage" id="stage">
+        <canvas id="three" aria-label="3D торта, разрязана на равни парчета"></canvas>
+        <div class="stage-hint" id="stageHint">☝ Докосни парче, за да го вземеш · плъзни, за да завъртиш</div>
+      </div>
+      <div class="panel">
+        <h3>На колко парчета режем?</h3>
+        <div class="dens" id="dens" role="group" aria-label="Брой равни парчета"></div>
+        <div class="readout">
+          <span class="fr" id="cakeFr"><b id="cakeK">0</b><b id="cakeN">8</b></span>
+          <div class="words"><span id="cakeWords">Нищо не е взето</span><small id="cakeSub">Взети 0 от 8 равни парчета</small></div>
+        </div>
+        <div class="legend">
+          <b>Числител</b><span>колко парчета са взети (горе)</span>
+          <b>Знаменател</b><span>на колко равни парчета е разрязано цялото (долу)</span>
+        </div>
+        <div class="row" style="gap:10px">
+          <button class="btn lemon" id="takeOne">+ Вземи парче</button>
+          <button class="btn" id="takeAll">Цялата торта</button>
+          <button class="btn" id="takeNone">↺ Върни</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT IS A FRACTION -->
+  <section id="learn">
+    <div class="sec-head"><h2>Как се чете една дроб?</h2><span class="sec-tag">Докосни картичка</span></div>
+    <p class="lead">Делим цялото на равни части и вземаме няколко от тях. Докосни картичка и виж как се пълни.</p>
+    <div class="gallery" id="gallery"></div>
+    <div class="anatomy">
+      <div class="big-fr" aria-label="Дробта седемнадесет двадесет и първи">
+        <div class="n">17</div><span>← Числител</span>
+        <div class="bar"></div><span>← Дробна черта</span>
+        <div class="d">21</div><span>← Знаменател</span>
+      </div>
+      <div>
+        <p>Всяка обикновена дроб се записва с две естествени числа, едно над друго, разделени с черта.</p>
+        <p><em>Знаменателят</em> показва на колко <em>равни части</em> е разделено цялото. <em>Числителят</em> показва колко от тези части са взети.</p>
+        <p>В дробта 17/21 цялото е разделено на 21 равни части и са взети 17 от тях.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TASKS -->
+  <section id="tasks">
+    <div class="sec-head"><h2>Задачи</h2><span class="sec-tag">11 задачи · 11 звезди</span></div>
+    <p class="lead">Попълни и натисни „Провери“. Сгрешените полета светват в червено. Поправи ги и опитай пак. За всяка решена задача получаваш звезда.</p>
+    <div class="tasks" id="taskList">
+
+      <article class="task" id="t1">
+        <div class="t-num">1</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>В един клас има 24 ученици. Половината от тях плуват, третинка от тях играят футбол и четвъртинка карат ски. Колко ученици плуват, колко играят футбол и колко карат ски?</h3>
+        <div class="klas" id="klas" aria-label="24 ученици"></div>
+        <div class="t1-btns">
+          <button class="btn blue" data-split="2">Раздели на 2</button>
+          <button class="btn berry" data-split="3">Раздели на 3</button>
+          <button class="btn lemon" data-split="4">Раздели на 4</button>
+        </div>
+        <div class="row">
+          <div class="item"><label for="t1a">🏊 Плуват</label><input class="nin" id="t1a" type="number" inputmode="numeric"></div>
+          <div class="item"><label for="t1b">⚽ Футбол</label><input class="nin" id="t1b" type="number" inputmode="numeric"></div>
+          <div class="item"><label for="t1c">⛷ Ски</label><input class="nin" id="t1c" type="number" inputmode="numeric"></div>
+        </div>
+      </article>
+
+      <article class="task" id="t2">
+        <div class="t-num">2</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>Торта е разделена на осем равни части. Каква част от нея са едно парче, две парчета, пет парчета и седем парчета? Запиши с обикновени дроби.</h3>
+        <button class="btn" id="cake8" style="margin-bottom:14px">🎂 Отвори 3D тортата на 8 парчета</button>
+        <div class="row" id="t2row"></div>
+      </article>
+
+      <article class="task" id="t3">
+        <div class="t-num">3</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>Запиши с числа обикновените дроби.</h3>
+        <div class="row" id="t3row"></div>
+      </article>
+
+      <article class="task" id="t4">
+        <div class="t-num">4</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>Напиши две различни дроби с числител 8 и две различни дроби със знаменател 15. Какво показват знаменателят и числителят?</h3>
+        <div class="row">
+          <div class="item"><span>с числител 8</span><span class="fin" id="t4a"><input value="8" disabled aria-label="числител"><i></i><input aria-label="знаменател" type="number" inputmode="numeric"></span></div>
+          <div class="item"><span>с числител 8</span><span class="fin" id="t4b"><input value="8" disabled aria-label="числител"><i></i><input aria-label="знаменател" type="number" inputmode="numeric"></span></div>
+          <div class="item"><span>знаменател 15</span><span class="fin" id="t4c"><input aria-label="числител" type="number" inputmode="numeric"><i></i><input value="15" disabled aria-label="знаменател"></span></div>
+          <div class="item"><span>знаменател 15</span><span class="fin" id="t4d"><input aria-label="числител" type="number" inputmode="numeric"><i></i><input value="15" disabled aria-label="знаменател"></span></div>
+        </div>
+        <div class="choices">
+          <div class="choice-q">Знаменателят показва:</div>
+          <div class="opts" data-q="den" data-right="0"><button class="opt" aria-pressed="false">на колко равни части е разделено цялото</button><button class="opt" aria-pressed="false">колко части са взети</button></div>
+          <div class="choice-q">Числителят показва:</div>
+          <div class="opts" data-q="num" data-right="1"><button class="opt" aria-pressed="false">на колко равни части е разделено цялото</button><button class="opt" aria-pressed="false">колко части са взети</button></div>
+        </div>
+      </article>
+
+      <article class="task" id="t5">
+        <div class="t-num">5</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>Коя дроб показва оцветената част на всяка фигура? Избери дроб, после докосни фигурата.</h3>
+        <div class="tray" id="tray" role="group" aria-label="Дроби за избор"></div>
+        <div class="grids" id="grids"></div>
+      </article>
+
+      <article class="task" id="t6">
+        <div class="t-num">6</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>Защо е вярно, че <span class="fr"><b>2</b><b>2</b></span> = 1, <span class="fr"><b>3</b><b>3</b></span> = 1, <span class="fr"><b>4</b><b>4</b></span> = 1? Оцвети всички части на всеки кръг и виж.</h3>
+        <div class="whole" id="whole"></div>
+        <div class="row" style="margin-top:16px">
+          <div class="item"><label for="t6a">Колко е <span class="fr"><b>5</b><b>5</b></span>?</label><input class="nin" id="t6a" type="number" inputmode="numeric"></div>
+          <div class="item"><label for="t6b">Колко е <span class="fr"><b>12</b><b>12</b></span>?</label><input class="nin" id="t6b" type="number" inputmode="numeric"></div>
+        </div>
+      </article>
+
+      <article class="task" id="t7">
+        <div class="t-num">7</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>Запиши с обикновена дроб каква част от фигурата е оцветена.</h3>
+        <div class="shapes" id="t7row"></div>
+      </article>
+
+      <article class="task" id="t8">
+        <div class="t-num">8</div><div class="t-try">Опитай сам</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>Запиши с обикновена дроб каква част от фигурата е оцветена.</h3>
+        <div class="shapes" id="t8row"></div>
+      </article>
+
+      <article class="task" id="t9">
+        <div class="t-num">9</div><div class="t-try">Опитай сам</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>Кои от дробите имат: а) числител, по-малък от 15; б) знаменател, по-голям от 20? Докосни верните.</h3>
+        <div class="sub">а) числител, по-малък от 15</div>
+        <div class="row" id="t9a" style="gap:10px"></div>
+        <div class="sub">б) знаменател, по-голям от 20</div>
+        <div class="row" id="t9b" style="gap:10px"></div>
+      </article>
+
+      <article class="task" id="t10">
+        <div class="t-num">10</div><div class="t-try">Опитай сам</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>Всеки флаг е разделен на няколко равни части. Запиши с обикновена дроб каква част:</h3>
+        <div class="flags" id="flags"></div>
+        <div class="sub">а) е зелена във флага на:</div><div class="row" id="t10a"></div>
+        <div class="sub">б) е червена във флага на:</div><div class="row" id="t10b"></div>
+        <div class="sub">в) не е оцветена в бяло във флага на:</div><div class="row" id="t10c"></div>
+      </article>
+
+      <article class="task" id="t11">
+        <div class="t-num">11</div><div class="t-try">Опитай сам</div><div class="t-stamp" aria-hidden="true">⭐</div>
+        <h3>Запиши с дроб каква част:</h3>
+        <div class="row" id="t11row"></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="finale">
+    <div class="finale">
+      <h2 id="finTitle">Твоите звезди</h2>
+      <div class="big-stars" id="bigStars"></div>
+      <p id="finText">Реши задачите, за да напълниш кутията със звезди!</p>
+      <button class="btn lemon" id="resetBtn">↺ Започни отначало</button>
+    </div>
+  </section>
+
+  <footer>Урок 25 · Обикновени дроби · Математика за 5. клас</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const F=(n,d)=>`<span class="fr"><b>${n}</b><b>${d}</b></span>`;
+const FIN=(id,wide)=>`<span class="fin${wide?' wide':''}" id="${id}"><input type="number" inputmode="numeric" aria-label="числител"><i></i><input type="number" inputmode="numeric" aria-label="знаменател"></span>`;
+
+/* sprinkles */
+const spr=$('#sprinkles'),sCols=['#FF4F79','#FFD23F','#4C6FFF','#4FAE54','#FF9F43'];
+for(let i=0;i<26;i++){const e=document.createElement('i');e.style.left=Math.random()*100+'%';e.style.background=sCols[i%5];e.style.animationDuration=(9+Math.random()*12)+'s';e.style.animationDelay=(-Math.random()*20)+'s';spr.appendChild(e);}
+
+/* title */
+const t=$('#title');let ci=0;
+t.innerHTML=t.textContent.split(' ').map((w,wi)=>`<span style="white-space:nowrap">${[...w].map(c=>`<span class="ch${wi?' c2':''}" aria-hidden="true" style="animation-delay:${(ci++)*0.05}s">${c}</span>`).join('')}</span>`).join(' ');
+
+/* sound */
+let soundOn=true,actx=null;
+function beep(type){
+  if(!soundOn)return;
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    const notes=type==='good'?[523,659,784,1047]:type==='tap'?[660,880]:[220,180];
+    notes.forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain();o.type=type==='bad'?'sawtooth':'triangle';o.frequency.value=f;const t0=actx.currentTime+i*0.08;
+      g.gain.setValueAtTime(0.0001,t0);g.gain.exponentialRampToValueAtTime(0.11,t0+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t0+0.2);o.connect(g).connect(actx.destination);o.start(t0);o.stop(t0+0.22);});
+  }catch(e){}
+}
+$('#soundBtn').addEventListener('click',e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?'🔊':'🔇';e.currentTarget.setAttribute('aria-label','Звук: '+(soundOn?'включен':'изключен'));});
+
+/* mascot */
+const mascot=$('#mascot'),bubble=$('#bubble'),mouth=$('#mouth');
+const cheers=['Браво! 🎉','Сладко решение!','Точно така!','Супер си!','Ням-ням, вярно!'];
+const oops=['Опа! Провери червените полета.','Почти! Опитай пак.','Не се отказвай!'];
+const SMILE='M88 148 Q100 162 114 147',FROWN='M88 156 Q100 144 114 155';
+function say(txt,mood){
+  bubble.textContent=txt;bubble.classList.remove('talk');void bubble.offsetWidth;bubble.classList.add('talk');
+  mascot.classList.remove('happy','sad');void mascot.getBoundingClientRect();if(mood)mascot.classList.add(mood);
+  mouth.setAttribute('d',mood==='sad'?FROWN:SMILE);
+  clearTimeout(say._t);say._t=setTimeout(()=>{mouth.setAttribute('d',SMILE);mascot.classList.remove('happy','sad');},1400);
+}
+document.addEventListener('pointermove',e=>{
+  const r=mascot.getBoundingClientRect();if(!r.width)return;
+  const dx=Math.max(-1,Math.min(1,(e.clientX-r.left-r.width/2)/300)),dy=Math.max(-1,Math.min(1,(e.clientY-r.top-r.height/2)/300));
+  $('#pupilL').setAttribute('cx',76+dx*5);$('#pupilL').setAttribute('cy',132+dy*5);$('#pupilR').setAttribute('cx',124+dx*5);$('#pupilR').setAttribute('cy',128+dy*5);
+});
+
+/* confetti */
+const cv=$('#confetti'),cx=cv.getContext('2d');let parts=[],confRaf=0;
+function sizeConf(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;}
+sizeConf();addEventListener('resize',sizeConf);
+function confetti(x,y,n){
+  if(reduce)return;
+  const cols=[css('--lemon'),css('--berry'),css('--blue'),css('--pist')];
+  for(let i=0;i<(n||60);i++){const a=Math.random()*Math.PI*2,sp=4+Math.random()*9;
+    parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-6,r:4+Math.random()*5,c:cols[i%4],rot:Math.random()*6,vr:(Math.random()-.5)*.4,life:90+Math.random()*40});}
+  if(!confRaf)confRaf=requestAnimationFrame(confTick);
+}
+function confTick(){
+  const d=devicePixelRatio;cx.clearRect(0,0,cv.width,cv.height);parts=parts.filter(p=>p.life-->0);
+  for(const p of parts){p.vy+=0.28;p.vx*=0.985;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;
+    cx.save();cx.translate(p.x*d,p.y*d);cx.rotate(p.rot);cx.fillStyle=p.c;cx.globalAlpha=Math.min(1,p.life/30);
+    cx.beginPath();cx.roundRect?cx.roundRect(-p.r*d/2,-p.r*d*1.2,p.r*d,p.r*d*2.4,p.r*d/2):cx.rect(-p.r*d/2,-p.r*d*1.2,p.r*d,p.r*d*2.4);cx.fill();cx.restore();}
+  confRaf=parts.length?requestAnimationFrame(confTick):0;if(!confRaf)cx.clearRect(0,0,cv.width,cv.height);
+}
+
+/* fraction words */
+const NUM=['','една','две','три','четири','пет','шест','седем','осем','девет','десет','единадесет','дванадесет'];
+const DEN1=['','','втора','трета','четвърт','пета','шеста','седма','осма','девета','десета','единадесета','дванадесета'];
+const DENP=['','','втори','трети','четвърти','пети','шести','седми','осми','девети','десети','единадесети','дванадесети'];
+const fword=(k,n)=>NUM[k]+' '+(k===1?DEN1[n]:DENP[n]);
+
+/* SVG helpers */
+function sectorPath(cx,cy,r,a0,a1){
+  const x0=cx+r*Math.cos(a0),y0=cy+r*Math.sin(a0),x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1);
+  return `M${cx} ${cy} L${x0.toFixed(2)} ${y0.toFixed(2)} A${r} ${r} 0 ${a1-a0>Math.PI?1:0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`;
+}
+function pieSVG(n,k,color,cls){
+  let s=`<svg viewBox="0 0 100 100" aria-hidden="true">`;
+  for(let i=0;i<n;i++){const a0=-Math.PI/2+i*2*Math.PI/n,a1=a0+2*Math.PI/n;
+    s+=`<path class="sec fig-stroke ${cls||''}" data-i="${i}" d="${sectorPath(50,50,46,a0,a1)}" style="fill:${i<k?color:'var(--paper)'}"/>`;}
+  return s+'</svg>';
+}
+function gridSVG(rows,cols,on,color){
+  const w=100/cols,h=100/rows;let s=`<svg viewBox="-3 -3 106 ${rows===cols?106:100*rows/cols+6}" aria-hidden="true">`;
+  const hh=rows===cols?h:100/cols;
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const i=r*cols+c;
+    s+=`<rect class="fig-stroke" x="${c*w}" y="${r*hh}" width="${w}" height="${hh}" style="fill:${on.includes(i)?color:'var(--paper)'}"/>`;}
+  return s+'</svg>';
+}
+function hexSVG(on,color){
+  let s='<svg viewBox="0 0 100 100" aria-hidden="true">';
+  for(let i=0;i<6;i++){const a0=-Math.PI/2+i*Math.PI/3,a1=a0+Math.PI/3;
+    s+=`<path class="fig-stroke" d="M50 50 L${(50+46*Math.cos(a0)).toFixed(2)} ${(50+46*Math.sin(a0)).toFixed(2)} L${(50+46*Math.cos(a1)).toFixed(2)} ${(50+46*Math.sin(a1)).toFixed(2)} Z" style="fill:${on.includes(i)?color:'var(--paper)'}"/>`;}
+  return s+'</svg>';
+}
+function triSVG(on,color){
+  const tris=['6,6 6,50 50,50','6,50 6,94 50,94','50,50 50,94 94,94','6,50 50,50 50,94'];
+  return '<svg viewBox="0 0 100 100" aria-hidden="true">'+tris.map((p,i)=>`<polygon class="fig-stroke" points="${p}" style="fill:${on.includes(i)?color:'var(--paper)'}"/>`).join('')+'</svg>';
+}
+
+/* ---------- score ---------- */
+const TASKS=11;const solved=new Array(TASKS+1).fill(false);
+function award(n,srcEl,explainHTML){
+  if(solved[n])return;solved[n]=true;
+  const el=$('#t'+n);el.classList.add('solved');
+  el.querySelectorAll('input').forEach(x=>x.disabled=true);
+  const ck=el.querySelector('.check');if(ck)ck.disabled=true;
+  if(explainHTML){const ex=document.createElement('div');ex.className='explain';ex.innerHTML=explainHTML;el.appendChild(ex);}
+  const r=(srcEl||el).getBoundingClientRect();confetti(r.left+r.width/2,r.top+r.height/2,70);
+  beep('good');say(cheers[Math.floor(Math.random()*cheers.length)],'happy');updateScore(true);
+}
+function fail(){beep('bad');say(oops[Math.floor(Math.random()*oops.length)],'sad');}
+function updateScore(pop){
+  const s=solved.filter(Boolean).length;
+  $('#score').textContent=s;$('#tallyBar').style.width=(s/TASKS*100)+'%';
+  if(pop){const ts=$('#tallyStar');ts.classList.remove('pop');void ts.offsetWidth;ts.classList.add('pop');}
+  $('#bigStars').innerHTML=solved.slice(1).map((x,k)=>x?`<span class="on" style="animation-delay:${k*0.05}s">★</span>`:'★').join('');
+  if(s===TASKS){
+    $('#finTitle').textContent='Майстор-сладкар на дробите!';$('#finText').textContent='Събра всичките 11 звезди. Браво!';
+    setTimeout(()=>{confetti(innerWidth*.25,innerHeight*.4,90);confetti(innerWidth*.75,innerHeight*.4,90);},300);say('Ти си шампион по дроби! 🏆','happy');
+  }else{$('#finTitle').textContent='Твоите звезди';$('#finText').textContent=`Решени задачи: ${s} от 11.`;}
+}
+
+/* generic checkers */
+const val=x=>x.value.trim()===''?NaN:Number(x.value);
+function checkFrac(id,n,d,exact){
+  const box=$('#'+id),[a,b]=box.querySelectorAll('input');const N=val(a),D=val(b);
+  const ok=Number.isInteger(N)&&Number.isInteger(D)&&D>0&&(exact?(N===n&&D===d):(N*d===n*D));
+  box.classList.remove('ok','bad');void box.offsetWidth;box.classList.add(ok?'ok':'bad');return ok;
+}
+function checkNum(id,v){const x=$('#'+id);const ok=val(x)===v;x.classList.remove('ok','bad');void x.offsetWidth;x.classList.add(ok?'ok':'bad');return ok;}
+function addFoot(n,hint,onCheck,noCheck){
+  const el=$('#t'+n),f=document.createElement('div');f.className='t-foot';
+  f.innerHTML=(noCheck?'':'<button class="btn lemon check">Провери</button>')+`<button class="hint-btn" type="button">💡 Подсказка</button><p class="hint" hidden>${hint}</p>`;
+  el.appendChild(f);
+  f.querySelector('.hint-btn').addEventListener('click',e=>{f.querySelector('.hint').hidden=false;e.currentTarget.hidden=true;});
+  if(!noCheck)f.querySelector('.check').addEventListener('click',e=>{if(!solved[n])onCheck(e.currentTarget);});
+}
+function blanks(n){return [...$('#t'+n).querySelectorAll('input:not(:disabled)')].some(x=>x.value.trim()==='');}
+
+/* ---------- 3D CAKE ---------- */
+let cake=null;
+(function initCake(){
+  const stage=$('#stage'),canvas=$('#three');
+  const dens=$('#dens');
+  for(let n=2;n<=12;n++){const b=document.createElement('button');b.className='den';b.textContent=n;b.setAttribute('aria-pressed',n===8);b.dataset.n=n;dens.appendChild(b);}
+  let N=8,taken=new Set();
+  function readout(){
+    const k=taken.size;$('#cakeK').textContent=k;$('#cakeN').textContent=N;
+    const fr=$('#cakeFr');fr.classList.remove('bump');void fr.offsetWidth;fr.classList.add('bump');
+    $('#cakeWords').textContent=k===0?'Нищо не е взето':k===N?`${N}/${N} = 1 цяла торта!`:fword(k,N);
+    $('#cakeSub').textContent=`Взети ${k} от ${N} равни парчета`;
+  }
+  dens.addEventListener('click',e=>{const b=e.target.closest('.den');if(!b)return;setN(+b.dataset.n);beep('tap');});
+  function setN(n){N=n;taken.clear();$$('.den').forEach(x=>x.setAttribute('aria-pressed',+x.dataset.n===n));if(api)api.build();readout();}
+  let api=null;
+  cake={setN,get N(){return N}};
+  readout();
+  if(!window.THREE){stage.insertAdjacentHTML('beforeend','<div class="nogl">3D тортата не можа да се зареди. Провери интернет връзката и презареди страницата.</div>');
+    $('#takeOne').onclick=()=>{if(taken.size<N){taken.add(taken.size);readout();}};$('#takeAll').onclick=()=>{for(let i=0;i<N;i++)taken.add(i);readout();};$('#takeNone').onclick=()=>{taken.clear();readout();};return;}
+  let renderer;
+  try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});}catch(e){stage.insertAdjacentHTML('beforeend','<div class="nogl">Устройството не поддържа 3D графика (WebGL).</div>');return;}
+  renderer.setPixelRatio(Math.min(2,devicePixelRatio||1));
+  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(40,1,0.1,200);
+  camera.position.set(0,8.2,10.6);
+  scene.add(new THREE.HemisphereLight(0xffffff,0xb38a6a,0.8));
+  const dl=new THREE.DirectionalLight(0xffffff,0.7);dl.position.set(5,10,6);scene.add(dl);
+  const controls=THREE.OrbitControls?new THREE.OrbitControls(camera,canvas):null;
+  if(controls){controls.enableDamping=true;controls.dampingFactor=.08;controls.enablePan=false;controls.minDistance=6;controls.maxDistance=18;controls.maxPolarAngle=Math.PI*.47;controls.autoRotate=!reduce;controls.autoRotateSpeed=1.4;
+    controls.addEventListener('start',()=>{controls.autoRotate=false;});}
+  else camera.lookAt(0,0,0);
+  // plate
+  const plate=new THREE.Mesh(new THREE.CylinderGeometry(4.1,3.7,0.25,64),new THREE.MeshStandardMaterial({color:0xDCE4FF,roughness:.35}));plate.position.y=-0.13;scene.add(plate);
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(4.0,0.08,12,80),new THREE.MeshStandardMaterial({color:0x4C6FFF}));rim.rotation.x=Math.PI/2;rim.position.y=0.02;scene.add(rim);
+  const cakeG=new THREE.Group();scene.add(cakeG);
+  const R=3,H=1.1,IC=0.32;
+  const matSponge=new THREE.MeshStandardMaterial({color:0xF3C27A,roughness:.8});
+  const matCream=new THREE.MeshStandardMaterial({color:0x7B4A35,roughness:.5});
+  const matJam=new THREE.MeshStandardMaterial({color:0xFF6F96,roughness:.6});
+  const matBerry=new THREE.MeshStandardMaterial({color:0xFF4F79,roughness:.45});
+  const matCherry=new THREE.MeshStandardMaterial({color:0xD4142F,roughness:.25,metalness:.1});
+  let slices=[],tweens=[];
+  function layer(a0,a1,y,h,mat){
+    const s=new THREE.Shape();s.moveTo(0,0);s.absarc(0,0,R,a0,a1,false);s.lineTo(0,0);
+    const g=new THREE.ExtrudeGeometry(s,{depth:h,bevelEnabled:false,curveSegments:Math.max(6,Math.round(48/N))});
+    g.rotateX(-Math.PI/2);g.translate(0,y,0);return new THREE.Mesh(g,mat);
+  }
+  function build(){
+    slices.forEach(sl=>{sl.g.traverse(o=>{if(o.geometry)o.geometry.dispose();});cakeG.remove(sl.g);});slices=[];tweens=[];
+    const gap=0.012*Math.min(8,N);
+    for(let i=0;i<N;i++){
+      const a0=i*2*Math.PI/N+gap/2,a1=(i+1)*2*Math.PI/N-gap/2,mid=(a0+a1)/2;
+      const g=new THREE.Group();
+      g.add(layer(a0,a1,0,H*.45,matSponge));g.add(layer(a0,a1,H*.45,H*.12,matJam));g.add(layer(a0,a1,H*.57,H*.43,matSponge));
+      const top=layer(a0,a1,H,IC,matCream);top.userData.top=true;g.add(top);
+      const dir=new THREE.Vector3(Math.cos(mid),0,-Math.sin(mid));
+      const cherry=new THREE.Mesh(new THREE.SphereGeometry(0.22,16,12),matCherry);
+      cherry.position.copy(dir.clone().multiplyScalar(R*0.72)).setY(H+IC+0.2);cherry.scale.setScalar(0.001);g.add(cherry);
+      g.userData={i,dir,top,cherry};
+      cakeG.add(g);slices.push({g,i,dir,top,cherry});
+      g.position.y=reduce?0:3+i*0.25;tween(g.position,'y',0,reduce?1:600+i*60);
+    }
+  }
+  function tween(obj,key,to,dur){tweens=tweens.filter(t=>!(t.obj===obj&&t.key===key));tweens.push({obj,key,from:obj[key],to,t:0,dur});}
+  const ease=x=>1+2.2*Math.pow(x-1,3)+1.2*Math.pow(x-1,2);
+  function setTaken(sl,on){
+    const p=sl.g.position,d=sl.dir;
+    tween(p,'x',on?d.x*1.1:0,450);tween(p,'z',on?d.z*1.1:0,450);tween(p,'y',on?0.7:0,450);
+    sl.top.material=on?matBerry:matCream;
+    tween(sl.cherry.scale,'x',on?1:0.001,400);tween(sl.cherry.scale,'y',on?1:0.001,400);tween(sl.cherry.scale,'z',on?1:0.001,400);
+  }
+  function toggle(i){
+    if(taken.has(i))taken.delete(i);else taken.add(i);
+    setTaken(slices[i],taken.has(i));readout();beep('tap');
+    if(taken.size===N)say(`${N}/${N} = 1. Цялата торта!`,'happy');
+  }
+  api={build:()=>{build();}};
+  $('#takeOne').addEventListener('click',()=>{for(let i=0;i<N;i++)if(!taken.has(i)){toggle(i);break;}});
+  $('#takeAll').addEventListener('click',()=>{for(let i=0;i<N;i++)if(!taken.has(i)){taken.add(i);setTaken(slices[i],true);}readout();beep('good');say(`${N}/${N} = 1. Цялата торта!`,'happy');});
+  $('#takeNone').addEventListener('click',()=>{taken.forEach(i=>setTaken(slices[i],false));taken.clear();readout();});
+  // tap detection
+  const ray=new THREE.Raycaster(),mv=new THREE.Vector2();let down=null;
+  canvas.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY};});
+  canvas.addEventListener('pointerup',e=>{
+    if(!down)return;const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y);down=null;if(moved>8)return;
+    const r=canvas.getBoundingClientRect();mv.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);
+    ray.setFromCamera(mv,camera);
+    const hit=ray.intersectObjects(cakeG.children,true)[0];
+    if(hit){let o=hit.object;while(o.parent&&o.parent!==cakeG)o=o.parent;if(o.userData&&o.userData.i!=null){toggle(o.userData.i);$('#stageHint').hidden=true;}}
+  });
+  function resize(){const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+  new ResizeObserver(resize).observe(stage);resize();
+  build();
+  let last=performance.now();
+  (function loop(now){
+    const dt=now-last;last=now;
+    tweens=tweens.filter(t=>{t.t=Math.min(1,t.t+dt/t.dur);t.obj[t.key]=t.from+(t.to-t.from)*ease(t.t);return t.t<1;});
+    if(controls)controls.update();renderer.render(scene,camera);requestAnimationFrame(loop);
+  })(last);
+  window.__cake={toggle,taken:()=>taken.size,N:()=>N};
+})();
+
+/* ---------- gallery ---------- */
+const GAL=[[1,2,'една втора','половинка'],[1,3,'една трета','третинка'],[1,4,'една четвърт','четвъртинка'],[1,10,'една десета','десетинка'],[2,3,'две трети'],[3,4,'три четвърти'],[7,10,'седем десети'],[3,5,'три пети']];
+const GCOL=['var(--berry)','var(--blue)','var(--pist)','var(--lemon)'];
+$('#gallery').innerHTML=GAL.map(([k,n,w,alt],i)=>`<button class="pie-card" data-k="${k}" data-n="${n}" data-c="${GCOL[i%4]}" aria-label="${w}">${pieSVG(n,k,GCOL[i%4])}${F(k,n)}<span class="w">${w}</span><small>Делим на ${n} равни части${k>1?` и вземаме ${k}`:''}${alt?`. Казваме и „${alt}“.`:'.'}</small></button>`).join('');
+$$('.pie-card').forEach(card=>card.addEventListener('click',()=>{
+  const k=+card.dataset.k,c=card.dataset.c,secs=card.querySelectorAll('.sec');
+  secs.forEach(s=>s.style.fill='var(--paper)');beep('tap');
+  secs.forEach((s,i)=>{if(i<k)setTimeout(()=>{s.style.fill=c;},250+i*220);});
+}));
+
+/* ---------- task 1 ---------- */
+const klas=$('#klas');
+for(let i=0;i<24;i++){const k=document.createElement('span');k.className='kid';klas.appendChild(k);}
+const T1COL={2:'var(--blue)',3:'var(--berry)',4:'var(--lemon)'};
+$$('[data-split]').forEach(b=>b.addEventListener('click',()=>{
+  const n=+b.dataset.split,per=24/n;klas.style.gridTemplateColumns=`repeat(${per},${innerWidth<=520?22:26}px)`;
+  $$('.kid').forEach((k,i)=>{k.classList.remove('on');k.style.background='var(--line)';if(i<per)setTimeout(()=>{k.style.background=T1COL[n];k.classList.add('on');},i*50);});
+  say(`24 : ${n} = ? Преброй оцветените!`,'');beep('tap');
+}));
+addFoot(1,'Половината значи 24 : 2. Третинката значи 24 : 3. Четвъртинката значи 24 : 4.',btn=>{
+  if(blanks(1)){say('Попълни всички полета!');return;}
+  const ok=[checkNum('t1a',12),checkNum('t1b',8),checkNum('t1c',6)].every(Boolean);
+  ok?award(1,btn,'24 : 2 = <b>12</b> плуват, 24 : 3 = <b>8</b> играят футбол, 24 : 4 = <b>6</b> карат ски.'):fail();
+});
+
+/* ---------- task 2 ---------- */
+const T2=[['едно парче',1],['две парчета',2],['пет парчета',5],['седем парчета',7]];
+$('#t2row').innerHTML=T2.map(([l],i)=>`<div class="item"><label>${l}</label>${FIN('t2f'+i)}</div>`).join('');
+$('#cake8').addEventListener('click',()=>{cake.setN(8);$('#cake').scrollIntoView({behavior:reduce?'auto':'smooth'});say('Ето тортата на 8 парчета!','happy');});
+addFoot(2,'Тортата е разделена на 8 равни части, значи знаменателят е 8. Числителят е броят парчета.',btn=>{
+  if(blanks(2)){say('Попълни всички полета!');return;}
+  const ok=T2.map(([,k],i)=>checkFrac('t2f'+i,k,8,false)).every(Boolean);
+  ok?award(2,btn,`Едно парче е ${F(1,8)}, две са ${F(2,8)}, пет са ${F(5,8)}, седем са ${F(7,8)} от тортата.`):fail();
+});
+
+/* ---------- task 3 ---------- */
+const T3=[['пет девети',5,9],['осем десети',8,10],['три седемнадесети',3,17],['десет двадесет и трети',10,23],['една стотна',1,100],['тридесет и една хилядни',31,1000],['три стохилядни',3,100000]];
+$('#t3row').innerHTML=T3.map(([l],i)=>`<div class="item"><label>${l}</label>${FIN('t3f'+i,true)}</div>`).join('');
+addFoot(3,'Първата дума е числителят (колко), втората е знаменателят (на колко части). Стотна е 100, хилядна е 1000, стохилядна е 100 000.',btn=>{
+  if(blanks(3)){say('Попълни всички полета!');return;}
+  const ok=T3.map(([,n,d],i)=>checkFrac('t3f'+i,n,d,true)).every(Boolean);
+  ok?award(3,btn,'Числителят се чете с бройно число (пет, осем…), а знаменателят с редно (девети, десети, стотна, хилядна…).'):fail();
+});
+
+/* ---------- task 4 ---------- */
+$$('#t4 .opts').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b||solved[4])return;g.querySelectorAll('.opt').forEach(x=>{x.setAttribute('aria-pressed',x===b);x.classList.remove('ok','bad');});beep('tap');}));
+addFoot(4,'Числителят може да е 8, а знаменателите са различни, например 9 и 11. После сложи различни числители над 15.',btn=>{
+  if(blanks(4)){say('Попълни всички полета!');return;}
+  const mark=(id,ok)=>{const b=$('#'+id);b.classList.remove('ok','bad');void b.offsetWidth;b.classList.add(ok?'ok':'bad');return ok;};
+  const g=id=>val($('#'+id).querySelectorAll('input')[id==='t4a'||id==='t4b'?1:0]);
+  const a=g('t4a'),b=g('t4b'),c=g('t4c'),d=g('t4d');
+  const pos=x=>Number.isInteger(x)&&x>0;
+  let ok=[mark('t4a',pos(a)&&a!==b),mark('t4b',pos(b)&&a!==b),mark('t4c',pos(c)&&c!==d),mark('t4d',pos(d)&&c!==d)].every(Boolean);
+  $$('#t4 .opts').forEach(gr=>{const sel=gr.querySelector('[aria-pressed="true"]');const right=gr.querySelectorAll('.opt')[+gr.dataset.right];
+    if(!sel){ok=false;gr.querySelectorAll('.opt').forEach(x=>{x.classList.remove('bad');void x.offsetWidth;x.classList.add('bad');});return;}
+    const good=sel===right;sel.classList.add(good?'ok':'bad');if(!good)ok=false;});
+  ok?award(4,btn,`Например ${F(8,a)} и ${F(8,b)}, ${F(c,15)} и ${F(d,15)}. <b>Знаменателят</b> показва на колко равни части е разделено цялото, а <b>числителят</b> колко от тях са взети.`):fail();
+});
+
+/* ---------- task 5 ---------- */
+const CHIPS=[[9,16],[12,16],[7,16],[8,16],[6,16],[1,2],[3,4],[10,16]];
+const G5=[ // colored cell indices on 4x4, color
+  {on:[0,1,2,4,5,6,8,9,10,12,13,14],c:'var(--berry)',v:12},
+  {on:[0,1,2,3,4,8,12],c:'var(--pist)',v:7},
+  {on:[0,2,5,7,9,15],c:'#FF9F43',v:6},
+  {on:[0,1,2,3,4,7,8,11,12,15],c:'var(--blue)',v:10},
+  {on:[0,1,2,4,6,8,9,10,5],c:'var(--lemon)',v:9},
+  {on:[0,1,4,5,8,9,12,13],c:'#A77BFF',v:8}
+];
+let pickedChip=null;const g5done=new Set();
+$('#tray').innerHTML=CHIPS.map(([n,d],i)=>`<button class="chip" data-i="${i}" aria-pressed="false" aria-label="${n} върху ${d}">${F(n,d)}</button>`).join('');
+$('#grids').innerHTML=G5.map((g,i)=>`<button class="gcard" data-i="${i}" aria-label="Фигура ${i+1}">${gridSVG(4,4,g.on,g.c)}<span class="slot">?</span></button>`).join('');
+$('#tray').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;pickedChip=+b.dataset.i;$$('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));beep('tap');});
+$('#grids').addEventListener('click',e=>{
+  const g=e.target.closest('.gcard');if(!g||solved[5])return;const gi=+g.dataset.i;if(g5done.has(gi))return;
+  if(pickedChip==null){say('Първо избери дроб отгоре!','');return;}
+  const [n,d]=CHIPS[pickedChip];
+  if(n*16===G5[gi].v*d){
+    g5done.add(gi);g.classList.remove('no');g.classList.add('done');g.querySelector('.slot').innerHTML=F(n,d);beep('tap');
+    if(g5done.size===G5.length)award(5,g,`Внимание: ${F(12,16)} = ${F(3,4)}, защото ако броиш по колони, са оцветени 3 от 4 колони. А ${F(8,16)} = ${F(1,2)}: оцветена е половината.`);
+    else say('Вярно! Продължавай.','happy');
+  }else{g.classList.remove('no');void g.offsetWidth;g.classList.add('no');fail();}
+});
+addFoot(5,'Всяка фигура има 16 квадратчета. Преброй оцветените. Някои фигури могат да се опишат и с по-проста дроб, ако броиш по колони!',null,true);
+
+/* ---------- task 6 ---------- */
+$('#whole').innerHTML=[2,3,4].map(n=>`<div class="shape" data-n="${n}">${pieSVG(n,0,'')}<span class="res">${F(0,n)}</span></div>`).join('');
+$$('#whole .shape').forEach(sh=>{
+  const n=+sh.dataset.n;const on=new Set();
+  sh.querySelectorAll('path').forEach(p=>p.addEventListener('click',()=>{
+    const i=+p.dataset.i;on.has(i)?on.delete(i):on.add(i);p.style.fill=on.has(i)?'var(--pist)':'var(--paper)';beep('tap');
+    const r=sh.querySelector('.res');r.classList.remove('full');
+    r.innerHTML=F(on.size,n)+(on.size===n?' = 1 цяло!':'');if(on.size===n){void r.offsetWidth;r.classList.add('full');}
+  }));
+});
+addFoot(6,'Когато числителят и знаменателят са равни, сме взели всички части, тоест цялото.',btn=>{
+  if(blanks(6)){say('Попълни всички полета!');return;}
+  const ok=[checkNum('t6a',1),checkNum('t6b',1)].every(Boolean);
+  ok?award(6,btn,`Щом вземем всички равни части, получаваме цялото: ${F(2,2)} = ${F(3,3)} = ${F(4,4)} = ${F(5,5)} = 1.`):fail();
+});
+
+/* ---------- task 7 & 8 ---------- */
+const T7=[['а)',pieSVG(8,3,'var(--blue)'),3,8],['б)',hexSVG([0,1],'var(--blue)'),2,6],['в)',gridSVG(3,3,[0,2,6,8],'var(--blue)'),4,9]];
+const T8=[['а)',gridSVG(2,2,[0],'var(--berry)'),1,4],['б)',gridSVG(3,3,[1,3,4,5,7],'var(--berry)'),5,9],['в)',triSVG([0,2],'var(--berry)'),2,4],['г)',gridSVG(2,4,[0,5,7],'var(--berry)'),3,8]];
+function shapeRow(rowId,list,pre){$(rowId).innerHTML=list.map(([tag,svg],i)=>`<div class="shape item"><span class="tag">${tag}</span>${svg}${FIN(pre+i)}</div>`).join('');}
+shapeRow('#t7row',T7,'t7f');shapeRow('#t8row',T8,'t8f');
+addFoot(7,'Преброй на колко равни части е разделена фигурата (знаменател) и колко от тях са оцветени (числител).',btn=>{
+  if(blanks(7)){say('Попълни всички полета!');return;}
+  const ok=T7.map(([,,n,d],i)=>checkFrac('t7f'+i,n,d,false)).every(Boolean);
+  ok?award(7,btn,`а) ${F(3,8)}, б) ${F(2,6)}, в) ${F(4,9)}.`):fail();
+});
+addFoot(8,'Знаменател: всички равни части. Числител: оцветените части. Триъгълникът е разделен на 4 еднакви триъгълника.',btn=>{
+  if(blanks(8)){say('Попълни всички полета!');return;}
+  const ok=T8.map(([,,n,d],i)=>checkFrac('t8f'+i,n,d,false)).every(Boolean);
+  ok?award(8,btn,`а) ${F(1,4)}, б) ${F(5,9)}, в) ${F(2,4)}, г) ${F(3,8)}.`):fail();
+});
+
+/* ---------- task 9 ---------- */
+const T9=[[11,20],[5,6],[100,803],[13,18],[18,37]];
+['t9a','t9b'].forEach(id=>{$('#'+id).innerHTML=T9.map(([n,d],i)=>`<button class="pick" data-i="${i}" aria-pressed="false" aria-label="${n} върху ${d}">${F(n,d)}</button>`).join('');
+  $('#'+id).addEventListener('click',e=>{const b=e.target.closest('.pick');if(!b||solved[9])return;b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true');b.classList.remove('ok','bad');beep('tap');});});
+addFoot(9,'Числителят е горе, знаменателят е долу. Сравни всяко число с 15 или с 20.',btn=>{
+  let ok=true;
+  [['t9a',([n])=>n<15],['t9b',([,d])=>d>20]].forEach(([id,rule])=>{
+    $$('#'+id+' .pick').forEach(b=>{const should=rule(T9[+b.dataset.i]),on=b.getAttribute('aria-pressed')==='true';b.classList.remove('ok','bad');void b.offsetWidth;
+      if(on&&should)b.classList.add('ok');else if(on!==should){b.classList.add('bad');ok=false;}});
+  });
+  ok?award(9,btn,`а) ${F(11,20)}, ${F(5,6)}, ${F(13,18)}. б) ${F(100,803)}, ${F(18,37)}.`):fail();
+});
+
+/* ---------- task 10 flags ---------- */
+const W='#FFFFFF';
+const FLAGS={
+  'България':`<rect width="90" height="20" fill="${W}"/><rect y="20" width="90" height="20" fill="#00966E"/><rect y="40" width="90" height="20" fill="#D62612"/>`,
+  'Австрия':`<rect width="90" height="20" fill="#C8102E"/><rect y="20" width="90" height="20" fill="${W}"/><rect y="40" width="90" height="20" fill="#C8102E"/>`,
+  'Франция':`<rect width="30" height="60" fill="#0055A4"/><rect x="30" width="30" height="60" fill="${W}"/><rect x="60" width="30" height="60" fill="#EF4135"/>`,
+  'Мадагаскар':`<rect width="30" height="60" fill="${W}"/><rect x="30" width="60" height="30" fill="#FC3D32"/><rect x="30" y="30" width="60" height="30" fill="#007E3A"/>`,
+  'Нигерия':`<rect width="30" height="60" fill="#008751"/><rect x="30" width="30" height="60" fill="${W}"/><rect x="60" width="30" height="60" fill="#008751"/>`,
+  'Мавриций':`<rect width="90" height="15" fill="#EA2839"/><rect y="15" width="90" height="15" fill="#1A206D"/><rect y="30" width="90" height="15" fill="#FFD500"/><rect y="45" width="90" height="15" fill="#00A551"/>`
+};
+$('#flags').innerHTML=Object.entries(FLAGS).map(([n,s])=>`<div class="flag"><svg viewBox="0 0 90 60" aria-hidden="true">${s}</svg>${n}</div>`).join('');
+const T10={t10a:[['България',1,3],['Мадагаскар',1,3],['Нигерия',2,3]],t10b:[['България',1,3],['Австрия',2,3],['Мадагаскар',1,3],['Мавриций',1,4]],t10c:[['Австрия',2,3],['Франция',2,3],['Мавриций',4,4]]};
+Object.entries(T10).forEach(([id,l])=>{$('#'+id).innerHTML=l.map(([n],i)=>`<div class="item"><label>${n}</label>${FIN(id+'f'+i)}</div>`).join('');});
+addFoot(10,'Преброй ивиците на флага: това е знаменателят. Внимавай: при Мадагаскар белата ивица е една от 3 равни части.',btn=>{
+  if(blanks(10)){say('Попълни всички полета!');return;}
+  let ok=true;Object.entries(T10).forEach(([id,l])=>l.forEach(([,n,d],i)=>{if(!checkFrac(id+'f'+i,n,d,false))ok=false;}));
+  ok?award(10,btn,`а) България ${F(1,3)}, Мадагаскар ${F(1,3)}, Нигерия ${F(2,3)}. б) България ${F(1,3)}, Австрия ${F(2,3)}, Мадагаскар ${F(1,3)}, Мавриций ${F(1,4)}. в) Австрия ${F(2,3)}, Франция ${F(2,3)}, Мавриций ${F(4,4)} = 1.`):fail();
+});
+
+/* ---------- task 11 ---------- */
+const T11=[['а) 1 min от 1 h',1,60],['б) 1 dm от 1 m',1,10],['в) 3 kg от 1 t',3,1000],['г) 7 s от 1 h',7,3600]];
+$('#t11row').innerHTML=T11.map(([l],i)=>`<div class="item"><label>${l}</label>${FIN('t11f'+i,true)}</div>`).join('');
+addFoot(11,'1 h = 60 min, 1 m = 10 dm, 1 t = 1000 kg, 1 h = 3600 s.',btn=>{
+  if(blanks(11)){say('Попълни всички полета!');return;}
+  const ok=T11.map(([,n,d],i)=>checkFrac('t11f'+i,n,d,false)).every(Boolean);
+  ok?award(11,btn,`1 h = 60 min → ${F(1,60)}. 1 m = 10 dm → ${F(1,10)}. 1 t = 1000 kg → ${F(3,1000)}. 1 h = 3600 s → ${F(7,3600)}.`):fail();
+});
+
+/* reset */
+$('#resetBtn').addEventListener('click',()=>{
+  solved.fill(false);
+  $$('.task').forEach(el=>{el.classList.remove('solved');el.querySelectorAll('.explain').forEach(x=>x.remove());
+    el.querySelectorAll('input').forEach(x=>{if(!x.hasAttribute('value')){x.value='';x.disabled=false;}});
+    el.querySelectorAll('.fin,.nin').forEach(x=>x.classList.remove('ok','bad'));
+    el.querySelectorAll('.check').forEach(x=>x.disabled=false);
+    el.querySelectorAll('.hint').forEach(x=>x.hidden=true);el.querySelectorAll('.hint-btn').forEach(x=>x.hidden=false);
+    el.querySelectorAll('[aria-pressed]').forEach(x=>{x.setAttribute('aria-pressed','false');x.classList.remove('ok','bad');});});
+  g5done.clear();pickedChip=null;$$('.gcard').forEach(g=>{g.classList.remove('done','no');g.querySelector('.slot').textContent='?';});
+  updateScore(false);say('Нов опит! Давай!','happy');$('#tasks').scrollIntoView({behavior:reduce?'auto':'smooth'});
+});
+updateScore(false);
+})();
+</script>
+</body>
+</html>
