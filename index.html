@@ -88,6 +88,15 @@ td.lk{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .asave{display:flex;align-items:center;gap:12px;position:sticky;bottom:0;padding:12px 0 calc(env(safe-area-inset-bottom,0px) + 16px);background:var(--cream)}
 .amsg{font:700 15px "Noto Sans",Arial,sans-serif;color:var(--grn)}
 .aerr{color:#c0392b;font-weight:700;min-height:1.2em;margin:10px 0 0!important}
+.asub{display:block;font:800 13px Rubik,Arial,sans-serif;margin:10px 0 4px}
+.dur{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.dur button{font:800 14px Rubik,Arial,sans-serif;background:#fff;color:#000;border:2px solid #000;border-radius:10px;padding:6px 12px;cursor:pointer}
+.dur button[aria-pressed="true"]{background:var(--yel)}
+.dur.days button[aria-pressed="true"]{background:var(--or)}
+.dur[hidden]{display:none}
+.ast{font:700 13px "Noto Sans",Arial,sans-serif;color:#555;margin:6px 0 0}
+.ast button{font:800 12px Rubik,Arial,sans-serif;background:#fff;border:2px solid #000;border-radius:8px;padding:2px 8px;margin-left:6px;cursor:pointer}
+.arow{border-top:2px dashed #e6dcc0;padding-top:12px}
 </style></head><body>
 <section class="sec" id="s1" data-h="640"><div class="sc">
 <div class="b card1"></div><div class="b card1i"></div>
@@ -124,7 +133,7 @@ td.lk{cursor:pointer;-webkit-tap-highlight-color:transparent}
  <div class="adm-top"><button type="button" class="ab" id="admClose">&larr; Назад</button><div class="adm-ttl">Админ</div></div>
  <div id="admLock" class="acard"><p>Въведи ПИН:</p><input id="pin" type="password" inputmode="numeric" autocomplete="off"><button type="button" class="ab y" id="pinGo">Влез</button><p class="aerr" id="pinErr"></p></div>
  <div id="admBody" hidden>
-  <p class="anote">Сложи линк до урок и натисни „Запази“. При натискане на урок с линк ще излезе въпрос „Да“ или „Не“ преди да се отвори сайтът. Празно поле = без линк.</p>
+  <p class="anote">Сложи линк до урок и натисни „Запази“. При натискане на урок с линк ще излезе въпрос „Да“ или „Не“ преди да се отвори сайтът. Празно поле = без линк.<br><br>Можеш и да смениш името на урок. Избери „Винаги“, за да остане новото име, или „Временно“ и 1, 2 или 3 дни. След това името се връща само към старото.</p>
   <div id="admList"></div>
   <div class="asave"><button type="button" class="ab y" id="admSave">Запази</button><span class="amsg" id="admMsg"></span></div>
  </div>
@@ -158,6 +167,29 @@ td.lk{cursor:pointer;-webkit-tap-highlight-color:transparent}
  function localGet(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}}
  function localSet(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
  function dbPath(){return DB_URL.replace(/\/+$/,'')+'/uchene/links.json'}
+ var NKEY='uchene-names';
+ function namesPath(){return DB_URL.replace(/\/+$/,'')+'/uchene/names.json'}
+ function nLocalGet(){try{return JSON.parse(localStorage.getItem(NKEY))||{}}catch(e){return {}}}
+ function nLocalSet(o){try{localStorage.setItem(NKEY,JSON.stringify(o))}catch(e){}}
+ function loadNames(){
+  if(!DB_URL)return Promise.resolve(nLocalGet());
+  return fetch(namesPath(),{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){d=d||{};nLocalSet(d);return d}).catch(function(){return nLocalGet()});
+ }
+ function saveNames(o){
+  nLocalSet(o);
+  if(!DB_URL)return Promise.resolve(true);
+  return fetch(namesPath(),{method:'PUT',body:JSON.stringify(o)}).then(function(r){return r.ok}).catch(function(){return false});
+ }
+ // A renamed lesson: {n:'new name', u:0} lasts forever; u = time in ms when it switches back
+ function active(e){return !!(e&&typeof e.n==='string'&&e.n.trim()&&(!e.u||e.u>Date.now()))}
+ var names={},nTimer=0;
+ function scheduleRevert(){
+  clearTimeout(nTimer);var next=Infinity,now=Date.now();
+  Object.keys(names).forEach(function(k){var e=names[k];if(active(e)&&e.u&&e.u<next)next=e.u});
+  if(next<Infinity)nTimer=setTimeout(function(){paint()},Math.min(next-now+500,2147483000));
+ }
+ var MON=['яну','фев','мар','апр','май','юни','юли','авг','сеп','окт','ное','дек'];
+ function when(ms){var d=new Date(ms);return d.getDate()+' '+MON[d.getMonth()]+' в '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
  function load(){
   if(!DB_URL)return Promise.resolve(localGet());
   return fetch(dbPath(),{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){d=d||{};localSet(d);return d}).catch(function(){return localGet()});
@@ -176,29 +208,34 @@ td.lk{cursor:pointer;-webkit-tap-highlight-color:transparent}
  });
  function paint(){
   document.querySelectorAll('td[data-k]').forEach(function(td){
-   var u=links[td.getAttribute('data-k')],name=td.getAttribute('data-name');
-   td.textContent=name;
+   var u=links[td.getAttribute('data-k')],name=td.getAttribute('data-name'),ne=names[td.getAttribute('data-k')];
+   td.textContent=active(ne)?ne.n.trim():name;
    if(ok(u)){td.classList.add('lk');td.setAttribute('data-url',u)}
    else{td.classList.remove('lk');td.removeAttribute('data-url')}
   });
+  scheduleRevert();
  }
  load().then(function(d){links=d;paint()});
+ loadNames().then(function(d){names=d;paint()});
+ document.addEventListener('visibilitychange',function(){if(!document.hidden)paint()});
  // Realtime: listen to Firebase over a live stream, so every device updates instantly
  var adminEditing=false;
- function live(){
+ function live(){liveOn(dbPath(),function(){return links},function(v){links=v;localSet(v)});liveOn(namesPath(),function(){return names},function(v){names=v;nLocalSet(v)})}
+ function liveOn(path,get,set){
   if(!DB_URL||!window.EventSource)return;
-  var es=new EventSource(dbPath());
+  var es=new EventSource(path);
   function apply(e,merge){
    try{var m=JSON.parse(e.data);}catch(x){return}
    if(!m)return;var p=(m.path||'/').replace(/^\/+/,''),d=m.data;
-   if(!p){links=merge?Object.assign({},links,d||{}):(d||{})}
-   else{var n=Object.assign({},links);if(d==null)delete n[p];else n[p]=d;links=n}
-   localSet(links);paint();
+   var cur=get(),v;
+   if(!p){v=merge?Object.assign({},cur,d||{}):(d||{})}
+   else{var top=p.split('/')[0];v=Object.assign({},cur);if(p.indexOf('/')>-1){var o=Object.assign({},v[top]||{});o[p.split('/')[1]]=d;if(d==null)delete o[p.split('/')[1]];v[top]=o}else if(d==null)delete v[top];else v[top]=d}
+   set(v);paint();
    if(!adm.hidden&&unlocked&&!adminEditing)build();
   }
   es.addEventListener('put',function(e){apply(e,false)});
   es.addEventListener('patch',function(e){apply(e,true)});
-  es.addEventListener('error',function(){if(es.readyState===2)setTimeout(live,3000)});
+  es.addEventListener('error',function(){if(es.readyState===2)setTimeout(function(){liveOn(path,get,set)},3000)});
  }
 
  var adm=$('adm'),lock=$('admLock'),abody=$('admBody'),list=$('admList'),pin=$('pin'),err=$('pinErr'),msg=$('admMsg');
@@ -213,15 +250,39 @@ td.lk{cursor:pointer;-webkit-tap-highlight-color:transparent}
     lab.appendChild(document.createTextNode(tb.rows[r].cells[c].getAttribute('data-name')));
     var inp=el('input');inp.type='url';inp.id='in-'+k;inp.setAttribute('data-k',k);inp.placeholder='https://…';
     inp.setAttribute('autocapitalize','off');inp.setAttribute('autocomplete','off');inp.spellcheck=false;inp.value=ok(links[k])?links[k]:'';
-    row.appendChild(lab);row.appendChild(inp);card.appendChild(row);
+    row.appendChild(lab);var l1=el('span','asub','Линк');row.appendChild(l1);row.appendChild(inp);
+    nameRow(row,k,tb.rows[r].cells[c].getAttribute('data-name'));card.appendChild(row);
    }
    list.appendChild(card);
   }
  }
+ function nameRow(row,k,orig){
+  var e=names[k],on=active(e);
+  var ln=el('label','asub','Ново име (по желание)');ln.htmlFor='nm-'+k;row.appendChild(ln);
+  var ni=el('input');ni.type='text';ni.id='nm-'+k;ni.className='nm';ni.setAttribute('data-nk',k);ni.setAttribute('data-orig',orig);ni.placeholder=orig;ni.autocomplete='off';ni.value=on?e.n:'';row.appendChild(ni);
+  var mode=el('div','dur');mode.setAttribute('role','group');mode.setAttribute('aria-label','Колко време');
+  var bA=el('button',null,'Винаги'),bT=el('button',null,'Временно');bA.type=bT.type='button';
+  var days=el('div','dur days');days.setAttribute('role','group');days.setAttribute('aria-label','Брой дни');
+  var dB=[1,2,3].map(function(n){var b=el('button',null,n===1?'1 ден':n+' дни');b.type='button';b.setAttribute('data-d',n);days.appendChild(b);return b});
+  mode.appendChild(bA);mode.appendChild(bT);row.appendChild(mode);row.appendChild(days);
+  var st=el('p','ast');row.appendChild(st);
+  row._m=on&&e.u?'t':'a';row._d=on&&e.u?(e.d||1):1;row._ch=false;
+  function sync(){bA.setAttribute('aria-pressed',row._m==='a');bT.setAttribute('aria-pressed',row._m==='t');days.hidden=row._m!=='t';
+   dB.forEach(function(b){b.setAttribute('aria-pressed',+b.getAttribute('data-d')===row._d)});
+   var v=ni.value.trim();st.textContent='';
+   if(!row._ch&&on){st.textContent='Сега се показва „'+e.n+'“ '+(e.u?'до '+when(e.u)+', после пак „'+orig+'“.':'завинаги.');}
+   else if(v&&v!==orig){st.textContent='След „Запази“: „'+v+'“ '+(row._m==='t'?'за '+(row._d===1?'1 ден':row._d+' дни')+', после пак „'+orig+'“.':'завинаги.');}
+   if(v){var rb=el('button',null,'Върни старото име');rb.type='button';rb.addEventListener('click',function(){ni.value='';row._ch=true;adminEditing=true;sync()});st.appendChild(rb)}}
+  bA.addEventListener('click',function(){row._m='a';row._ch=true;adminEditing=true;sync()});
+  bT.addEventListener('click',function(){row._m='t';row._ch=true;adminEditing=true;sync()});
+  dB.forEach(function(b){b.addEventListener('click',function(){row._d=+b.getAttribute('data-d');row._m='t';row._ch=true;adminEditing=true;sync()})});
+  ni.addEventListener('input',function(){row._ch=true;sync()});
+  sync();
+ }
  function show(){
   adm.hidden=false;document.body.style.overflow='hidden';adm.scrollTop=0;msg.textContent='';
   lock.hidden=unlocked;abody.hidden=!unlocked;adminEditing=false;
-  if(unlocked)load().then(function(d){links=d;build()});
+  if(unlocked)Promise.all([load(),loadNames()]).then(function(r){links=r[0];names=r[1];build()});
   else{pin.value='';err.textContent='';setTimeout(function(){pin.focus()},60)}
  }
  function hide(){
@@ -239,9 +300,15 @@ td.lk{cursor:pointer;-webkit-tap-highlight-color:transparent}
  pin.addEventListener('keydown',function(e){if(e.key==='Enter')tryPin()});
  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!adm.hidden)hide()});
  $('admSave').addEventListener('click',function(){
-  var o={};list.querySelectorAll('input').forEach(function(i){var u=norm(i.value);i.value=u;if(u)o[i.getAttribute('data-k')]=u});
+  var o={};list.querySelectorAll('input[data-k]').forEach(function(i){var u=norm(i.value);i.value=u;if(u)o[i.getAttribute('data-k')]=u});
+  var nn={},now=Date.now();
+  list.querySelectorAll('input[data-nk]').forEach(function(i){var k=i.getAttribute('data-nk'),row=i.parentNode,v=i.value.trim(),old=names[k];
+   if(!row._ch){if(active(old))nn[k]=old;return}
+   if(!v||v===i.getAttribute('data-orig'))return;
+   nn[k]=row._m==='t'?{n:v,u:now+row._d*864e5,d:row._d}:{n:v,u:0};
+  });
   msg.style.color='';msg.textContent='Запазване…';
-  save(o).then(function(good){links=o;adminEditing=false;paint();if(good)msg.textContent='Запазено ✓';else{msg.style.color='#c0392b';msg.textContent='Запазено само на това устройство'}});
+  Promise.all([save(o),saveNames(nn)]).then(function(r){links=o;names=nn;adminEditing=false;paint();build();if(r[0]&&r[1])msg.textContent='Запазено ✓';else{msg.style.color='#c0392b';msg.textContent='Запазено само на това устройство'}});
  });
  var go=$('go'),goUrl='';
  document.addEventListener('click',function(e){var td=e.target.closest&&e.target.closest('td.lk');if(!td)return;goUrl=td.getAttribute('data-url');if(ok(goUrl))go.hidden=false});
