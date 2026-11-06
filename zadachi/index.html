@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Задачи за консултации · Учене с Алекс и тати</title>
+<meta name="description" content="Какво да направите за консултации: география и човекът и природата.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;800;900&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Consultations look: white page, purple band, blue→pink gradient pills, black outlines, cyan/pink glitch accents */
+:root{--kp:#6a1fb0;--kb:#0b4bb3;--kpk:#c56ee6;--kg:linear-gradient(90deg,#0b4bb3,#c56ee6);--kcy:#00e6ff;--kmg:#ff2bd6;--ink:#000;--yel:#ffd83f;color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:#fff;color:#000;font-family:"Noto Sans",Arial,sans-serif;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--kcy);outline-offset:3px;border-radius:8px}
+
+/* hero: reuses the consultations artwork with a live title */
+.hero{max-width:1100px;margin:0 auto;padding:12px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+.art{position:relative;width:100%;aspect-ratio:1366/768;container-type:inline-size;animation:fade .9s ease both}
+.art img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ttl{position:absolute;left:32.3%;top:41.2%;transform:translate(-50%,-50%) rotate(-7.6deg);text-align:center;font:900 6.1cqw/1 Rubik,Arial,sans-serif;white-space:nowrap}
+.ttl span{display:inline-block;animation:blurIn 1.9s .4s cubic-bezier(.2,.7,.2,1) both}
+.ttl small{display:block;font-size:.5em;margin-top:.15em;color:var(--kp)}
+@keyframes fade{from{opacity:0;transform:scale(1.02)}}
+@keyframes blurIn{0%{filter:blur(18px);opacity:0;letter-spacing:.14em}35%{opacity:.6}100%{filter:blur(0);opacity:1;letter-spacing:0}}
+
+/* tasks band */
+.band{background:var(--kp);padding:40px max(16px,env(safe-area-inset-right,0px)) 50px max(16px,env(safe-area-inset-left,0px))}
+.band-in{max-width:1000px;margin:0 auto}
+.head{display:flex;justify-content:center;margin-bottom:28px}
+.bigpill{background:var(--kg);color:#fff;border:2px solid #000;border-radius:16px;padding:10px 26px;font:800 clamp(24px,4.4vw,40px) Rubik,Arial,sans-serif;text-align:center;box-shadow:0 6px 0 #000;animation:drop .7s .2s cubic-bezier(.2,1.5,.35,1) both}
+@keyframes drop{from{opacity:0;transform:translateY(-30px) scale(.8)}}
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.frame{background:var(--kg);border:2px solid #000;border-radius:22px;padding:12px;animation:rise .7s cubic-bezier(.2,1.3,.4,1) both}
+.frame:nth-child(2){animation-delay:.15s}
+@keyframes rise{from{opacity:0;transform:translateY(40px)}}
+.card{background:#fff;border:2px solid #000;border-radius:14px;padding:22px 20px 20px;height:100%;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.subj{align-self:flex-start;background:var(--kg);color:#fff;border:2px solid #000;border-radius:10px;padding:3px 12px;font:800 16px Rubik,Arial,sans-serif}
+.card h2{font:900 clamp(26px,3.6vw,36px)/1.1 Rubik,Arial,sans-serif;margin:4px 0 0;text-wrap:balance}
+.pages{font:800 20px Rubik,Arial,sans-serif;margin:0;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pages b{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:0 10px;border:2px solid #000;border-radius:12px;background:#fff;font:900 20px Rubik,Arial,sans-serif;box-shadow:3px 3px 0 var(--kmg),-2px -2px 0 var(--kcy)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:10px}
+.btn{border:3px solid #000;border-radius:16px;padding:12px 18px;font:800 18px Rubik,Arial,sans-serif;background:var(--kg);color:#fff;box-shadow:0 5px 0 #000;transition:transform .12s,box-shadow .12s;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 #000}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #000}
+.btn.w{background:#fff;color:#000}
+.done{border:3px solid #000;border-radius:16px;padding:12px 14px;font:800 16px Rubik,Arial,sans-serif;background:#fff;color:#000;box-shadow:0 5px 0 #000}
+.done[aria-pressed="true"]{background:var(--yel)}
+.card.ok::after{content:"Готово!";position:absolute;right:-34px;top:20px;transform:rotate(35deg);background:var(--yel);border:2px solid #000;padding:4px 40px;font:900 15px Rubik,Arial,sans-serif;animation:stamp .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes stamp{from{transform:rotate(35deg) scale(2.4);opacity:0}}
+.star{position:absolute;width:var(--s,30px);height:var(--s,30px);background:var(--yel);clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);animation:tw 2.8s var(--d,0s) ease-in-out infinite;pointer-events:none}
+@keyframes tw{0%,100%{transform:scale(.6) rotate(0);opacity:.6}50%{transform:scale(1.1) rotate(45deg);opacity:1}}
+
+/* «Каквото Алекс иска» strip */
+.alex{padding:40px 16px 30px;text-align:center;overflow:hidden}
+.alex p{display:inline-block;margin:0;transform:rotate(-6deg) skewX(-8deg);font:900 clamp(30px,7vw,64px)/1 Rubik,Arial,sans-serif;color:#1c1c1c;text-shadow:-3px -2px 0 var(--kmg),3px 3px 0 var(--kcy);animation:jit 4s 1s steps(1) infinite}
+@keyframes jit{0%,88%,100%{transform:rotate(-6deg) skewX(-8deg)}90%{transform:rotate(-6deg) skewX(-8deg) translate(-5px,2px)}93%{transform:rotate(-6deg) skewX(-2deg) translate(4px,-2px)}}
+.back{display:flex;justify-content:center;padding:0 16px 40px}
+
+/* page viewer */
+#view{position:fixed;inset:0;z-index:50;background:rgba(20,6,40,.88);display:flex;flex-direction:column}
+#view[hidden]{display:none}
+.vbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 10px) max(12px,env(safe-area-inset-right,0px)) 10px max(12px,env(safe-area-inset-left,0px));background:var(--kg);border-bottom:2px solid #000;flex-wrap:wrap}
+.vbar h3{margin:0;color:#fff;font:800 17px Rubik,Arial,sans-serif;min-width:0}
+.vbar .row{margin:0;padding:0}
+.vbar .btn{padding:8px 14px;font-size:15px;box-shadow:0 3px 0 #000}
+.vscroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:14px;display:flex;justify-content:center;align-items:flex-start}
+.vscroll img{width:100%;max-width:900px;height:auto;display:block;border:3px solid #000;border-radius:10px;background:#fff;animation:fade .4s ease both}
+#view.zoom .vscroll img{width:220%;max-width:none}
+.pagelist{background:#fff;border:3px solid #000;border-radius:18px;padding:22px;max-width:520px;width:100%;margin:auto;animation:fade .4s ease both}
+.pagelist p{font:700 17px/1.45 "Noto Sans",Arial,sans-serif;margin:0 0 16px}
+.pagelist .pages{gap:12px}
+.pagelist .pages button{min-width:64px;height:64px;font:900 24px Rubik,Arial,sans-serif;border:3px solid #000;border-radius:14px;background:#fff;box-shadow:4px 4px 0 var(--kmg),-3px -3px 0 var(--kcy)}
+.pagelist .pages button[aria-pressed="true"]{background:var(--yel)}
+.pagelist small{display:block;margin-top:14px;color:#555;font-weight:700}
+
+@media (max-width:760px){.tasks{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="art">
+    <img src="../kons/k1.webp" alt="">
+    <h1 class="ttl"><span>Консултации</span></h1>
+  </div>
+</header>
+
+<main class="band">
+  <div class="band-in">
+    <div class="head"><div class="bigpill">Задачи за консултации</div></div>
+    <div class="tasks">
+      <div class="frame"><article class="card" id="geo">
+        <i class="star" style="right:18px;top:16px;--s:26px"></i>
+        <span class="subj">География</span>
+        <h2>Контурна карта</h2>
+        <p class="pages">Страница <b>5</b></p>
+        <p style="margin:0;font-size:15px;color:#333">Строеж на Земята и формиране на съвременните континенти.</p>
+        <div class="row">
+          <button class="btn" id="openGeo" type="button">📷 Отвори страницата</button>
+          <button class="done" type="button" data-task="geo" aria-pressed="false">✓ Готово</button>
+        </div>
+      </article></div>
+      <div class="frame"><article class="card" id="chp">
+        <i class="star" style="right:18px;top:16px;--s:26px;--d:1s"></i>
+        <span class="subj">Човекът и природата</span>
+        <h2>Учебна тетрадка</h2>
+        <p class="pages">Страници <b>18</b><b>19</b><b>20</b><b>21</b></p>
+        <div class="row">
+          <button class="btn" id="openChp" type="button">📖 Виж задачата</button>
+          <button class="done" type="button" data-task="chp" aria-pressed="false">✓ Готово</button>
+        </div>
+      </article></div>
+    </div>
+  </div>
+</main>
+
+<section class="alex" aria-label="Каквото Алекс иска"><p>КАКВОТО АЛЕКС ИСКА</p></section>
+<div class="back"><a class="btn w" href="../">← Към Учене с Алекс и тати</a></div>
+
+<div id="view" hidden role="dialog" aria-modal="true" aria-labelledby="vTitle">
+  <div class="vbar">
+    <h3 id="vTitle"></h3>
+    <div class="row">
+      <button class="btn w" id="vZoom" type="button">🔍 Увеличи</button>
+      <button class="btn" id="vClose" type="button">✕ Затвори</button>
+    </div>
+  </div>
+  <div class="vscroll" id="vBody"></div>
+</div>
+
+<script>
+(function(){
+ var $=function(id){return document.getElementById(id)};
+ var KEY='uchene-zadachi';
+ function get(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}}
+ function put(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+ var st=get();
+ function paint(){document.querySelectorAll('.done').forEach(function(b){var on=!!st[b.dataset.task];b.setAttribute('aria-pressed',on);$(b.dataset.task).classList.toggle('ok',on)})}
+ document.querySelectorAll('.done').forEach(function(b){b.addEventListener('click',function(){st[b.dataset.task]=!st[b.dataset.task];put(st);paint()})});
+ paint();
+ var view=$('view'),body=$('vBody'),zoomBtn=$('vZoom'),last=null;
+ function open(title,html,zoomable){last=document.activeElement;$('vTitle').textContent=title;body.innerHTML=html;view.classList.remove('zoom');zoomBtn.hidden=!zoomable;zoomBtn.textContent='🔍 Увеличи';view.hidden=false;document.body.style.overflow='hidden';$('vClose').focus()}
+ function close(){view.hidden=true;document.body.style.overflow='';if(last)last.focus()}
+ $('openGeo').addEventListener('click',function(){open('География · Контурна карта · стр. 5','<img src="geografia-konturna-karta-str5.jpg" alt="Контурна карта, страница 5: Строеж на Земята и Формиране на съвременните континенти">',true)});
+ $('openChp').addEventListener('click',function(){
+  var pg=st.chpPages||{};
+  open('Човекът и природата · Учебна тетрадка','<div class="pagelist"><p>Реши задачите в учебната тетрадка на тези страници. Докосни страницата, когато я завършиш.</p><div class="pages">'+[18,19,20,21].map(function(n){return '<button type="button" data-p="'+n+'" aria-pressed="'+(!!pg[n])+'">'+n+'</button>'}).join('')+'</div><small>Отметките се пазят само на това устройство.</small></div>',false);
+  body.querySelectorAll('[data-p]').forEach(function(b){b.addEventListener('click',function(){pg[b.dataset.p]=!pg[b.dataset.p];b.setAttribute('aria-pressed',!!pg[b.dataset.p]);st.chpPages=pg;if([18,19,20,21].every(function(n){return pg[n]}))st.chp=true;put(st);paint()})});
+ });
+ zoomBtn.addEventListener('click',function(){var z=view.classList.toggle('zoom');zoomBtn.textContent=z?'↩ Намали':'🔍 Увеличи'});
+ $('vClose').addEventListener('click',close);
+ view.addEventListener('click',function(e){if(e.target===view||e.target===body)close()});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!view.hidden)close()});
+})();
+</script>
+</body>
+</html>

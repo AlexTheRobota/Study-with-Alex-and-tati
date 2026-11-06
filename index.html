@@ -158,6 +158,21 @@ html.kons body,html.kons .foot{background:#fff}
 .kbox{width:62%;max-width:260px;aspect-ratio:1/0.83;margin:14px auto;border-radius:12px;border:2px solid #000;background:linear-gradient(90deg,#ff5b5b,#8f55f2)}
 .mk4 .dc{display:block;width:78%;max-width:320px;height:auto;margin:0 auto}
 /* admin theme card */
+.alink{display:block;text-align:center;text-decoration:none}
+.aurl{font:700 13px "Noto Sans",Arial,sans-serif!important;color:#555;margin:10px 0 0!important;word-break:break-all;user-select:all}
+/* admin + popup in the consultations look */
+html.kons #adm,html.kons .asave{background:#f4eefc}
+html.kons .adm-ttl,html.kons .aday,html.kons .ab.y,html.kons .dur button[aria-pressed="true"],html.kons .dur.days button[aria-pressed="true"]{background:var(--kg);color:#fff}
+html.kons .adm-ttl{box-shadow:4px 4px 0 var(--kmg),-3px -3px 0 var(--kcy)}
+html.kons .acard{border-color:#000;box-shadow:0 0 0 6px var(--kp)}
+html.kons .acard{margin-bottom:26px}
+html.kons .arow{border-top-color:#d9c6f2}
+html.kons .arow label b{background:#efe4fb;border-color:var(--kp)}
+html.kons .acard .ast{background:#f4eefc;border-color:#d9c6f2}
+html.kons .amsg{color:var(--kp)}
+html.kons .go-box{box-shadow:6px 6px 0 var(--kp)}
+html.kons .admbtn{background:var(--kg);color:#fff}
+
 .tstat{font:700 16px/1.4 "Noto Sans",Arial,sans-serif!important;margin:10px 0 12px!important}
 .trow{display:flex;gap:10px;flex-wrap:wrap}
 .trow .ab{flex:1 1 auto}
@@ -216,6 +231,7 @@ html.kons body,html.kons .foot{background:#fff}
  <div id="admLock" class="acard"><p>Въведи ПИН:</p><input id="pin" type="password" inputmode="numeric" autocomplete="off"><button type="button" class="ab y" id="pinGo">Влез</button><p class="aerr" id="pinErr"></p></div>
  <div id="admBody" hidden>
   <div class="acard" id="admTheme"><div class="aday">Тема на сайта</div><p class="tstat" id="tStat"></p><div class="trow"><button type="button" class="ab y" id="tToggle">Смени темата</button><button type="button" class="ab" id="tAuto">Автоматично (петък)</button></div><p class="amsg" id="tMsg" style="margin:10px 0 0"></p></div>
+  <div class="acard" id="admZad"><div class="aday">Задачи за консултации</div><p>Линк към страницата със задачите:</p><a class="ab y alink" href="zadachi/" target="_blank" rel="noopener">Отвори задачите →</a><p class="aurl">uchene-s-aleks-i-tati.vercel.app/zadachi/</p></div>
   <p class="anote">Сложи линк до урок и натисни „Запази“. При натискане на урок с линк ще излезе въпрос „Да“ или „Не“ преди да се отвори сайтът. Празно поле = без линк.<br><br>Можеш и да смениш името на урок. Избери „Винаги“, за да остане новото име, или „Временно“ и 1, 2 или 3 дни. След това името се връща само към старото.</p>
   <div id="admList"></div>
   <div class="asave"><button type="button" class="ab y" id="admSave">Запази</button><span class="amsg" id="admMsg"></span></div>
