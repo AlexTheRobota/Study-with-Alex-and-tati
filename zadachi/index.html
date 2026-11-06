@@ -70,7 +70,17 @@ button{font:inherit;color:inherit;cursor:pointer}
 .vbar .btn{padding:8px 14px;font-size:15px;box-shadow:0 3px 0 #000}
 .vscroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:14px;display:flex;justify-content:center;align-items:flex-start}
 .vscroll img{width:100%;max-width:900px;height:auto;display:block;border:3px solid #000;border-radius:10px;background:#fff;animation:fade .4s ease both}
+#view.zoom .vscroll{justify-content:flex-start}
 #view.zoom .vscroll img{width:220%;max-width:none}
+.pgv{width:100%;max-width:900px}
+#view.zoom .pgv{max-width:none}
+.ptabs{position:sticky;top:-14px;left:0;z-index:2;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;padding:12px 0;margin:-14px 0 10px;background:rgba(20,6,40,.88)}
+.ptabs .lbl{color:#fff;font:800 15px Rubik,Arial,sans-serif}
+.ptabs button{min-width:56px;height:52px;padding:0 10px;font:900 21px Rubik,Arial,sans-serif;border:3px solid #000;border-radius:14px;background:#fff;color:#000;box-shadow:3px 3px 0 var(--kmg),-2px -2px 0 var(--kcy)}
+.ptabs button[aria-current="true"]{background:var(--kg);color:#fff;transform:translateY(-2px)}
+.ptabs button.dn::after{content:" ✓"}
+.ptabs .mark{background:#fff;font-size:15px;height:52px}
+.ptabs .mark[aria-pressed="true"]{background:var(--yel)}
 .pagelist{background:#fff;border:3px solid #000;border-radius:18px;padding:22px;max-width:520px;width:100%;margin:auto;animation:fade .4s ease both}
 .pagelist p{font:700 17px/1.45 "Noto Sans",Arial,sans-serif;margin:0 0 16px}
 .pagelist .pages{gap:12px}
@@ -147,10 +157,18 @@ button{font:inherit;color:inherit;cursor:pointer}
  function open(title,html,zoomable){last=document.activeElement;$('vTitle').textContent=title;body.innerHTML=html;view.classList.remove('zoom');zoomBtn.hidden=!zoomable;zoomBtn.textContent='🔍 Увеличи';view.hidden=false;document.body.style.overflow='hidden';$('vClose').focus()}
  function close(){view.hidden=true;document.body.style.overflow='';if(last)last.focus()}
  $('openGeo').addEventListener('click',function(){open('География · Контурна карта · стр. 5','<img src="geografia-konturna-karta-str5.jpg" alt="Контурна карта, страница 5: Строеж на Земята и Формиране на съвременните континенти">',true)});
+ var PAGES=[18,19,20,21];
  $('openChp').addEventListener('click',function(){
-  var pg=st.chpPages||{};
-  open('Човекът и природата · Учебна тетрадка','<div class="pagelist"><p>Реши задачите в учебната тетрадка на тези страници. Докосни страницата, когато я завършиш.</p><div class="pages">'+[18,19,20,21].map(function(n){return '<button type="button" data-p="'+n+'" aria-pressed="'+(!!pg[n])+'">'+n+'</button>'}).join('')+'</div><small>Отметките се пазят само на това устройство.</small></div>',false);
-  body.querySelectorAll('[data-p]').forEach(function(b){b.addEventListener('click',function(){pg[b.dataset.p]=!pg[b.dataset.p];b.setAttribute('aria-pressed',!!pg[b.dataset.p]);st.chpPages=pg;if([18,19,20,21].every(function(n){return pg[n]}))st.chp=true;put(st);paint()})});
+  var pg=st.chpPages||{},cur=PAGES[0];
+  open('Човекът и природата · Учебна тетрадка','<div class="pgv"><div class="ptabs"><span class="lbl">Страница:</span>'+PAGES.map(function(n){return '<button type="button" data-p="'+n+'">'+n+'</button>'}).join('')+'<button type="button" class="mark" id="pMark">✓ Готова</button></div><img id="pImg" alt=""></div>',true);
+  var img=$('pImg'),mark=$('pMark');
+  function show(n){cur=n;img.src='chovekat-i-prirodata-str'+n+'.jpg';img.alt='Учебна тетрадка по Човекът и природата, страница '+n;
+   body.querySelectorAll('[data-p]').forEach(function(b){var p=+b.dataset.p;b.setAttribute('aria-current',p===n);b.classList.toggle('dn',!!pg[p])});
+   mark.setAttribute('aria-pressed',!!pg[n]);mark.textContent=pg[n]?'✓ Стр. '+n+' е готова':'✓ Готова';body.scrollTop=0;body.scrollLeft=0;
+   img.style.animation='none';void img.offsetWidth;img.style.animation=''}
+  body.querySelectorAll('[data-p]').forEach(function(b){b.addEventListener('click',function(){show(+b.dataset.p)})});
+  mark.addEventListener('click',function(){pg[cur]=!pg[cur];st.chpPages=pg;st.chp=PAGES.every(function(n){return pg[n]});put(st);paint();show(cur)});
+  show(cur);
  });
  zoomBtn.addEventListener('click',function(){var z=view.classList.toggle('zoom');zoomBtn.textContent=z?'↩ Намали':'🔍 Увеличи'});
  $('vClose').addEventListener('click',close);
