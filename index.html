@@ -440,10 +440,12 @@ html.kons .admbtn{background:var(--kg);color:#fff}
   msg.style.color='';msg.textContent='Запазване…';
   Promise.all([save(o),saveNames(nn)]).then(function(r){links=o;names=nn;adminEditing=false;paint();build();if(r[0]&&r[1])msg.textContent='Запазено ✓';else{msg.style.color='#c0392b';msg.textContent='Запазено само на това устройство'}});
  });
+ // Sites that need your login can't be shown inside our page (Safari hides the login there), so they open normally
+ var NEED_LOGIN=['izzi.digital'];
  var go=$('go'),goUrl='';
  document.addEventListener('click',function(e){var td=e.target.closest&&e.target.closest('td.lk');if(!td)return;goUrl=td.getAttribute('data-url');if(ok(goUrl))go.hidden=false});
  function goClose(){go.hidden=true;goUrl=''}
- $('goYes').addEventListener('click',function(){var u=goUrl;goClose();if(!ok(u))return;var ext=false;try{ext=new URL(u,location.href).origin!==location.origin}catch(e){}if(ext)u='/open/?u='+encodeURIComponent(u);window.open(u,'_blank','noopener')});
+ $('goYes').addEventListener('click',function(){var u=goUrl;goClose();if(!ok(u))return;var ext=false;try{var h=new URL(u,location.href);ext=h.origin!==location.origin&&!NEED_LOGIN.some(function(d){return h.hostname===d||h.hostname.slice(-d.length-1)==='.'+d})}catch(e){}if(ext)u='/open/?u='+encodeURIComponent(u);window.open(u,'_blank','noopener')});
  $('goNo').addEventListener('click',goClose);
  go.addEventListener('click',function(e){if(e.target===go)goClose()});
  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!go.hidden)goClose()});
