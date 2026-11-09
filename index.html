@@ -441,7 +441,7 @@ html.kons .admbtn{background:var(--kg);color:#fff}
  var go=$('go'),goUrl='';
  document.addEventListener('click',function(e){var td=e.target.closest&&e.target.closest('td.lk');if(!td)return;goUrl=td.getAttribute('data-url');if(ok(goUrl))go.hidden=false});
  function goClose(){go.hidden=true;goUrl=''}
- $('goYes').addEventListener('click',function(){var u=goUrl;goClose();if(ok(u))window.open(u,'_blank','noopener')});
+ $('goYes').addEventListener('click',function(){var u=goUrl;goClose();if(!ok(u))return;var ext=false;try{ext=new URL(u,location.href).origin!==location.origin}catch(e){}if(ext)u='/open/?u='+encodeURIComponent(u);window.open(u,'_blank','noopener')});
  $('goNo').addEventListener('click',goClose);
  go.addEventListener('click',function(e){if(e.target===go)goClose()});
  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!go.hidden)goClose()});
