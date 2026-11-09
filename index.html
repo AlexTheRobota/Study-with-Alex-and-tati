@@ -340,6 +340,8 @@ html.kons .admbtn{background:var(--kg);color:#fff}
   });
   scheduleRevert();
  }
+ // Show the saved copy straight away (no flash of the original names), then refresh from the internet
+ links=localGet();names=nLocalGet();paint();
  load().then(function(d){links=d;paint()});
  loadNames().then(function(d){names=d;paint()});
  document.addEventListener('visibilitychange',function(){if(!document.hidden)paint()});
