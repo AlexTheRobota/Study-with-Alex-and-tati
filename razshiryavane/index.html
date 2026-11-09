@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Урок 28 по математика за 5. клас: основно свойство на дробите и разширяване на дроби, с 3D модели, които се въртят с пръст.">
+<title>Разширяване на дроби · Урок 28</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Onest:wght@400;500;700;800&display=swap">
+<style>
+:root{
+  --bg:#F4F2FF; --card:#FFFFFF; --ink:#1D1A39; --soft:#69658C; --line:#E4E0F6;
+  --coral:#FF6B6B; --mint:#14B8A6; --sun:#FFB020; --sky:#4F7DF3; --grape:#8B5CF6; --pink:#FF5FA2;
+  --ok:#10B981; --no:#EF4444; --field:#F6F4FF;
+  --display:"Unbounded","Onest",system-ui,sans-serif;
+  --body:"Onest","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#110F24; --card:#1B1836; --ink:#F2F0FF; --soft:#A9A5CC; --line:#2F2A57; --field:#14122B;
+    --coral:#FF7E7E; --mint:#2DD4BF; --sun:#FFC247; --sky:#6E95FF; --grape:#A37BFF; --pink:#FF78B4;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#110F24; --card:#1B1836; --ink:#F2F0FF; --soft:#A9A5CC; --line:#2F2A57; --field:#14122B;
+  --coral:#FF7E7E; --mint:#2DD4BF; --sun:#FFC247; --sky:#6E95FF; --grape:#A37BFF; --pink:#FF78B4;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 17px/1.5 var(--body);
+  padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);
+  background-image:radial-gradient(circle at 12% 0%, color-mix(in srgb,var(--grape) 16%,transparent) 0, transparent 38%),
+                   radial-gradient(circle at 100% 30%, color-mix(in srgb,var(--sun) 14%,transparent) 0, transparent 30%);
+  background-attachment:fixed}
+.wrap{max-width:780px;margin:0 auto;padding:0 16px 80px}
+a{color:inherit}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 16px;margin:0 -16px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  background:color-mix(in srgb,var(--bg) 78%,transparent)}
+.back{font:700 14px var(--body);text-decoration:none;padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--line)}
+.stars{display:flex;align-items:center;gap:6px;font:800 15px var(--display);padding:8px 14px;border-radius:999px;background:var(--ink);color:var(--bg)}
+.stars b{color:var(--sun)}
+.stars.pop{animation:pop .5s}
+@keyframes pop{40%{transform:scale(1.18)}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:8px;padding:18px 0 8px}
+.chip{display:inline-block;font:700 13px var(--body);letter-spacing:.02em;padding:6px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--soft)}
+h1{font:800 clamp(30px,6.4vw,50px)/1.05 var(--display);margin:14px 0 10px;letter-spacing:-.02em}
+h1 span{display:block;font-size:.62em;color:var(--grape);margin-top:8px}
+.lead{color:var(--soft);margin:0;max-width:34ch}
+.heroStage{position:relative;height:clamp(240px,40vw,320px)}
+.heroStage canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+.bubble{position:absolute;top:6px;right:4px;background:var(--card);border:1px solid var(--line);border-radius:18px 18px 4px 18px;padding:8px 12px;font:700 14px/1.3 var(--body);max-width:170px;box-shadow:0 8px 20px -10px rgba(40,20,90,.35)}
+@media (max-width:620px){.hero{grid-template-columns:1fr}.heroStage{height:250px;margin-top:-6px}}
+
+/* section labels */
+.sec{display:flex;align-items:center;gap:12px;margin:40px 0 14px;font:800 14px var(--display);text-transform:uppercase;letter-spacing:.08em;color:var(--soft)}
+.sec::after{content:"";flex:1;height:2px;border-radius:2px;background:var(--line)}
+.sec.try{color:var(--pink)}
+
+/* cards */
+.card{--tint:var(--sky);background:var(--card);border:1px solid var(--line);border-radius:28px;padding:20px;margin:16px 0;box-shadow:0 18px 40px -30px rgba(40,20,90,.45);position:relative}
+.card.done{border-color:color-mix(in srgb,var(--ok) 55%,var(--line))}
+.thead{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.num{flex:none;width:40px;height:40px;border-radius:14px;display:grid;place-items:center;font:800 17px var(--display);color:#fff;background:var(--tint);transform:rotate(-6deg)}
+.card.done .num{background:var(--ok)}
+.thead p{margin:6px 0 0;font-weight:600}
+.self .num{border-radius:50%;transform:none}
+
+/* 3D stages */
+.stage{position:relative;height:clamp(250px,66vw,380px);border-radius:22px;overflow:hidden;margin:6px 0 12px;
+  background:radial-gradient(120% 90% at 50% 15%, color-mix(in srgb,var(--tint) 20%,var(--card)) 0%, color-mix(in srgb,var(--tint) 8%,var(--card)) 70%)}
+.stage.sm{height:clamp(210px,52vw,290px)}
+.stage canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+.stage canvas:active,.heroStage canvas:active{cursor:grabbing}
+.hint{position:absolute;left:12px;bottom:12px;font:700 12px var(--body);padding:6px 10px;border-radius:999px;background:color-mix(in srgb,var(--card) 85%,transparent);color:var(--soft);pointer-events:none;transition:opacity .4s}
+.stage.touched .hint{opacity:0}
+.tools{position:absolute;right:10px;top:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.tbtn{font:700 13px var(--body);border:0;border-radius:999px;padding:8px 12px;background:var(--card);color:var(--ink);box-shadow:0 4px 12px -6px rgba(0,0,0,.35);cursor:pointer}
+.tbtn.on{background:var(--tint);color:#fff}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;color:var(--soft);margin:-4px 0 8px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:-1px}
+
+/* fractions */
+.eq{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font:700 20px var(--body)}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15}
+.fr>span{display:flex;align-items:center;gap:2px;padding:2px 4px;white-space:nowrap}
+.fr>span:first-child{border-bottom:2.5px solid currentColor}
+.op{color:var(--soft);font-weight:700}
+.bl{width:2.7em;font:700 18px var(--body);text-align:center;color:var(--ink);background:var(--field);border:2px dashed color-mix(in srgb,var(--tint) 60%,var(--line));border-radius:10px;padding:3px 2px;outline:none;-moz-appearance:textfield}
+.bl:focus{border-style:solid;border-color:var(--tint);background:var(--card)}
+.bl.ok{border:2px solid var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--card))}
+.bl.no{border:2px solid var(--no);background:color-mix(in srgb,var(--no) 12%,var(--card));animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.rows{display:grid;gap:10px}
+.rows.cols{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:16px;background:color-mix(in srgb,var(--tint) 6%,var(--card));border:1px solid var(--line)}
+.row .lbl{font:800 14px var(--display);color:var(--tint);min-width:22px}
+.row.ok{background:color-mix(in srgb,var(--ok) 9%,var(--card));border-color:color-mix(in srgb,var(--ok) 40%,var(--line))}
+.row .txt{font-weight:600}
+.pair{display:inline-flex;flex-direction:column;align-items:center;gap:4px;padding:4px 8px;border-radius:14px;background:var(--card)}
+.pair .lbl{font-size:12px}
+.choice{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.choice button{font:700 15px var(--body);border:2px solid var(--line);background:var(--card);color:var(--ink);padding:6px 16px;border-radius:999px;cursor:pointer}
+.choice button.sel{border-color:var(--tint);background:color-mix(in srgb,var(--tint) 14%,var(--card))}
+.choice button.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 16%,var(--card))}
+.choice button.no{border-color:var(--no);animation:shake .35s}
+
+.foot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+.check{font:800 15px var(--display);border:0;border-radius:16px;padding:12px 22px;color:#fff;background:var(--ink);cursor:pointer;transition:transform .15s}
+.check:active{transform:scale(.96)}
+.msg{font-weight:700;font-size:15px}
+.msg.ok{color:var(--ok)} .msg.no{color:var(--no)}
+
+details{margin-top:12px;border-radius:16px;background:var(--field);padding:2px 14px}
+summary{cursor:pointer;font:700 15px var(--body);padding:10px 0;color:var(--tint);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"＋ "}
+details[open] summary::before{content:"－ "}
+details p{margin:0 0 12px}
+.tip{display:flex;gap:10px;align-items:flex-start;margin:10px 0 0;padding:10px 14px;border-radius:16px;background:color-mix(in srgb,var(--sun) 16%,var(--card));font-size:15px;font-weight:600}
+.tip::before{content:"💡";font-size:18px}
+.ifr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.1;font-weight:700;margin:0 2px;font-size:.95em}
+.ifr>span:first-child{border-bottom:2px solid currentColor;padding:0 3px}
+
+/* rule cards */
+.rule{border-radius:28px;padding:22px;margin:22px 0;color:#fff;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--grape),var(--sky))}
+.rule.alt{background:linear-gradient(135deg,var(--pink),var(--sun))}
+.rule h2{font:800 20px/1.2 var(--display);margin:0 0 8px}
+.rule p{margin:0 0 12px;font-weight:600}
+.rule .eq{color:#fff}
+.rule .op{color:rgba(255,255,255,.75)}
+.rule .formula{display:flex;gap:26px;flex-wrap:wrap;margin:6px 0 14px;font-size:24px}
+.rule .k{color:#FFE27A}
+.rule .chain{background:rgba(255,255,255,.14);border-radius:18px;padding:12px;font-size:17px;gap:6px;margin-top:8px}
+.rule::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.12)}
+.rule b{color:#FFE27A}
+
+/* task 7 / 11 schema */
+.schema{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:16px 8px;border-radius:20px;background:color-mix(in srgb,var(--tint) 7%,var(--card));border:1px solid var(--line)}
+.box{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:6px 10px}
+.arrow{display:flex;flex-direction:column;align-items:center;font:800 14px var(--display);color:var(--soft)}
+.arrow .bub{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--tint);color:#fff;font-size:15px}
+.arrow .ln{font-size:20px;line-height:1}
+.sym{display:inline-grid;place-items:center;min-width:1.3em;font-weight:800}
+.s1{color:var(--pink)}.s2{color:var(--sky)}.s3{color:var(--mint)}.s4{color:var(--coral)}
+
+.final{text-align:center;padding:30px 20px;border-radius:28px;background:var(--ink);color:var(--bg);margin-top:30px}
+.final h2{font:800 24px var(--display);margin:0 0 6px}
+.final p{margin:0;opacity:.8}
+.final .big{font:800 54px var(--display);color:var(--sun)}
+.reset{margin-top:14px;font:700 14px var(--body);background:transparent;color:inherit;border:1px solid currentColor;border-radius:999px;padding:8px 16px;cursor:pointer;opacity:.7}
+
+.cf{position:fixed;z-index:50;width:9px;height:14px;border-radius:3px;pointer-events:none;animation:cf 1.2s cubic-bezier(.2,.7,.4,1) forwards}
+@keyframes cf{to{transform:translate(var(--dx),var(--dy)) rotate(var(--r));opacity:0}}
+@media (prefers-reduced-motion:reduce){.cf{display:none}.bl.no,.choice button.no{animation:none}}
+.noGL .stage canvas,.noGL .heroStage canvas{display:none}
+.noGL .stage::before{content:"3D моделите не се зареждат на това устройство.";position:absolute;inset:0;display:grid;place-items:center;color:var(--soft);font-weight:700;padding:20px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="bar">
+  <a class="back" href="../">← Начало</a>
+  <div class="stars" id="stars" aria-live="polite">★ <b id="sc">0</b>/<span id="tot">0</span></div>
+</div>
+
+<header class="hero">
+  <div>
+    <span class="chip">Математика · 5. клас · Урок 28</span>
+    <h1>Основно свойство на дробите<span>Разширяване на дроби</span></h1>
+    <p class="lead">Една и съща част може да има много имена. Върти моделите с пръст, решавай и събирай звезди!</p>
+  </div>
+  <div class="heroStage">
+    <canvas data-model="hero" aria-label="3D торта-герой с две оцветени парчета от четири"></canvas>
+    <div class="bubble">Пипни ме и ме завърти! 👆</div>
+  </div>
+</header>
+
+<div class="sec">Откривай</div>
+
+<!-- TASK 1 -->
+<section class="card" style="--tint:var(--sky)" data-task="t1">
+  <div class="thead"><div class="num">1</div>
+    <p>Запишете с обикновена дроб каква част от кръговете е оцветена. Равни ли са оцветените части, ако кръговете са еднакви?</p></div>
+  <div class="stage"><canvas data-model="pies3"></canvas>
+    <div class="tools"><button class="tbtn" data-act="stack">Наслагай</button></div>
+    <div class="hint">👆 Върти с пръст · 🤏 приближи</div></div>
+  <div class="rows cols">
+    <div class="row" data-row="t1"><span class="pair"><span class="lbl" style="color:#3FA9F5">синя</span><span class="eq">{[1]/[3]}</span></span>
+      <span class="pair"><span class="lbl" style="color:#22B07D">зелена</span><span class="eq">{[2]/[6]}</span></span>
+      <span class="pair"><span class="lbl" style="color:#E3B400">жълта</span><span class="eq">{[4]/[12]}</span></span>
+      <div class="choice" data-correct="yes"><span class="txt">Равни ли са?</span><button data-v="yes">Да</button><button data-v="no">Не</button></div></div>
+  </div>
+  <div class="foot"><button class="check">Провери</button><span class="msg"></span></div>
+  <div class="tip">За всеки следващ кръг удвояваме броя на частите, които вземаме, но те стават два пъти по-малки.</div>
+  <details><summary>Решение</summary>
+    <p>Синята част е <span class="ifr"><span>1</span><span>3</span></span> от кръга. Зелената е <span class="ifr"><span>2</span><span>6</span></span>, а жълтата е <span class="ifr"><span>4</span><span>12</span></span>. От чертежа се вижда, че оцветените части са равни. В трите случая една и съща част от кръга е представена като дроб по три различни начина.</p>
+  </details>
+</section>
+
+<!-- TASK 2 -->
+<section class="card" style="--tint:var(--coral)" data-task="t2">
+  <div class="thead"><div class="num">2</div>
+    <p>Запишете с обикновена дроб каква част от квадратите е оцветена. Равни ли са оцветените части?</p></div>
+  <div class="stage"><canvas data-model="squares4"></canvas>
+    <div class="tools"><button class="tbtn" data-act="stack">Наслагай</button></div>
+    <div class="hint">👆 Върти с пръст · 🤏 приближи</div></div>
+  <div class="rows">
+    <div class="row" data-row="t2"><span class="pair"><span class="lbl" style="color:#E2556B">червена</span><span class="eq">{[8]/[16]}</span></span>
+      <span class="pair"><span class="lbl" style="color:#E3A800">жълта</span><span class="eq">{[4]/[8]}</span></span>
+      <span class="pair"><span class="lbl" style="color:#22B07D">зелена</span><span class="eq">{[2]/[4]}</span></span>
+      <span class="pair"><span class="lbl" style="color:#4F7DF3">синя</span><span class="eq">{[1]/[2]}</span></span>
+      <div class="choice" data-correct="yes"><span class="txt">Равни ли са?</span><button data-v="yes">Да</button><button data-v="no">Не</button></div></div>
+  </div>
+  <div class="foot"><button class="check">Провери</button><span class="msg"></span></div>
+  <div class="tip">И за квадратите е така! От всеки следващ квадрат вземаме два пъти по-малко части, но те стават два пъти по-големи.</div>
+  <details><summary>Решение</summary>
+    <p>Червената част е <span class="ifr"><span>8</span><span>16</span></span> от квадрата. Жълтата е <span class="ifr"><span>4</span><span>8</span></span>, зелената е <span class="ifr"><span>2</span><span>4</span></span>, а синята е <span class="ifr"><span>1</span><span>2</span></span>. И в четирите случая половината от квадрата е представена като дроб по различен начин.</p>
+  </details>
+</section>
+
+<!-- RULE -->
+<section class="rule">
+  <h2>Основно свойство на дробите</h2>
+  <p>Ако числителят и знаменателят на обикновена дроб се умножат или разделят с едно и също число, различно от 0, се получава обикновена дроб, равна на дадената.</p>
+  <div class="formula">
+    <span class="eq">{a/b} <span class="op">=</span> {a·<span class="k">n</span>/b·<span class="k">n</span>}</span>
+    <span class="eq">{a/b} <span class="op">=</span> {a:<span class="k">m</span>/b:<span class="k">m</span>}</span>
+  </div>
+  <div class="eq chain">{1/3} = {1·<span class="k">2</span>/3·<span class="k">2</span>} = {2/6} = {2·<span class="k">2</span>/6·<span class="k">2</span>} = {4/12}</div>
+  <div class="eq chain">{8/16} = {8:<span class="k">2</span>/16:<span class="k">2</span>} = {4/8} = {4:<span class="k">2</span>/8:<span class="k">2</span>} = {2/4} = {2:<span class="k">2</span>/4:<span class="k">2</span>} = {1/2}</div>
+</section>
+
+<!-- TASK 3 -->
+<section class="card" style="--tint:var(--grape)" data-task="t3">
+  <div class="thead"><div class="num">3</div><p>Умножете числителя и знаменателя на дробта:</p></div>
+  <div class="rows cols">
+    <div class="row" data-row="t3a"><span class="lbl">а)</span><span class="eq">{1/4} <span class="op">· 3 =</span> {[3]/[12]}</span></div>
+    <div class="row" data-row="t3b"><span class="lbl">б)</span><span class="eq">{5/7} <span class="op">· 20 =</span> {[100]/[140]}</span></div>
+    <div class="row" data-row="t3c"><span class="lbl">в)</span><span class="eq">{8/1} <span class="op">· 9 =</span> {[72]/[9]}</span></div>
+    <div class="row" data-row="t3d"><span class="lbl">г)</span><span class="eq">{8/7} <span class="op">· 12 =</span> {[96]/[84]}</span></div>
+    <div class="row" data-row="t3e"><span class="lbl">д)</span><span class="eq">{0/3} <span class="op">· 40 =</span> {[0]/[120]}</span></div>
+  </div>
+  <div class="foot"><button class="check">Провери</button><span class="msg"></span></div>
+  <div class="tip"><span>Пример: <span class="ifr"><span>1</span><span>4</span></span> = <span class="ifr"><span>1·3</span><span>4·3</span></span> = <span class="ifr"><span>3</span><span>12</span></span> — умножаваме и горе, и долу с 3.</span></div>
+</section>
+
+<!-- TASK 4 -->
+<section class="card" style="--tint:var(--mint)" data-task="t4">
+  <div class="thead"><div class="num">4</div><p>Като си помогнете с моделите, открийте пропуснатите числа в равенството.</p></div>
+  <div class="rows">
+    <div>
+      <div class="stage sm"><canvas data-model="t4a"></canvas><div class="hint">👆 Върти</div></div>
+      <div class="row" data-row="t4a"><span class="lbl">а)</span><span class="eq">{2/3} = {2·[3]/3·[3]} = {6/9}</span></div>
+    </div>
+    <div>
+      <div class="stage sm"><canvas data-model="t4b"></canvas><div class="hint">👆 Върти</div></div>
+      <div class="row" data-row="t4b"><span class="lbl">б)</span><span class="eq">{7/10} = {7·[2]/10·[2]} = {14/20}</span></div>
+    </div>
+    <div>
+      <div class="stage sm"><canvas data-model="t4c"></canvas><div class="hint">👆 Върти</div></div>
+      <div class="row" data-row="t4c"><span class="lbl">в)</span><span class="eq">{3/5} = {3·[2]/5·[2]} = {[6]/10}</span></div>
+    </div>
+    <div>
+      <div class="stage sm"><canvas data-model="t4d"></canvas><div class="hint">👆 Върти</div></div>
+      <div class="row" data-row="t4d"><span class="lbl">г)</span><span class="eq">{5/[6]} = {5·[4]/[6]·[4]} = {[20]/24}</span></div>
+    </div>
+  </div>
+  <div class="foot"><button class="check">Провери</button><span class="msg"></span></div>
+</section>
+
+<!-- DEFINITION -->
+<section class="rule alt">
+  <h2>Разширяване на дроб</h2>
+  <p>Умножението на числителя и знаменателя на дадена дроб с едно и също естествено число, различно от 1, се нарича <b>разширяване на дробта</b>. Числото, с което умножаваме, се нарича <b>допълнителен множител</b>.</p>
+  <div class="eq" style="font-size:22px">{7/10} = {7·<span class="k">3</span>/10·<span class="k">3</span>} = {21/30}</div>
+</section>
+
+<!-- TASK 5 -->
+<section class="card" style="--tint:var(--pink)" data-task="t5">
+  <div class="thead"><div class="num">5</div><p>Разширете с допълнителен множител:</p></div>
+  <div class="rows">
+    <div class="row" data-row="t5a"><span class="lbl">а) ·3</span>
+      <span class="eq">{7/10} = {[21]/[30]}</span><span class="op">;</span>
+      <span class="eq">{2/9} = {[6]/[27]}</span><span class="op">;</span>
+      <span class="eq">{7/1} = {[21]/[3]}</span></div>
+    <div class="row" data-row="t5b"><span class="lbl">б) ·4</span>
+      <span class="eq">{2/3} = {[8]/[12]}</span><span class="op">;</span>
+      <span class="eq">{5/4} = {[20]/[16]}</span><span class="op">;</span>
+      <span class="eq">{0/2} = {[0]/[8]}</span></div>
+  </div>
+  <div class="foot"><button class="check">Провери</button><span class="msg"></span></div>
+  <details><summary>Решение (пример)</summary>
+    <p><span class="ifr"><span>7</span><span>10</span></span> = <span class="ifr"><span>7·3</span><span>10·3</span></span> = <span class="ifr"><span>21</span><span>30</span></span>. Обикновено умножението на числителя и знаменателя с допълнителния множител се извършва наум — пишем малкото 3 над дробта и направо записваме <span class="ifr"><span>21</span><span>30</span></span>.</p>
+  </details>
+</section>
+
+<!-- TASK 6 -->
+<section class="card" style="--tint:var(--sun)" data-task="t6">
+  <div class="thead"><div class="num">6</div>
+    <p>В кутия има 30 бонбона, подредени в шест еднакви реда. Запишете като дроби със знаменател 6 каква част от всички бонбони са бонбоните от: един ред; два реда; пет реда. Разширете получените дроби до знаменател 30.</p></div>
+  <div class="stage"><canvas data-model="candy"></canvas>
+    <div class="tools"><button class="tbtn" data-rows="1">1 ред</button><button class="tbtn" data-rows="2">2 реда</button><button class="tbtn" data-rows="5">5 реда</button></div>
+    <div class="hint">👆 Върти кутията</div></div>
+  <div class="rows">
+    <div class="row" data-row="t6"><span class="pair"><span class="lbl">1 ред</span><span class="eq">{[1]/6} = {[5]/30}</span></span>
+      <span class="pair"><span class="lbl">2 реда</span><span class="eq">{[2]/6} = {[10]/30}</span></span>
+      <span class="pair"><span class="lbl">5 реда</span><span class="eq">{[5]/6} = {[25]/30}</span></span></div>
+  </div>
+  <div class="foot"><button class="check">Провери</button><span class="msg"></span></div>
+</section>
+
+<!-- TASK 7 -->
+<section class="card" style="--tint:var(--sky)" data-task="t7">
+  <div class="thead"><div class="num">7</div>
+    <p>Открийте липсващите дроби <span class="ifr"><span>a</span><span>b</span></span> и <span class="ifr"><span>c</span><span>d</span></span>, ако числото в кръгчето е допълнителният множител, с който разширяваме предходната дроб.</p></div>
+  <div class="schema row" data-row="t7">
+    <span class="box eq">{2/3}</span>
+    <span class="arrow"><span class="bub">5</span><span class="ln">→</span></span>
+    <span class="box eq">{[10]/[15]}</span>
+    <span class="arrow"><span class="bub">4</span><span class="ln">→</span></span>
+    <span class="box eq">{[40]/[60]}</span>
+  </div>
+  <div class="foot"><button class="check">Провери</button><span class="msg"></span></div>
+</section>
+
+<div class="sec try">Опитай сам</div>
+
+<!-- TASK 8 -->
+<section class="card self" style="--tint:var(--pink)" data-task="t8">
+  <div class="thead"><div class="num">8</div><p>Запишете дроб със знаменател 60, равна на:</p></div>
+  <div class="rows cols">
+    <div class="row" data-row="t8a"><span class="lbl">а)</span><span class="eq">{3/10} = {[18]/60}</span></div>
+    <div class="row" data-row="t8b"><span class="lbl">б)</span><span class="eq">{5/6} = {[50]/60}</span></div>
+    <div class="row" data-row="t8c"><span class="lbl">в)</span><span class="eq">{1/4} = {[15]/60}</span></div>
+    <div class="row" data-row="t8d"><span class="lbl">г)</span><span class="eq">{8/15} = {[32]/60}</span></div>
+    <div class="row" data-row="t8e"><span class="lbl">д)</span><span class="eq">{11/20} = {[33]/60}</span></div>
+  </div>
+  <div class="foot"><button class="check">Провери</button><span class="msg"></span></div>
+</section>
+
+<!-- TASK 9 -->
+<section class="card self" style="--tint:var(--pink)" data-task="t9">
+  <div class="thead"><div class="num">9</div><p>Открийте пропуснатите числа в равенството:</p></div>
+  <div class="rows">
+    <div class="row" data-row="t9a"><span class="lbl">а)</span><span class="eq">{14/15} = {14·[2]/15·[2]} = {28/[30]}</span></div>
+    <div class="row" data-row="t9b"><span class="lbl">б)</span><span class="eq">{2/13} = {2·[4]/13·4} = {[8]/[52]}</span></div>
+    <div class="row" data-row="t9c"><span class="lbl">в)</span><span class="eq">{3/7} = {3·[8]/7·[8]} = {24/[56]}</span></div>
+  </div>
+  <div class="foot"><button class="check">Провери</button><span class="msg"></span></div>
+</section>
+
+<!-- TASK 10 -->
+<section class="card self" style="--tint:var(--pink)" data-task="t10">
+  <div class="thead"><div class="num">10</div><p>Запишете дроб с числител 48, равна на:</p></div>
+  <div class="rows cols">
+    <div class="row" data-row="t10a"><span class="lbl">а)</span><span class="eq">{3/5} = {48/[80]}</span></div>
+    <div class="row" data-row="t10b"><span class="lbl">б)</span><span class="eq">{12/5} = {48/[20]}</span></div>
+    <div class="row" data-row="t10c"><span class="lbl">в)</span><span class="eq">{8/9} = {48/[54]}</span></div>
+    <div class="row" data-row="t10d"><span class="lbl">г)</span><span class="eq">{24/31} = {48/[62]}</span></div>
+    <div class="row" data-row="t10e"><span class="lbl">д)</span><span class="eq">{16/16} = {48/[48]}</span></div>
+  </div>
+  <div class="foot"><button class="check">Провери</button><span class="msg"></span></div>
+</section>
+
+<!-- TASK 11 -->
+<section class="card self" style="--tint:var(--pink)" data-task="t11">
+  <div class="thead"><div class="num">11</div><p>На различните символи съответстват различни числа. Открийте кое число на кой символ съответства.</p></div>
+  <div class="schema">
+    <span class="box eq">{3/4}</span>
+    <span class="arrow"><span class="eq" style="font-size:15px">{3·<span class="s1">□</span>/4·<span class="s1">□</span>}</span><span class="ln">→</span></span>
+    <span class="box eq">{9/<span class="s2">△</span>}</span>
+    <span class="arrow"><span class="eq" style="font-size:15px">{9·<span class="s3">⊗</span>/<span class="s2">△</span>·<span class="s3">⊗</span>}</span><span class="ln">→</span></span>
+    <span class="box eq">{<span class="s4">✱</span>/96}</span>
+  </div>
+  <div class="rows cols" style="margin-top:12px">
+    <div class="row" data-row="t11"><span class="eq"><span class="s1">□</span> = [3]</span><span class="eq"><span class="s2">△</span> = [12]</span><span class="eq"><span class="s3">⊗</span> = [8]</span><span class="eq"><span class="s4">✱</span> = [72]</span></div>
+  </div>
+  <div class="foot"><button class="check">Провери</button><span class="msg"></span></div>
+</section>
+
+<section class="final" id="final">
+  <div class="big" id="finalScore">0 ★</div>
+  <h2 id="finalTitle">Продължавай!</h2>
+  <p id="finalText">Реши всички задачи, за да събереш всички звезди.</p>
+  <button class="reset" id="reset">Започни отначало</button>
+</section>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+'use strict';
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+
+/* ---------- fractions: {top/bottom}, [answer] = blank ---------- */
+function blanks(s){return s.replace(/\[(\d+)\]/g,'<input class="bl" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" data-a="$1" aria-label="пропуснато число">')}
+$$('.eq').forEach(el=>{
+  let h=el.innerHTML;
+  h=h.replace(/\{((?:<[^>]*>|[^{}<])*?)\/([^{}]*?)\}/g,(m,t,b)=>'<span class="fr"><span>'+t+'</span><span>'+b+'</span></span>');
+  h=h.replace(/ = /g,' <span class="op">=</span> ');
+  el.innerHTML=blanks(h);
+});
+
+/* ---------- progress ---------- */
+const KEY='uchene-urok28-v1';
+let solved={};
+try{solved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){solved={}}
+const rows=$$('[data-row]');
+$('#tot').textContent=rows.length;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(solved))}catch(e){}}
+function score(bump){
+  const n=rows.filter(r=>solved[r.dataset.row]).length;
+  $('#sc').textContent=n;
+  if(bump){const s=$('#stars');s.classList.remove('pop');void s.offsetWidth;s.classList.add('pop')}
+  $('#finalScore').textContent=n+' ★';
+  if(n===rows.length){$('#finalTitle').textContent='Супер! Всички звезди са твои! 🎉';$('#finalText').textContent='Вече знаеш как да разширяваш дроби.'}
+  else{$('#finalTitle').textContent='Продължавай!';$('#finalText').textContent='Остават още '+(rows.length-n)+' звезди.'}
+  $$('[data-task]').forEach(c=>c.classList.toggle('done',$$('[data-row]',c).every(r=>solved[r.dataset.row])));
+}
+function markSolved(r){
+  $$('.bl',r).forEach(i=>{i.value=i.dataset.a;i.classList.add('ok')});
+  $$('.choice',r).forEach(c=>$$('button',c).forEach(b=>b.classList.toggle('ok',b.dataset.v===c.dataset.correct)));
+  r.classList.add('ok');
+}
+rows.forEach(r=>{if(solved[r.dataset.row])markSolved(r)});
+score(false);
+
+$$('.choice').forEach(c=>$$('button',c).forEach(b=>b.addEventListener('click',()=>{
+  $$('button',c).forEach(x=>x.classList.remove('sel','ok','no'));b.classList.add('sel');
+})));
+$$('.bl').forEach(i=>{
+  i.addEventListener('input',()=>{i.value=i.value.replace(/\D/g,'');i.classList.remove('ok','no')});
+  i.addEventListener('keydown',e=>{if(e.key==='Enter'){const c=i.closest('[data-task]');$('.check',c).click()}});
+});
+
+const praise=['Браво! 🎉','Супер! ⭐','Точно така! 🙌','Страхотно! 🚀','Отлично! 💜'];
+$$('.check').forEach(btn=>btn.addEventListener('click',()=>{
+  const card=btn.closest('[data-task]'),msg=$('.msg',card);
+  let wrong=0,empty=0,newly=0;
+  $$('[data-row]',card).forEach(r=>{
+    let ok=true;
+    $$('.bl',r).forEach(i=>{
+      i.classList.remove('ok','no');void i.offsetWidth;
+      if(i.value===''){empty++;ok=false;return}
+      if(+i.value===+i.dataset.a)i.classList.add('ok');else{i.classList.add('no');wrong++;ok=false}
+    });
+    $$('.choice',r).forEach(c=>{
+      const s=$('button.sel,button.ok',c);
+      $$('button',c).forEach(x=>x.classList.remove('no','ok'));
+      if(!s){empty++;ok=false;return}
+      if(s.dataset.v===c.dataset.correct)s.classList.add('ok');else{s.classList.add('no');wrong++;ok=false}
+    });
+    r.classList.toggle('ok',ok);
+    if(ok&&!solved[r.dataset.row]){solved[r.dataset.row]=1;newly++}
+  });
+  if(!wrong&&!empty){msg.className='msg ok';msg.textContent=praise[Math.floor(Math.random()*praise.length)];confetti(btn)}
+  else if(wrong){msg.className='msg no';msg.textContent='Почти! Провери червените полета.'}
+  else{msg.className='msg';msg.textContent='Попълни всички празни места.'}
+  if(newly){save();score(true)}
+}));
+$('#reset').addEventListener('click',()=>{
+  solved={};save();
+  $$('.bl').forEach(i=>{i.value='';i.classList.remove('ok','no')});
+  $$('.choice button').forEach(b=>b.classList.remove('sel','ok','no'));
+  $$('.row').forEach(r=>r.classList.remove('ok'));$$('.msg').forEach(m=>m.textContent='');
+  score(false);window.scrollTo({top:0,behavior:'smooth'});
+});
+
+function confetti(el){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const b=el.getBoundingClientRect(),cols=['#FF6B6B','#FFB020','#14B8A6','#4F7DF3','#8B5CF6','#FF5FA2'];
+  for(let i=0;i<26;i++){
+    const d=document.createElement('i');d.className='cf';
+    d.style.left=(b.left+b.width/2)+'px';d.style.top=(b.top+b.height/2)+'px';d.style.background=cols[i%cols.length];
+    const a=Math.random()*Math.PI*2,v=60+Math.random()*120;
+    d.style.setProperty('--dx',Math.cos(a)*v+'px');d.style.setProperty('--dy',(Math.sin(a)*v-60+Math.random()*140)+'px');
+    d.style.setProperty('--r',(Math.random()*720-360)+'deg');
+    document.body.appendChild(d);setTimeout(()=>d.remove(),1300);
+  }
+}
+
+/* ---------- 3D: one shared WebGL renderer draws every scene ---------- */
+if(!window.THREE){document.documentElement.classList.add('noGL');return}
+let R;
+try{R=new THREE.WebGLRenderer({antialias:true,alpha:true});}catch(e){document.documentElement.classList.add('noGL');return}
+R.setPixelRatio(1);R.setClearColor(0x000000,0);
+R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
+
+const C={white:0xF7F5FF,blue:0x3FA9F5,green:0x22B07D,yellow:0xFFD23F,red:0xF0607A,ylw2:0xFFC93C,sky:0x6E95FF,
+  mint:0x2BC4A0,orange:0xFFA552,purple:0xA98BE8,coral:0xFF6B6B,pink:0xFF5FA2};
+const matCache={};
+function mat(c){return matCache[c]||(matCache[c]=new THREE.MeshStandardMaterial({color:c,roughness:.42,metalness:0}))}
+function shade(m){m.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});return m}
+
+function pie(n,k,col,r=1.3,h=.34,gap=.04){
+  const g=new THREE.Group(),a=Math.PI*2/n;
+  for(let i=0;i<n;i++){
+    const a0=Math.PI/2-(i+1)*a+.0001,s=new THREE.Shape();
+    s.moveTo(0,0);s.absarc(0,0,r,a0,a0+a-.0002,false);s.lineTo(0,0);
+    const geo=new THREE.ExtrudeGeometry(s,{depth:h,bevelEnabled:true,bevelThickness:.03,bevelSize:.025,bevelSegments:2,curveSegments:Math.max(3,Math.ceil(72/n))});
+    const m=new THREE.Mesh(geo,mat(i<k?col:C.white));
+    m.rotation.x=-Math.PI/2;
+    const mid=a0+a/2,dir=new THREE.Vector3(Math.cos(mid),0,-Math.sin(mid));
+    m.position.copy(dir).multiplyScalar(gap);m.userData.dir=dir;
+    if(i<k)m.position.y=.06;
+    g.add(m);
+  }
+  return shade(g);
+}
+function slabGeo(w,d,h,rad){
+  rad=Math.min(rad,w/2.2,d/2.2);
+  const s=new THREE.Shape(),x=-w/2,y=-d/2;
+  s.moveTo(x+rad,y);s.lineTo(x+w-rad,y);s.quadraticCurveTo(x+w,y,x+w,y+rad);s.lineTo(x+w,y+d-rad);
+  s.quadraticCurveTo(x+w,y+d,x+w-rad,y+d);s.lineTo(x+rad,y+d);s.quadraticCurveTo(x,y+d,x,y+d-rad);
+  s.lineTo(x,y+rad);s.quadraticCurveTo(x,y,x+rad,y);
+  const geo=new THREE.ExtrudeGeometry(s,{depth:h,bevelEnabled:true,bevelThickness:.02,bevelSize:.02,bevelSegments:2,curveSegments:4});
+  geo.rotateX(-Math.PI/2);return geo;
+}
+// grid of cols×rows cells over W×D; colored(c,r) decides colour
+function grid(cols,rows,W,D,colored,col,h=.28,gap=.07){
+  const g=new THREE.Group(),cw=W/cols,cd=D/rows,geo=slabGeo(cw-gap,cd-gap,h,.08);
+  for(let c=0;c<cols;c++)for(let r=0;r<rows;r++){
+    const on=colored(c,r),m=new THREE.Mesh(geo,mat(on?col:C.white));
+    m.position.set(-W/2+cw*(c+.5),on?.05:0,-D/2+cd*(r+.5));g.add(m);
+  }
+  return shade(g);
+}
+
+/* viewers */
+const viewers=[];
+const io=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target._v;v.visible=e.isIntersecting;if(v.visible)v.dirty=true}),{rootMargin:'100px'});
+const ro=new ResizeObserver(es=>es.forEach(e=>{const v=e.target._v;if(v){v.refit=true;v.dirty=true}}));
+
+function viewer(canvas,o){
+  const scene=new THREE.Scene();
+  scene.add(new THREE.HemisphereLight(0xffffff,0xC9C2EE,.85));
+  const sun=new THREE.DirectionalLight(0xffffff,.75);
+  sun.position.set(4,9,6);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.radius=4;
+  const sc=sun.shadow.camera,S=o.fit*1.4;sc.left=-S;sc.right=S;sc.top=S;sc.bottom=-S;sc.near=.5;sc.far=40;
+  scene.add(sun);
+  const ground=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.ShadowMaterial({opacity:.13}));
+  ground.rotation.x=-Math.PI/2;ground.position.y=o.floor??-.05;ground.receiveShadow=true;scene.add(ground);
+
+  const cam=new THREE.PerspectiveCamera(32,1,.1,200);
+  const ctl=new THREE.OrbitControls(cam,canvas);
+  ctl.enablePan=false;ctl.enableDamping=true;ctl.dampingFactor=.12;ctl.rotateSpeed=.9;
+  ctl.maxPolarAngle=Math.PI*.47;ctl.target.set(0,o.ty||.2,0);
+  ctl.autoRotate=!o.still;ctl.autoRotateSpeed=o.spin||1.1;
+  const v={canvas,ctx:canvas.getContext('2d'),scene,cam,ctl,fit:o.fit,dir:new THREE.Vector3(...(o.dir||[0,1,1.3])).normalize(),
+    visible:false,dirty:true,refit:true,ticks:[],tw:[]};
+  cam.position.copy(ctl.target).addScaledVector(v.dir,10);
+  canvas._v=v;
+  const stop=()=>{ctl.autoRotate=false;const st=canvas.closest('.stage');if(st)st.classList.add('touched')};
+  canvas.addEventListener('pointerdown',stop);canvas.addEventListener('wheel',stop,{passive:true});
+  ctl.addEventListener('change',()=>v.dirty=true);
+  viewers.push(v);io.observe(canvas);ro.observe(canvas);
+  return v;
+}
+// smooth move helper
+function moveTo(v,obj,pos){obj.userData.to=pos.clone();if(!v.tw.includes(obj))v.tw.push(obj);v.dirty=true}
+function runTw(v,dt){
+  let moving=false;const k=1-Math.exp(-dt*7);
+  v.tw.forEach(o=>{const t=o.userData.to;if(!t)return;o.position.lerp(t,k);if(o.position.distanceToSquared(t)>1e-6)moving=true;else o.position.copy(t)});
+  return moving;
+}
+
+function fitCam(v){
+  const w=v.canvas.clientWidth,h=v.canvas.clientHeight,asp=w/h;
+  v.cam.aspect=asp;v.cam.updateProjectionMatrix();
+  const vf=v.cam.fov*Math.PI/180,hf=2*Math.atan(Math.tan(vf/2)*asp),d=v.fit*.82/Math.sin(Math.min(vf,hf)/2);
+  const cur=v.cam.position.clone().sub(v.ctl.target);
+  const dir=cur.lengthSq()>0?cur.normalize():v.dir;
+  v.cam.position.copy(v.ctl.target).addScaledVector(dir,d);
+  v.ctl.minDistance=d*.45;v.ctl.maxDistance=d*1.7;v.ctl.update();
+}
+function draw(v){
+  const w=v.canvas.clientWidth,h=v.canvas.clientHeight;if(!w||!h)return;
+  const dpr=Math.min(window.devicePixelRatio||1,2),W=Math.round(w*dpr),H=Math.round(h*dpr);
+  if(v.canvas.width!==W||v.canvas.height!==H){v.canvas.width=W;v.canvas.height=H}
+  if(v.refit){fitCam(v);v.refit=false}
+  R.setSize(W,H,false);R.render(v.scene,v.cam);
+  v.ctx.clearRect(0,0,W,H);v.ctx.drawImage(R.domElement,0,0);
+  v.dirty=false;
+}
+let last=performance.now();
+function loop(t){
+  const dt=Math.min((t-last)/1000,.05);last=t;
+  for(const v of viewers){
+    if(!v.visible)continue;
+    if(v.ctl.update())v.dirty=true;
+    if(v.ctl.autoRotate)v.dirty=true;
+    let anim=runTw(v,dt);
+    for(const f of v.ticks)if(f(dt,t/1000))anim=true;
+    if(anim||v.dirty)draw(v);
+  }
+  requestAnimationFrame(loop);
+}
+
+/* ---------- models ---------- */
+const models={
+  hero(c){
+    const v=viewer(c,{fit:2.3,dir:[0,.55,1],ty:.6,spin:1.6});
+    const g=new THREE.Group();v.scene.add(g);
+    const p=pie(4,2,C.coral,1.35,.5,.05);g.add(p);
+    const white=mat(0xffffff),black=new THREE.MeshStandardMaterial({color:0x1D1A39,roughness:.3});
+    const eyeGeo=new THREE.SphereGeometry(.24,24,16),pupGeo=new THREE.SphereGeometry(.11,16,12);
+    const face=new THREE.Group();face.position.set(0,.58,.15);g.add(face);
+    [-.42,.42].forEach(x=>{
+      const e=new THREE.Mesh(eyeGeo,white);e.scale.set(1,.55,1);e.position.set(x,0,0);face.add(e);
+      const pu=new THREE.Mesh(pupGeo,black);pu.position.set(x,.1,.1);face.add(pu);
+    });
+    const smile=new THREE.Mesh(new THREE.TorusGeometry(.28,.055,10,24,Math.PI),black);
+    smile.rotation.x=-Math.PI/2;smile.rotation.z=Math.PI;smile.position.set(0,.02,.5);face.add(smile);
+    // cheeks
+    const ck=new THREE.MeshStandardMaterial({color:0xFF9DB8,roughness:.6});
+    [-.75,.75].forEach(x=>{const m=new THREE.Mesh(new THREE.SphereGeometry(.12,16,10),ck);m.scale.set(1,.3,1);m.position.set(x,-.02,.38);face.add(m)});
+    // orbiting fraction tokens
+    const orb=new THREE.Group();g.add(orb);
+    const t1=pie(2,1,C.sky,.32,.14,.02);t1.position.set(2.3,1.5,0);orb.add(t1);
+    const t2=grid(2,2,.6,.6,(c)=>c===1,C.mint,.12,.04);t2.position.set(-2.2,1.9,-.6);orb.add(t2);
+    const t3=pie(8,4,C.yellow,.34,.14,.02);t3.position.set(.4,2.1,-2.2);orb.add(t3);
+    shade(g);
+    let pop=0;
+    c.addEventListener('pointerdown',()=>{pop=1});
+    v.ticks.push((dt,T)=>{
+      g.position.y=Math.sin(T*2)*.12;
+      orb.rotation.y=T*.6;[t1,t2,t3].forEach((o,i)=>{o.rotation.y=T*(1+i*.3);o.rotation.x=Math.sin(T+i)*.4});
+      pop=Math.max(0,pop-dt*1.6);
+      const off=.05+Math.sin(pop*Math.PI)*.45;
+      p.children.forEach(m=>{m.position.x=m.userData.dir.x*off;m.position.z=m.userData.dir.z*off});
+      face.scale.setScalar(1+Math.sin(pop*Math.PI*2)*.08);
+      return true;
+    });
+  },
+  pies3(c){
+    const v=viewer(c,{fit:4.9,dir:[0,1.4,1]});
+    const ps=[pie(3,1,C.blue),pie(6,2,C.green),pie(12,4,C.yellow)];
+    const spread=[new THREE.Vector3(-3,0,0),new THREE.Vector3(0,0,0),new THREE.Vector3(3,0,0)];
+    const stack=[new THREE.Vector3(0,0,0),new THREE.Vector3(0,.55,0),new THREE.Vector3(0,1.1,0)];
+    ps.forEach((p,i)=>{p.position.copy(spread[i]);v.scene.add(p)});
+    toggle(c,on=>ps.forEach((p,i)=>moveTo(v,p,(on?stack:spread)[i])));
+  },
+  squares4(c){
+    const v=viewer(c,{fit:3.6,dir:[0,1.5,1]});
+    const S=2.3;
+    const qs=[grid(4,4,S,S,c=>c>=2,C.red),grid(4,2,S,S,c=>c>=2,C.ylw2),grid(2,2,S,S,c=>c>=1,C.green),grid(2,1,S,S,c=>c>=1,C.sky)];
+    const spread=[[-1.35,0,-1.35],[1.35,0,-1.35],[-1.35,0,1.35],[1.35,0,1.35]].map(a=>new THREE.Vector3(...a));
+    const stack=[0,1,2,3].map(i=>new THREE.Vector3(0,i*.5,0));
+    qs.forEach((q,i)=>{q.position.copy(spread[i]);v.scene.add(q)});
+    toggle(c,on=>qs.forEach((q,i)=>moveTo(v,q,(on?stack:spread)[i])));
+  },
+  t4a(c){const v=viewer(c,{fit:2.9,dir:[0,1.5,1]});
+    const a=grid(3,1,2.1,2.1,c=>c<2,C.mint),b=grid(3,3,2.1,2.1,c=>c<2,C.mint);a.position.x=-1.3;b.position.x=1.3;v.scene.add(a,b)},
+  t4b(c){const v=viewer(c,{fit:3.1,dir:[0,1.6,1]});
+    const a=grid(10,1,5,.8,c=>c<7,C.orange,.3,.08),b=grid(20,1,5,.8,c=>c<14,C.orange,.3,.05);a.position.z=-.6;b.position.z=.6;v.scene.add(a,b)},
+  t4c(c){const v=viewer(c,{fit:3,dir:[0,1.5,1]});
+    const a=pie(5,3,C.blue,1.15),b=pie(10,6,C.blue,1.15);a.position.x=-1.4;b.position.x=1.4;v.scene.add(a,b)},
+  t4d(c){const v=viewer(c,{fit:3,dir:[0,1.5,1]});
+    const a=grid(6,1,2.2,1.6,c=>c<5,C.purple),b=grid(6,4,2.2,1.6,c=>c<5,C.purple);a.position.x=-1.3;b.position.x=1.3;v.scene.add(a,b)},
+  candy(c){
+    const v=viewer(c,{fit:3.4,dir:[.15,1.6,1],floor:-.32});
+    const box=new THREE.Group();v.scene.add(box);
+    const W=4.2,D=3.6,trayM=new THREE.MeshStandardMaterial({color:0x2B2140,roughness:.6});
+    const base=new THREE.Mesh(slabGeo(W,D,.14,.18),trayM);base.position.y=-.3;box.add(base);
+    const wallM=trayM;
+    [[0,-D/2,W,.1],[0,D/2,W,.1]].forEach(([x,z,w,d])=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,.4,d),wallM);m.position.set(x,-.1,z);box.add(m)});
+    [[-W/2,0],[W/2,0]].forEach(([x,z])=>{const m=new THREE.Mesh(new THREE.BoxGeometry(.1,.4,D),wallM);m.position.set(x,-.1,z);box.add(m)});
+    const flavors=[0x4A2C21,0xF3EEE6,0x8B5A3C,0xC98B4E,0xF3EEE6,0x5E3A2A];
+    const ball=new THREE.SphereGeometry(.27,28,18),cup=new THREE.CylinderGeometry(.33,.26,.16,20,1,true);
+    const cupM=new THREE.MeshStandardMaterial({color:0x6C5A8C,roughness:.7,side:THREE.DoubleSide});
+    const rowG=[],cw=W/6,cd=D/5;
+    for(let r=0;r<6;r++){
+      const g=new THREE.Group();g.position.x=-W/2+cw*(r+.5);box.add(g);rowG.push(g);
+      for(let k=0;k<5;k++){
+        const z=-D/2+cd*(k+.5);
+        const cu=new THREE.Mesh(cup,cupM);cu.position.set(0,-.15,z);g.add(cu);
+        const col=flavors[(r+k*2)%6];
+        const m=new THREE.Mesh(ball,new THREE.MeshStandardMaterial({color:col,roughness:.35,emissive:0x000000}));
+        m.scale.y=.85;m.position.set(0,.02,z);g.add(m);
+      }
+    }
+    shade(box);
+    const st=c.closest('.stage'),btns=$$('.tbtn',st);
+    btns.forEach(b=>b.addEventListener('click',()=>{
+      const n=+b.dataset.rows,on=!b.classList.contains('on');
+      btns.forEach(x=>x.classList.remove('on'));if(on)b.classList.add('on');
+      rowG.forEach((g,i)=>{
+        const lit=on&&i<n;moveTo(v,g,new THREE.Vector3(g.position.x,lit?.45:0,0));
+        g.children.forEach(m=>{if(m.geometry===ball)m.material.emissive.setHex(lit?0x3A2A00:0)});
+      });
+      v.ctl.autoRotate=false;v.dirty=true;
+    }));
+  }
+};
+function toggle(canvas,fn){
+  const b=$('[data-act="stack"]',canvas.closest('.stage'));if(!b)return;
+  b.addEventListener('click',()=>{const on=b.classList.toggle('on');b.textContent=on?'Раздели':'Наслагай';fn(on);canvas._v.ctl.autoRotate=false});
+}
+
+$$('canvas[data-model]').forEach(c=>{try{models[c.dataset.model](c)}catch(e){console.error(e)}});
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
