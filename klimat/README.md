@@ -6,3 +6,6 @@
 
 ## Видео
 - https://youtu.be/LenO72n6ygc
+
+## Учебник
+- https://bg.izzi.digital/DOS/404071/404119.html
