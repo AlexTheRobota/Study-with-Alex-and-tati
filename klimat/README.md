@@ -5,7 +5,7 @@
 - [5-Климат2.docx](5-Климат2.docx) – Климат – елементи на климата
 
 ## Видео
-- https://youtu.be/LenO72n6ygc
+- https://youtu.be/X9tDmNNYD7w
 
 ## Учебник
 - https://bg.izzi.digital/DOS/404071/404119.html
