@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Урок 35 по математика за 5. клас: събиране на обикновени дроби с равни и с различни знаменатели, с 3D шоколади, които се въртят с пръст.">
+<title>Събиране на дроби · Урок 35</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='5' width='26' height='22' rx='3' fill='%235A3220'/%3E%3Crect x='6' y='8' width='9' height='7' fill='%23FF5A36'/%3E%3Crect x='17' y='8' width='9' height='7' fill='%23FFC23D'/%3E%3Crect x='6' y='17' width='9' height='7' fill='%237A4A30'/%3E%3Crect x='17' y='17' width='9' height='7' fill='%237A4A30'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Nunito:wght@500;700;800;900&display=swap">
+<style>
+:root{
+  --bg:#FFF6EC; --card:#FFFFFF; --ink:#2B1A14; --soft:#7A5E52; --line:#F0DFCF; --field:#FFF1E3;
+  --pers:#FF5A36; --pers-deep:#C9381A; --butter:#FFC23D; --butter-deep:#B07C00; --choc:#5A3220; --mint:#1F9A6E; --no:#D93A2B;
+  --display:"Dela Gothic One","Nunito",system-ui,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+  --step--1:clamp(.83rem,.78rem + .29vw,1rem);
+  --step-0:clamp(1rem,.95rem + .3vw,1.15rem);
+  --step-1:clamp(1.2rem,1.07rem + .63vw,1.56rem);
+  --step-2:clamp(1.44rem,1.26rem + .89vw,1.95rem);
+  --step-3:clamp(1.73rem,1.48rem + 1.24vw,2.44rem);
+  --step-5:clamp(2.1rem,1.5rem + 3.2vw,4rem);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1A110D; --card:#251813; --ink:#FBEFE4; --soft:#C7AE9F; --line:#3A2820; --field:#2E1F18;
+    --pers:#FF6E4D; --pers-deep:#FF8F73; --butter:#FFCB57; --butter-deep:#FFCB57; --mint:#3CC48F; --no:#FF6B5C;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1A110D; --card:#251813; --ink:#FBEFE4; --soft:#C7AE9F; --line:#3A2820; --field:#2E1F18;
+  --pers:#FF6E4D; --pers-deep:#FF8F73; --butter:#FFCB57; --butter-deep:#FFCB57; --mint:#3CC48F; --no:#FF6B5C;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--bg);color:var(--ink);font:600 var(--step-0)/1.55 var(--body);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+::selection{background:var(--butter);color:#2B1A14}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px 96px}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pers);outline-offset:3px;border-radius:6px}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 86%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .in{max-width:820px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px}
+.back{font-weight:800;text-decoration:none;font-size:var(--step--1);white-space:nowrap;
+  background:linear-gradient(var(--pers),var(--pers)) left bottom/0 2px no-repeat;transition:background-size .3s}
+@media (hover:hover){.back:hover{background-size:100% 2px}}
+.meter{flex:1;height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--choc);border-radius:99px;transition:width .5s cubic-bezier(.2,.9,.3,1.2)}
+:root[data-theme="dark"] .meter i{background:var(--butter)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .meter i{background:var(--butter)}}
+.score{font:400 var(--step--1) var(--display);white-space:nowrap}
+.iconbtn{width:40px;height:40px;border-radius:50%;border:2px solid var(--ink);background:transparent;display:grid;place-items:center;cursor:pointer;flex:none}
+.iconbtn svg{width:20px;height:20px}
+@media (hover:hover){.iconbtn:hover{background:var(--ink);color:var(--bg)}}
+
+/* hero */
+.hero{padding:34px 0 8px}
+.over{font:800 var(--step--1)/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--pers-deep);margin:0 0 14px}
+h1{font:400 var(--step-5)/1.02 var(--display);margin:0;letter-spacing:-.01em}
+h1 .hl{color:var(--pers)}
+.lede{font-size:var(--step-1);color:var(--soft);max-width:34ch;margin:16px 0 0;font-weight:700}
+
+/* 3D stage */
+.stage{position:relative;height:clamp(280px,52vw,420px);margin:18px -16px 0;touch-action:none}
+.stage canvas{display:block;width:100%!important;height:100%!important;cursor:grab}
+.stage canvas:active{cursor:grabbing}
+.hint{position:absolute;left:16px;bottom:10px;display:flex;align-items:center;gap:8px;font-size:var(--step--1);
+  font-weight:800;color:var(--soft);pointer-events:none}
+.hint svg{width:22px;height:22px}
+@media (prefers-reduced-motion:no-preference){.hint svg{animation:swipe 2.4s ease-in-out infinite}}
+@keyframes swipe{0%,100%{transform:translateX(-4px) rotate(-8deg)}50%{transform:translateX(6px) rotate(8deg)}}
+.readout{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:8px;font-weight:800}
+.big{font:400 var(--step-3)/1 var(--display)}
+
+/* sections */
+section{margin-top:72px}
+.num{font:400 clamp(3rem,2rem + 6vw,6rem)/.8 var(--display);color:transparent;-webkit-text-stroke:2px var(--ink);display:block;margin-bottom:6px}
+h2{font:400 var(--step-3)/1.1 var(--display);margin:0 0 14px}
+h3{font:900 var(--step-1)/1.25 var(--body);margin:28px 0 10px}
+p{margin:0 0 14px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:20px}
+.rule{background:var(--choc);color:#FFF6EC;border-radius:4px 28px 4px 28px;padding:22px 22px;font-size:var(--step-1);font-weight:800;line-height:1.4;margin:22px 0}
+.rule b{color:var(--butter)}
+:root[data-theme="dark"] .rule{background:#4A2A1B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .rule{background:#4A2A1B}}
+.rule .formula{display:block;font-size:var(--step-2);margin-top:12px;text-align:center}
+
+/* fractions */
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.08;font-weight:900;margin:0 .12em;position:relative}
+.fr>span{padding:0 .22em}
+.fr>.n{border-bottom:.09em solid currentColor;padding-bottom:.06em}
+.fr>.d{padding-top:.04em}
+.fr .m{position:absolute;top:-1.05em;left:50%;transform:translateX(-50%);font-size:.6em;color:var(--pers-deep);font-weight:900}
+.eq{font-size:var(--step-2);font-weight:900;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.2em .35em;padding:.5em 0}
+.eq .op{font-weight:800;color:var(--soft)}
+.c-p{color:var(--pers-deep)} .c-b{color:var(--butter-deep)} .c-g{color:var(--mint)}
+
+/* controls */
+.ctrls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.stepper{background:var(--field);border-radius:16px;padding:10px 8px;text-align:center}
+.stepper label{display:block;font-size:var(--step--1);font-weight:800;color:var(--soft)}
+.stepper .row{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:4px}
+.stepper output{font:400 var(--step-2)/1 var(--display);min-width:2ch}
+.sbtn{width:40px;height:40px;border-radius:12px;border:2px solid var(--ink);background:var(--card);font-weight:900;font-size:1.3rem;cursor:pointer;line-height:1}
+@media (hover:hover){.sbtn:hover{background:var(--ink);color:var(--bg)}}
+.sbtn:active{transform:scale(.92)}
+.sw-p{border-bottom:5px solid var(--pers)} .sw-b{border-bottom:5px solid var(--butter)} .sw-c{border-bottom:5px solid var(--choc)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{border:2px solid var(--ink);background:transparent;border-radius:99px;padding:8px 14px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip .fr{font-size:.8em}
+@media (hover:hover){.chip:hover{background:var(--ink);color:var(--bg)}}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.msg{min-height:1.6em;font-weight:800;color:var(--soft);text-align:center;margin-top:8px}
+.msg.warn{color:var(--no)}
+
+/* 3D push button */
+.btn3d{--sh:var(--choc);border:0;border-radius:14px;padding:12px 20px;font-weight:900;font-size:var(--step-0);cursor:pointer;
+  background:var(--pers);color:#2B1A14;box-shadow:0 6px 0 var(--sh);transform:translateY(0);transition:transform .12s,box-shadow .12s}
+@media (hover:hover){.btn3d:hover{transform:translateY(2px);box-shadow:0 4px 0 var(--sh)}}
+.btn3d:active{transform:translateY(6px);box-shadow:0 0 0 var(--sh)}
+.btn3d.ghost{background:var(--card);border:2px solid var(--ink);--sh:var(--ink)}
+.btn3d.butter{background:var(--butter)}
+.btn3d:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:0 6px 0 var(--sh)}
+
+/* story steps */
+.steps{display:flex;gap:6px;margin-top:14px}
+.steps button{flex:1;height:10px;border-radius:99px;border:0;background:var(--line);cursor:pointer;padding:0}
+.steps button[aria-current="true"]{background:var(--pers)}
+.steptxt{min-height:6.5em;margin-top:10px}
+.steptxt h4{font:900 var(--step-1)/1.2 var(--body);margin:0 0 6px}
+.nav2{display:flex;gap:10px;justify-content:space-between;margin-top:12px}
+
+/* notebook writeup */
+.note{background:var(--field);border-left:6px solid var(--pers);border-radius:0 18px 18px 0;padding:16px 18px;margin:18px 0}
+.note .eq{justify-content:flex-start;font-size:var(--step-1);padding:.6em 0 .2em}
+.tip{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:2px dashed var(--soft);border-radius:18px;padding:14px 16px;margin:18px 0}
+.tip svg{flex:none;width:30px;height:30px;color:var(--pers)}
+
+/* simplify machine */
+.machine{text-align:center}
+.machine .big-fr{font-size:clamp(2.6rem,2rem + 4vw,4.2rem);display:inline-flex}
+.divs{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0}
+.divs button{width:62px;height:62px;border-radius:50%;border:3px solid var(--ink);background:var(--card);font:400 1.1rem var(--display);cursor:pointer}
+@media (hover:hover){.divs button:hover{background:var(--butter);color:#2B1A14}}
+.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.pop{animation:pop .45s cubic-bezier(.2,.9,.3,1.4)}
+@keyframes pop{0%{transform:scale(.6);opacity:.3}100%{transform:scale(1);opacity:1}}
+
+/* LCM game */
+.game{text-align:center}
+.pair{font:400 var(--step-3)/1 var(--display);margin:8px 0 4px}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.opts button{padding:16px 0;border-radius:16px;border:2px solid var(--ink);background:var(--card);font:400 var(--step-2) var(--display);cursor:pointer}
+@media (hover:hover){.opts button:hover:not(:disabled){background:var(--butter);color:#2B1A14}}
+.opts button.ok{background:var(--mint);border-color:var(--mint);color:#fff}
+.opts button.bad{background:var(--no);border-color:var(--no);color:#fff}
+.multiples{font-size:var(--step--1);color:var(--soft);font-weight:800;min-height:3em;margin-top:10px}
+
+/* quiz */
+.quiz{display:grid;gap:14px}
+.q{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:16px 16px 14px;transition:border-color .3s}
+.q.done{border-color:var(--mint)}
+.q .top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tag{font:400 var(--step--1) var(--display);background:var(--ink);color:var(--bg);border-radius:99px;padding:4px 10px}
+.q.done .tag{background:var(--mint);color:#fff}
+.q .eq{justify-content:flex-start}
+.ans{display:inline-flex;flex-direction:column;align-items:center;gap:4px;vertical-align:middle}
+.ans input{width:3.4em;text-align:center;font:900 var(--step-1) var(--body);color:var(--ink);background:var(--field);border:2px solid var(--line);border-radius:10px;padding:4px 2px}
+.ans input:focus{border-color:var(--pers);outline:none}
+.ans hr{width:100%;border:0;border-top:.12em solid var(--ink);margin:0}
+.qbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.qbtns .btn3d{padding:9px 14px;font-size:var(--step--1)}
+.fb{font-weight:800;margin-top:10px;min-height:1.4em}
+.fb.ok{color:var(--mint)} .fb.no{color:var(--no)}
+.sol{margin-top:10px;background:var(--field);border-radius:14px;padding:6px 12px 10px}
+.sol .eq{font-size:var(--step-1);padding:.5em 0 .1em}
+.sol p{margin:6px 0 0;font-size:var(--step--1);color:var(--soft);font-weight:800}
+
+footer{margin-top:80px;padding-top:24px;border-top:2px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-weight:800;color:var(--soft)}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:520px){.ctrls{gap:6px}.sbtn{width:32px;height:32px}.stepper{padding:10px 4px}.stepper .row{gap:3px}.stepper output{font-size:var(--step-1)}.opts{gap:6px}}
+@media (prefers-reduced-motion:reduce){.pop,.shake{animation:none}.meter i,.btn3d{transition:none}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="in">
+  <a class="back" href="https://uchene-s-aleks-i-tati.vercel.app/">← Всички уроци</a>
+  <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+  <span class="score" id="score" aria-live="polite">0 / 11</span>
+  <button class="iconbtn" id="snd" aria-pressed="false" aria-label="Включи звука"></button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <p class="over">Математика · 5. клас · Урок 35</p>
+    <h1>Събиране на обикновени дроби с <span class="hl">равни знаменатели</span></h1>
+    <p class="lede">…а после и с различни. Днес смятаме с шоколад.</p>
+    <div class="stage" id="heroStage" aria-label="3D шоколад с 15 парченца. Докосни парченца, за да ги избереш.">
+      <div class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a2 2 0 1 1 4 0v5"/><path d="M13 10a2 2 0 1 1 4 0v2"/><path d="M17 12a2 2 0 1 1 4 0v3a6 6 0 0 1-6 6h-2a6 6 0 0 1-5-2.7L5 15a2 2 0 0 1 3.3-2.3L9 14"/></svg>Върти с пръст · докосни парченце</div>
+    </div>
+    <div class="readout"><span>Избра</span><span class="big" id="heroFr"></span><span id="heroTxt">от шоколада</span></div>
+  </div>
+
+  <!-- 01 equal -->
+  <section id="s1">
+    <span class="num">01</span>
+    <h2>Равни знаменатели</h2>
+    <p>Шоколадът е разчупен на еднакви парченца. Знаменателят казва <b>на колко части</b>, а числителят казва <b>колко части взимаме</b>. Ако двете дроби имат еднакъв знаменател, парченцата са от един и същ размер. Тогава просто ги събираме.</p>
+    <div class="rule">Дроби с <b>равни знаменатели</b> се събират, като съберем числителите, а знаменателят остава същият.
+      <span class="formula"><span class="fr"><span class="n">a</span><span class="d">n</span></span> + <span class="fr"><span class="n">b</span><span class="d">n</span></span> = <span class="fr"><span class="n">a + b</span><span class="d">n</span></span></span>
+    </div>
+
+    <h3>Шоколадова лаборатория</h3>
+    <div class="card">
+      <div class="stage" id="labStage" aria-label="3D шоколад, който показва сбора на две дроби"></div>
+      <div class="eq" id="labEq" aria-live="polite"></div>
+      <div class="ctrls">
+        <div class="stepper sw-p"><label>Числител 1</label><div class="row"><button class="sbtn" data-k="a" data-d="-1" aria-label="по-малко">−</button><output id="oa">2</output><button class="sbtn" data-k="a" data-d="1" aria-label="повече">+</button></div></div>
+        <div class="stepper sw-b"><label>Числител 2</label><div class="row"><button class="sbtn" data-k="b" data-d="-1" aria-label="по-малко">−</button><output id="ob">9</output><button class="sbtn" data-k="b" data-d="1" aria-label="повече">+</button></div></div>
+        <div class="stepper sw-c"><label>Знаменател</label><div class="row"><button class="sbtn" data-k="n" data-d="-1" aria-label="по-малко">−</button><output id="on">15</output><button class="sbtn" data-k="n" data-d="1" aria-label="повече">+</button></div></div>
+      </div>
+      <div class="msg" id="labMsg"></div>
+      <div class="chips" id="labChips">
+        <button class="chip" data-p="2,9,15">Задача 1: <span class="fr"><span class="n">2</span><span class="d">15</span></span>+<span class="fr"><span class="n">9</span><span class="d">15</span></span></button>
+        <button class="chip" data-p="51,49,100">Задача 1: <span class="fr"><span class="n">51</span><span class="d">100</span></span>+<span class="fr"><span class="n">49</span><span class="d">100</span></span></button>
+        <button class="chip" data-p="1,2,8">Изненадай ме</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 different -->
+  <section id="s2">
+    <span class="num">02</span>
+    <h2>А ако знаменателите са различни?</h2>
+    <p><b>Задача 2.</b> За рождения си ден Симона получила пари. С <span class="fr"><span class="n">1</span><span class="d">6</span></span> от тях си купила блуза, а с <span class="fr"><span class="n">4</span><span class="d">7</span></span> купила пола. Каква част от парите е похарчила общо?</p>
+    <p>Шестинките и седминките са парченца с <b>различен размер</b>, затова не можем да ги съберем направо. Трябва да нарежем и двата шоколада на <b>еднакви</b> парченца.</p>
+    <div class="card">
+      <div class="stage" id="simStage" aria-label="3D шоколади за задачата на Симона"></div>
+      <div class="steps" id="simDots" role="tablist" aria-label="Стъпки"></div>
+      <div class="steptxt" id="simTxt" aria-live="polite"></div>
+      <div class="nav2"><button class="btn3d ghost" id="simPrev">← Назад</button><button class="btn3d" id="simNext">Напред →</button></div>
+    </div>
+
+    <h3>Как го пишем в тетрадката</h3>
+    <div class="note">
+      <p style="margin:0">НОК(7; 6) = 42. Над всяка дроб пишем допълнителния множител: 42 : 6 = <b class="c-p">7</b> и 42 : 7 = <b class="c-p">6</b>.</p>
+      <div class="eq"><span class="fr"><span class="m">6</span><span class="n">4</span><span class="d">7</span></span><span class="op">+</span><span class="fr"><span class="m">7</span><span class="n">1</span><span class="d">6</span></span><span class="op">=</span><span class="fr"><span class="n">24</span><span class="d">42</span></span><span class="op">+</span><span class="fr"><span class="n">7</span><span class="d">42</span></span><span class="op">=</span><span class="fr c-p"><span class="n">31</span><span class="d">42</span></span></div>
+      <p style="margin:0">Симона е похарчила <span class="fr"><span class="n">31</span><span class="d">42</span></span> от парите.</p>
+    </div>
+    <div class="rule">Обикновени дроби с <b>различни знаменатели</b> се събират, като първо ги приведем към <b>общ знаменател</b> и след това съберем получените дроби.</div>
+
+    <h3>Ловец на НОК</h3>
+    <div class="card game">
+      <p style="margin:0;color:var(--soft);font-weight:800">Кой е най-малкият общ знаменател?</p>
+      <div class="pair" id="gPair"></div>
+      <div class="opts" id="gOpts"></div>
+      <div class="multiples" id="gMul"></div>
+      <button class="btn3d butter" id="gNext" hidden>Следващ →</button>
+    </div>
+  </section>
+
+  <!-- 03 simplify first -->
+  <section id="s3">
+    <span class="num">03</span>
+    <h2>Първо съкрати!</h2>
+    <p>Преди да събираме, е добре да съкратим събираемите, които могат да се съкратят. Така числата стават по-малки и смятането е по-лесно. Пример от <b>задача 3б</b>: <span class="fr"><span class="n">2</span><span class="d">9</span></span> + <span class="fr"><span class="n">175</span><span class="d">225</span></span></p>
+    <div class="card machine">
+      <p style="margin:0;font-weight:800;color:var(--soft)">Машината за съкращаване. На кое число се делят и числителят, и знаменателят?</p>
+      <div class="big-fr" id="mFr"></div>
+      <div class="divs" id="mDivs"></div>
+      <div class="msg" id="mMsg" aria-live="polite"></div>
+      <div class="eq" id="mEq" hidden></div>
+      <button class="btn3d ghost" id="mReset">Отначало</button>
+    </div>
+    <div class="tip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg>
+      <div><b>Цяло число плюс дроб?</b> Запиши цялото число като дроб със знаменател 1:<div class="eq" style="justify-content:flex-start;font-size:var(--step-1)">2 <span class="op">+</span><span class="fr"><span class="n">3</span><span class="d">5</span></span><span class="op">=</span><span class="fr"><span class="n">2</span><span class="d">1</span></span><span class="op">+</span><span class="fr"><span class="n">3</span><span class="d">5</span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 04 quiz -->
+  <section id="s4">
+    <span class="num">04</span>
+    <h2>Твой ред</h2>
+    <p>Всички задачи от урока. Напиши отговора като <b>несъкратима дроб</b>. Ако отговорът е цяло число, остави знаменателя празен.</p>
+    <div class="quiz" id="quiz"></div>
+  </section>
+
+  <footer><span>Учене с Алекс и тати</span><span>Урок 35 · стр. 67</span></footer>
+</main>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a};
+const lcm=(a,b)=>a/gcd(a,b)*b;
+const F=(n,d,cls,m)=>d===1&&!m&&cls!=='keep'?`<span class="${cls||''}">${n}</span>`:`<span class="fr ${cls||''}">${m?`<span class="m">${m}</span>`:''}<span class="n">${n}</span><span class="d">${d}</span></span>`;
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- sound (Web Audio, off by default) ---------- */
+let soundOn=store.get('sub35-sound',false),actx=null;
+const ICON_ON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+const ICON_OFF='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>';
+function paintSnd(){const b=$('snd');b.innerHTML=soundOn?ICON_ON:ICON_OFF;b.setAttribute('aria-pressed',soundOn);b.setAttribute('aria-label',soundOn?'Изключи звука':'Включи звука')}
+function tone(f,t0,dur,type,vol){const o=actx.createOscillator(),g=actx.createGain();o.type=type||'sine';o.frequency.value=f;
+  g.gain.setValueAtTime(0,actx.currentTime+t0);g.gain.linearRampToValueAtTime(vol||.18,actx.currentTime+t0+.01);
+  g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+t0+dur);o.connect(g).connect(actx.destination);o.start(actx.currentTime+t0);o.stop(actx.currentTime+t0+dur+.02)}
+function sfx(kind){if(!soundOn)return;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();
+  if(kind==='tick')tone(880,0,.06,'triangle',.08);
+  else if(kind==='snap')tone(320,0,.09,'square',.06);
+  else if(kind==='ok'){tone(660,0,.14,'triangle');tone(990,.1,.22,'triangle')}
+  else if(kind==='win'){[523,659,784,1047].forEach((f,i)=>tone(f,i*.09,.25,'triangle',.15))}
+  else if(kind==='no')tone(180,0,.18,'sawtooth',.07);}catch(e){}}
+$('snd').addEventListener('click',()=>{soundOn=!soundOn;store.set('sub35-sound',soundOn);paintSnd();sfx('tick')});
+paintSnd();
+
+/* ---------- confetti ---------- */
+const cv=$('confetti'),cx=cv.getContext('2d');let bits=[],raf=0;
+function confetti(x,y){if(REDUCE)return;cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;
+  const cols=['#FF5A36','#FFC23D','#5A3220','#1F9A6E','#FFF6EC'];
+  for(let i=0;i<70;i++)bits.push({x:x*devicePixelRatio,y:y*devicePixelRatio,vx:(Math.random()-.5)*14*devicePixelRatio,vy:(-Math.random()*13-4)*devicePixelRatio,
+    s:(5+Math.random()*7)*devicePixelRatio,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:cols[i%cols.length],life:1});
+  if(!raf)raf=requestAnimationFrame(drawC)}
+function drawC(){cx.clearRect(0,0,cv.width,cv.height);bits.forEach(b=>{b.vy+=.45*devicePixelRatio;b.x+=b.vx;b.y+=b.vy;b.vx*=.985;b.r+=b.vr;b.life-=.008;
+  cx.save();cx.globalAlpha=Math.max(b.life,0);cx.translate(b.x,b.y);cx.rotate(b.r);cx.fillStyle=b.c;cx.fillRect(-b.s/2,-b.s/3,b.s,b.s*.66);cx.restore()});
+  bits=bits.filter(b=>b.life>0&&b.y<cv.height+40);raf=bits.length?requestAnimationFrame(drawC):0;if(!raf)cx.clearRect(0,0,cv.width,cv.height)}
+const burstAt=el=>{const r=el.getBoundingClientRect();confetti(r.left+r.width/2,r.top+r.height/2)};
+
+/* ---------- 3D chocolate engine ---------- */
+const COL={choc:0x5A3220,milk:0x7A4A30,pers:0xFF5A36,butter:0xFFC23D};
+const H=.34;
+const GEO=window.THREE?new THREE.BoxGeometry(1,1,1):null;
+const has3D=(()=>{try{const c=document.createElement('canvas');return !!(window.THREE&&(c.getContext('webgl')||c.getContext('experimental-webgl')))}catch(e){return false}})();
+function Stage(el,opt){
+  opt=opt||{};
+  if(!has3D){el.insertAdjacentHTML('beforeend','<p style="padding:40px 16px;text-align:center;color:var(--soft)">3D моделът не може да се покаже на това устройство.</p>');return {set(){},fit(){},aspect:()=>1.6,el};}
+  const ren=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  ren.setPixelRatio(Math.min(devicePixelRatio||1,2));
+  el.prepend(ren.domElement);
+  const scene=new THREE.Scene();
+  const cam=new THREE.PerspectiveCamera(30,1,.1,300);
+  scene.add(new THREE.HemisphereLight(0xFFF3E6,0x5A3220,.95));
+  const sun=new THREE.DirectionalLight(0xFFFFFF,.85);sun.position.set(5,12,7);scene.add(sun);
+  const rim=new THREE.DirectionalLight(0xFFD2A8,.45);rim.position.set(-7,5,-6);scene.add(rim);
+  const plate=new THREE.Mesh(new THREE.CylinderGeometry(1,1.04,.14,72),new THREE.MeshStandardMaterial({color:0xF4E7DA,roughness:.85}));
+  plate.position.y=-H/2-.09;scene.add(plate);
+  const ctl=new THREE.OrbitControls(cam,ren.domElement);
+  ctl.enablePan=false;ctl.enableDamping=true;ctl.dampingFactor=.09;ctl.rotateSpeed=.8;
+  ctl.minPolarAngle=.15;ctl.maxPolarAngle=Math.PI*.46;
+  ctl.autoRotate=!!opt.auto&&!REDUCE;ctl.autoRotateSpeed=1.1;
+  ctl.addEventListener('start',()=>{ctl.autoRotate=false});
+  cam.position.set(0,9,9);
+  const pool=new Map();let fitDist=14,fitting=true,plateR=5,plateCur=5;
+  function mesh(id){let p=pool.get(id);if(p)return p;
+    const m=new THREE.Mesh(GEO,new THREE.MeshStandardMaterial({color:COL.choc,roughness:.42,metalness:.05}));
+    m.scale.set(.0001,.0001,.0001);m.userData.id=id;scene.add(m);
+    p={m,t:{x:0,y:0,z:0,sx:.0001,sy:.0001,sz:.0001,c:new THREE.Color(COL.choc)}};pool.set(id,p);return p}
+  function set(specs,fitW,fitD){
+    const seen=new Set();
+    specs.forEach(s=>{const fresh=!pool.has(s.id);const p=mesh(s.id);seen.add(s.id);
+      Object.assign(p.t,{x:s.x,z:s.z,y:s.y||0,sx:s.sx,sy:H,sz:s.sz});p.t.c.setHex(s.c);
+      if(fresh){p.m.position.set(s.x,(s.y||0)+1.2,s.z);p.m.material.color.setHex(s.c)}});
+    pool.forEach((p,id)=>{if(!seen.has(id)){p.t.sx=p.t.sy=p.t.sz=.0001;p.t.y=-.6}});
+    let W=fitW,D=fitD;
+    if(W==null){let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9;specs.forEach(s=>{x0=Math.min(x0,s.x-s.sx/2);x1=Math.max(x1,s.x+s.sx/2);z0=Math.min(z0,s.z-s.sz/2);z1=Math.max(z1,s.z+s.sz/2)});W=x1-x0;D=z1-z0}
+    plateR=Math.max(W,D)/2+.4;fit(W,D);
+  }
+  function fit(W,D){const a=aspect();const v=cam.fov*Math.PI/360;const hz=Math.atan(Math.tan(v)*a);
+    const dW=(W/2)/Math.tan(hz),dD=(D*.78/2+.6)/Math.tan(v);fitDist=Math.max(dW,dD)*1.22+.8;fitting=true;
+    ctl.minDistance=fitDist*.55;ctl.maxDistance=fitDist*1.8}
+  function aspect(){return Math.max(el.clientWidth,1)/Math.max(el.clientHeight,1)}
+  function resize(){const w=el.clientWidth,h=el.clientHeight;if(!w||!h)return;ren.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();if(opt.onResize)opt.onResize()}
+  new ResizeObserver(resize).observe(el);resize();
+  let visible=true;new IntersectionObserver(es=>{visible=es[0].isIntersecting;if(visible)loop()}).observe(el);
+  // tap to pick
+  if(opt.pick){const ray=new THREE.Raycaster(),v2=new THREE.Vector2();let down=null;
+    ren.domElement.addEventListener('pointerdown',e=>{down=[e.clientX,e.clientY]});
+    ren.domElement.addEventListener('pointerup',e=>{if(!down)return;const moved=Math.hypot(e.clientX-down[0],e.clientY-down[1]);down=null;if(moved>7)return;
+      const r=ren.domElement.getBoundingClientRect();v2.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
+      ray.setFromCamera(v2,cam);const hits=ray.intersectObjects([...pool.values()].map(p=>p.m).filter(m=>m.scale.x>.05));
+      if(hits.length)opt.pick(hits[0].object.userData.id)})}
+  let last=performance.now(),running=false;
+  function loop(){if(running)return;running=true;requestAnimationFrame(tick)}
+  function tick(now){const dt=Math.min((now-last)/1000,.05);last=now;const k=REDUCE?1:1-Math.exp(-dt*9);
+    pool.forEach(p=>{const m=p.m,t=p.t;m.position.x+=(t.x-m.position.x)*k;m.position.y+=(t.y-m.position.y)*k;m.position.z+=(t.z-m.position.z)*k;
+      m.scale.x+=(t.sx-m.scale.x)*k;m.scale.y+=(t.sy-m.scale.y)*k;m.scale.z+=(t.sz-m.scale.z)*k;m.material.color.lerp(t.c,k);m.visible=m.scale.x>.002});
+    plateCur+=(plateR-plateCur)*k;plate.scale.set(plateCur,1,plateCur);
+    if(fitting){const dir=cam.position.clone().sub(ctl.target);const d=dir.length();const nd=d+(fitDist-d)*(REDUCE?1:Math.min(k*1.2,1));dir.setLength(nd);cam.position.copy(ctl.target).add(dir);if(Math.abs(nd-fitDist)<.01)fitting=false}
+    ctl.update();ren.render(scene,cam);running=false;if(visible)loop()}
+  loop();
+  return {set,fit,aspect,el};
+}
+/* bar = grid of chocolate squares; gaps per axis let a bar look "cut" only one way */
+function bar(o){const out=[];const cw=(o.W-o.gx*(o.cols-1))/o.cols,cd=(o.D-o.gz*(o.rows-1))/o.rows;
+  for(let r=0;r<o.rows;r++)for(let c=0;c<o.cols;c++){const col=o.color(r,c);
+    out.push({id:o.id(r,c),x:(o.cx||0)-o.W/2+cw/2+c*(cw+o.gx),z:(o.cz||0)-o.D/2+cd/2+r*(cd+o.gz),sx:cw,sz:cd,c:col,y:col!==COL.choc&&col!==COL.milk?.1:0})}
+  return out}
+function grid(n){let r=Math.floor(Math.sqrt(n));while(n%r)r--;let c=n/r;if(r===1&&n>7){/* prime: keep it a single strip */}return [r,c]}
+
+/* ---------- hero: tap squares ---------- */
+const heroSel=new Set();
+const hero=Stage($('heroStage'),{auto:true,pick:id=>{heroSel.has(id)?heroSel.delete(id):heroSel.add(id);sfx('snap');drawHero()}});
+function drawHero(){
+  hero.set(bar({rows:3,cols:5,W:6.2,D:3.6,gx:.13,gz:.13,id:(r,c)=>'h'+r+c,color:(r,c)=>heroSel.has('h'+r+c)?COL.pers:COL.choc}));
+  const k=heroSel.size;$('heroFr').innerHTML=F(k,15,'keep');
+  const g=gcd(k,15);$('heroTxt').innerHTML=k===0?'от шоколада. Докосни парченце!':k===15?'целия шоколад, това е 1 цяло!':(g>1?`от шоколада, това е същото като ${F(k/g,15/g)}`:'от шоколада');
+}
+drawHero();
+
+/* ---------- 01 lab ---------- */
+const lab={a:2,b:9,n:15};
+const labStage=Stage($('labStage'));
+function drawLab(){
+  const {a,b,n}=lab;const [rows,cols]=grid(n);
+  const s=Math.min(6.4/cols,4.2/rows);
+  labStage.set(bar({rows,cols,W:cols*s,D:rows*s,gx:s*.1,gz:s*.1,id:(r,c)=>'L'+(r*cols+c),
+    color:(r,c)=>{const i=r*cols+c;return i<a?COL.pers:i<a+b?COL.butter:COL.choc}}));
+  $('oa').textContent=a;$('ob').textContent=b;$('on').textContent=n;
+  const sum=a+b,g=gcd(sum,n);
+  let html=`${F(a,n,'c-p keep')}<span class="op">+</span>${F(b,n,'c-b keep')}<span class="op">=</span>${F(`<span class="c-p">${a}</span> + <span class="c-b">${b}</span>`,n,'keep')}<span class="op">=</span>${F(sum,n,'keep')}`;
+  if(g>1)html+=`<span class="op">=</span>${F(sum/g,n/g,'c-g')}`;
+  $('labEq').innerHTML=html;
+  document.querySelectorAll('#labChips .chip').forEach(ch=>{const p=ch.dataset.p.split(',').map(Number);ch.setAttribute('aria-pressed',p[0]===a&&p[1]===b&&p[2]===n&&ch.textContent.indexOf('Изненадай')<0)});
+}
+function labMsg(t,warn){const m=$('labMsg');m.textContent=t;m.classList.toggle('warn',!!warn);if(warn){m.classList.remove('shake');void m.offsetWidth;m.classList.add('shake')}}
+document.querySelectorAll('.sbtn').forEach(b=>b.addEventListener('click',()=>{
+  const k=b.dataset.k,d=+b.dataset.d;const nx={...lab};nx[k]+=d;
+  if(nx.n<2||nx.n>100||nx.a<0||nx.b<0){sfx('no');return}
+  if(k==='n'&&nx.a+nx.b>nx.n){ if(nx.b>0)nx.b=Math.max(0,nx.n-nx.a); if(nx.a+nx.b>nx.n)nx.a=nx.n; }
+  if(nx.a+nx.b>nx.n){sfx('no');labMsg('Шоколадът свърши! Няма повече от '+nx.n+' парченца.',true);return}
+  Object.assign(lab,nx);labMsg(lab.a+lab.b===lab.n?'Целият шоколад! Сборът е 1 цяло.':'Знаменателят остава '+lab.n+', събираме само числителите.');sfx('tick');drawLab()}));
+document.querySelectorAll('#labChips .chip').forEach(ch=>ch.addEventListener('click',()=>{
+  let [a,b,n]=ch.dataset.p.split(',').map(Number);
+  if(ch.textContent.indexOf('Изненадай')>=0){n=[6,8,9,10,12,16,20][Math.floor(Math.random()*7)];a=1+Math.floor(Math.random()*(n-2));b=1+Math.floor(Math.random()*(n-a));}
+  Object.assign(lab,{a,b,n});labMsg(a+b===n?'Целият шоколад! Сборът е 1 цяло.':'Знаменателят остава '+n+', събираме само числителите.');sfx('snap');drawLab()}));
+drawLab();labMsg('Знаменателят остава 15, събираме само числителите.');
+
+/* ---------- 02 Simona: re-slice story ---------- */
+const STEPS=[
+  {t:'Блузата: <span class="fr"><span class="n">1</span><span class="d">6</span></span>',p:'Първият шоколад е нарязан на <b>6</b> ленти. Симона е дала 1 от тях за блузата.'},
+  {t:'Полата: <span class="fr"><span class="n">4</span><span class="d">7</span></span>',p:'Вторият шоколад е нарязан на <b>7</b> ленти, но по другата посока. 4 от тях са за полата. Лентите са с различен размер, затова не можем да ги съберем направо.'},
+  {t:'Режем отново на 42',p:'НОК(6; 7) = <b>42</b>. Режем и двата шоколада на 6 × 7 = 42 еднакви парченца. Сега <span class="fr"><span class="n">1</span><span class="d">6</span></span> = <span class="fr c-p"><span class="n">7</span><span class="d">42</span></span>, а <span class="fr"><span class="n">4</span><span class="d">7</span></span> = <span class="fr c-b"><span class="n">24</span><span class="d">42</span></span>.'},
+  {t:'Събираме!',p:'Парченцата вече са еднакви, затова ги слагаме заедно: <span class="fr c-p"><span class="n">7</span><span class="d">42</span></span> + <span class="fr c-b"><span class="n">24</span><span class="d">42</span></span> = <span class="fr"><span class="n">31</span><span class="d">42</span></span>. Симона е похарчила <b>31 от 42</b> части от парите.'}
+];
+let simStep=0,simReady=false;
+const sim=Stage($('simStage'),{onResize:()=>{if(simReady)drawSim()}});
+function drawSim(){
+  const portrait=sim.aspect()<1.25,W=6,D=4.2,g=.12;
+  const Lp=portrait?{cx:0,cz:-2.75}:{cx:-3.6,cz:0},Rp=portrait?{cx:0,cz:2.75}:{cx:3.6,cz:0};
+  const Lcol=(r,c)=>c===0?COL.pers:COL.choc,Rcol=(r,c)=>r<4?COL.butter:COL.milk;
+  const Lid=(r,c)=>'a'+r+'_'+c,Rid=(r,c)=>'b'+r+'_'+c;
+  let specs=[],fw,fd;
+  if(simStep===0){specs=bar({rows:7,cols:6,W,D,gx:g,gz:0,id:Lid,color:Lcol})}
+  else if(simStep===1){specs=bar({...Lp,rows:7,cols:6,W,D,gx:g,gz:0,id:Lid,color:Lcol}).concat(bar({...Rp,rows:7,cols:6,W,D,gx:0,gz:g,id:Rid,color:Rcol}))}
+  else if(simStep===2){specs=bar({...Lp,rows:7,cols:6,W,D,gx:g,gz:g,id:Lid,color:Lcol}).concat(bar({...Rp,rows:7,cols:6,W,D,gx:g,gz:g,id:Rid,color:Rcol}))}
+  else{ // merge: 7 coral + 24 butter + 11 empty into one 7x6 bar, filled column by column
+    const slots=bar({rows:7,cols:6,W,D,gx:g,gz:g,id:(r,c)=>'s',color:()=>COL.choc});
+    const slotAt=k=>slots[(k%7)*6+Math.floor(k/7)];
+    const order=[];for(let r=0;r<7;r++)order.push([Lid(r,0),COL.pers]);
+    for(let c=0;c<6;c++)for(let r=0;r<4;r++)order.push([Rid(r,c),COL.butter]);
+    for(let c=1;c<6&&order.length<42;c++)for(let r=0;r<7&&order.length<42;r++)order.push([Lid(r,c),COL.choc]);
+    specs=order.map(([id,col],k)=>{const s=slotAt(k);return {...s,id,c:col,y:col===COL.choc?0:.1}});
+  }
+  if(simStep===1||simStep===2){fw=portrait?W:W*2+1.2;fd=portrait?D*2+1.3:D}
+  sim.set(specs,fw,fd);
+  $('simTxt').innerHTML=`<h4>${simStep+1}. ${STEPS[simStep].t}</h4><p>${STEPS[simStep].p}</p>`;
+  document.querySelectorAll('#simDots button').forEach((b,i)=>b.setAttribute('aria-current',i===simStep));
+  $('simPrev').disabled=simStep===0;$('simNext').textContent=simStep===3?'Пак отначало ↺':'Напред →';
+}
+STEPS.forEach((s,i)=>{const b=document.createElement('button');b.setAttribute('role','tab');b.setAttribute('aria-label','Стъпка '+(i+1));b.onclick=()=>{simStep=i;sfx('tick');drawSim()};$('simDots').appendChild(b)});
+$('simPrev').onclick=()=>{if(simStep>0){simStep--;sfx('tick');drawSim()}};
+$('simNext').onclick=e=>{simStep=simStep===3?0:simStep+1;if(simStep===3){sfx('win');burstAt($('simStage'))}else sfx('snap');drawSim()};
+simReady=true;drawSim();
+
+/* ---------- LCM hunter game ---------- */
+const PAIRS=[[6,7],[4,6],[12,20],[16,20],[9,18],[20,15],[10,3],[8,12],[5,12],[9,20]];
+let gi=0,gOrder=PAIRS.slice().sort(()=>Math.random()-.5);
+function drawGame(){const [a,b]=gOrder[gi%gOrder.length];const L=lcm(a,b);
+  const opts=new Set([L]);if(a*b!==L)opts.add(a*b);const cands=[L*2,L/2,Math.max(a,b)+1,L+Math.min(a,b),L-Math.min(a,b)].filter(x=>Number.isInteger(x)&&x>Math.max(a,b)-1&&x!==L);
+  for(const x of cands){if(opts.size>=3)break;opts.add(x)}
+  const arr=[...opts].slice(0,3).sort((x,y)=>x-y);
+  $('gPair').textContent=`${a} и ${b}`;$('gMul').textContent='';$('gNext').hidden=true;
+  $('gOpts').innerHTML=arr.map(x=>`<button data-v="${x}">${x}</button>`).join('');
+  $('gOpts').querySelectorAll('button').forEach(btn=>btn.onclick=()=>{const v=+btn.dataset.v;
+    const mult=(n)=>{const out=[];for(let k=1;k<=Math.max(6,L/n+1)&&out.length<8;k++)out.push(n*k===L?`<b class="c-p">${n*k}</b>`:n*k);return out.join(', ')};
+    if(v===L){btn.classList.add('ok');sfx('ok');burstAt(btn);$('gOpts').querySelectorAll('button').forEach(x=>x.disabled=true);
+      $('gMul').innerHTML=`Кратни на ${a}: ${mult(a)}…<br>Кратни на ${b}: ${mult(b)}…`;$('gNext').hidden=false}
+    else{btn.classList.add('bad');btn.disabled=true;sfx('no');$('gMul').innerHTML=v%a||v%b?`${v} не се дели и на ${a}, и на ${b}.`:`${v} става, но има и по-малко общо кратно!`}})}
+$('gNext').onclick=()=>{gi++;sfx('tick');drawGame()};drawGame();
+
+/* ---------- simplify machine ---------- */
+let mf=[175,225];
+function drawM(anim){$('mFr').innerHTML=F(mf[0],mf[1],'keep');if(anim){$('mFr').classList.remove('pop');void $('mFr').offsetWidth;$('mFr').classList.add('pop')}
+  const done=gcd(mf[0],mf[1])===1;$('mDivs').innerHTML=done?'':[2,3,5,7,9,25].map(d=>`<button data-d="${d}" aria-label="Раздели на ${d}">÷${d}</button>`).join('');
+  $('mDivs').querySelectorAll('button').forEach(b=>b.onclick=()=>{const d=+b.dataset.d;
+    if(mf[0]%d===0&&mf[1]%d===0){mf=[mf[0]/d,mf[1]/d];sfx('snap');$('mMsg').textContent=`И двете се делят на ${d}.`;drawM(true)}
+    else{sfx('no');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');$('mMsg').textContent=`${mf[0]%d?mf[0]:mf[1]} не се дели на ${d}.`}});
+  if(done){$('mMsg').innerHTML=`Готово! ${F(175,225,'keep')} = ${F(7,9)} и вече не може да се съкрати.`;
+    $('mEq').hidden=false;$('mEq').innerHTML=`${F(2,9)}<span class="op">+</span>${F(7,9,'c-p')}<span class="op">=</span>${F(9,9,'keep')}<span class="op">=</span><span class="c-g">1</span>`;sfx('win');burstAt($('mFr'))}
+  else $('mEq').hidden=true}
+$('mReset').onclick=()=>{mf=[175,225];$('mMsg').textContent='';sfx('tick');drawM(true)};drawM();
+
+/* ---------- quiz: every task from p.67 ---------- */
+const Q=[
+  ['1а',[2,15],[9,15]],['1б',[51,100],[49,100]],
+  ['3а',[5,12],[17,20]],['3б',[2,9],[175,225]],['3в',[3,16],[9,20]],['3г',[8,27],[1,1]],
+  ['4а',[8,9],[17,18]],['4б',[9,20],[11,15]],['4в',[27,90],[13,39]],['4г',[2,1],[3,5]],['4д',[1,2],[3,1]]
+];
+const solved=new Set(store.get('sub35-solved',[]));
+function term(t){return t[1]===1?`<span>${t[0]}</span>`:F(t[0],t[1],'keep')}
+function answer(t1,t2){const L=lcm(t1[1],t2[1]);const n=t1[0]*L/t1[1]+t2[0]*L/t2[1];const g=gcd(n,L);return [n/g,L/g]}
+function solution(t1,t2){const lines=[];let a=t1.slice(),b=t2.slice();
+  const red=[];[a,b].forEach(t=>{const g=gcd(t[0],t[1]);if(t[1]!==1&&g>1){red.push(`${F(t[0],t[1],'keep')} = ${F(t[0]/g,t[1]/g,'keep')} (÷${g})`);t[0]/=g;t[1]/=g}});
+  if(red.length)lines.push(`<p>Първо съкращаваме: ${red.join(' и ')}</p>`);
+  if(a[1]===1||b[1]===1)lines.push(`<p>Цялото число записваме като дроб със знаменател 1.</p>`);
+  const L=lcm(a[1],b[1]);const ma=L/a[1],mb=L/b[1];
+  let eq=`${F(a[0],a[1],'keep',ma>1?ma:'')}<span class="op">+</span>${F(b[0],b[1],'keep',mb>1?mb:'')}<span class="op">=</span>`;
+  if(ma>1||mb>1){lines.push(`<p>НОК(${a[1]}; ${b[1]}) = ${L}. Допълнителни множители: ${ma} и ${mb}.</p>`);eq+=`${F(a[0]*ma,L,'keep')}<span class="op">+</span>${F(b[0]*mb,L,'keep')}<span class="op">=</span>`}
+  const n=a[0]*ma+b[0]*mb;eq+=F(n,L,'keep');const g=gcd(n,L);
+  if(g>1)eq+=`<span class="op">=</span>${L/g===1?`<span class="c-g">${n/g}</span>`:F(n/g,L/g,'c-g keep')}`;
+  return `${lines.join('')}<div class="eq">${eq}</div>${g>1?`<p>Накрая съкращаваме на ${g}.</p>`:''}`}
+function hint(t1,t2){const r=[t1,t2].filter(t=>t[1]!==1&&gcd(t[0],t[1])>1);if(r.length)return `Подсказка: първо съкрати ${r.map(t=>F(t[0],t[1],'keep')).join(' и ')}.`;
+  if(t1[1]===t2[1])return 'Подсказка: знаменателите са равни, събери само числителите.';
+  return `Подсказка: потърси НОК(${t1[1]}; ${t2[1]}).`}
+function score(){const n=solved.size;$('score').textContent=`${n} / ${Q.length}`;$('meter').style.width=(n/Q.length*100)+'%';store.set('sub35-solved',[...solved])}
+$('quiz').innerHTML=Q.map(([k,t1,t2],i)=>`<div class="q" id="q${i}"><div class="top"><span class="tag">Зад. ${k}</span></div>
+  <div class="eq">${term(t1)}<span class="op">+</span>${term(t2)}<span class="op">=</span><span class="ans"><input inputmode="numeric" aria-label="числител" id="n${i}" autocomplete="off"><hr><input inputmode="numeric" aria-label="знаменател" id="d${i}" autocomplete="off"></span></div>
+  <div class="qbtns"><button class="btn3d" data-a="check" data-i="${i}">Провери</button><button class="btn3d ghost" data-a="hint" data-i="${i}">Подсказка</button><button class="btn3d ghost" data-a="sol" data-i="${i}">Решение</button></div>
+  <div class="fb" id="fb${i}" aria-live="polite"></div><div class="sol" id="sol${i}" hidden></div></div>`).join('');
+function markDone(i){$('q'+i).classList.add('done');const [N,D]=answer(Q[i][1],Q[i][2]);$('n'+i).value=N;$('d'+i).value=D===1?'':D}
+solved.forEach(i=>{if(Q[i])markDone(i)});score();
+$('quiz').addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(!b)return;const i=+b.dataset.i,[,t1,t2]=Q[i],fb=$('fb'+i);
+  if(b.dataset.a==='hint'){fb.className='fb';fb.innerHTML=hint(t1,t2);sfx('tick');return}
+  if(b.dataset.a==='sol'){const s=$('sol'+i);s.hidden=!s.hidden;if(!s.hidden)s.innerHTML=solution(t1,t2);sfx('tick');return}
+  const pRaw=$('n'+i).value.trim(),qRaw=$('d'+i).value.trim();
+  if(!/^\d+$/.test(pRaw)||(qRaw&&!/^\d+$/.test(qRaw))){fb.className='fb no';fb.textContent='Напиши числа в полетата.';sfx('no');return}
+  const p=+pRaw,q=qRaw?+qRaw:1;const [N,D]=answer(t1,t2);
+  if(q===0){fb.className='fb no';fb.textContent='Знаменателят не може да е 0.';sfx('no');return}
+  if(p*D===N*q){
+    if(gcd(p,q)>1){fb.className='fb ok';fb.innerHTML=`Вярно! Но ${F(p,q,'keep')} може да се съкрати още. Опитай!`;sfx('tick');return}
+    fb.className='fb ok';fb.innerHTML=['Браво!','Точно така!','Супер, вярно е!','Шоколад за теб!'][i%4];
+    const first=!solved.has(i);solved.add(i);markDone(i);score();sfx(solved.size===Q.length&&first?'win':'ok');burstAt(b);
+    if(solved.size===Q.length&&first)setTimeout(()=>{confetti(innerWidth/2,innerHeight/3);fb.innerHTML='Реши всички задачи от урока! Шампион!'},350);
+  }else{fb.className='fb no';fb.innerHTML='Не е точно. Натисни „Подсказка“ и опитай пак.';sfx('no')}});
+$('quiz').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT'){const i=e.target.id.slice(1);document.querySelector(`button[data-a="check"][data-i="${i}"]`).click()}});
+})();
+</script>
+</body>
+</html>
