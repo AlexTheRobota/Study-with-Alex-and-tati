@@ -117,14 +117,15 @@ button{font:inherit;color:inherit;cursor:pointer}
           <button class="done" type="button" data-task="mat" aria-pressed="false">✓ Готово</button>
         </div>
       </article></div>
-      <div class="frame"><article class="card" id="chp">
+      <div class="frame"><article class="card" id="geo40">
         <i class="star" style="right:18px;top:16px;--s:26px;--d:1s"></i>
-        <span class="subj">Човекът и природата</span>
-        <h2>Учебна тетрадка</h2>
-        <p class="pages">Страници <b>18</b><b>19</b><b>20</b><b>21</b></p>
+        <span class="subj">География и икономика</span>
+        <h2>Учебник</h2>
+        <p class="pages">Стр. <b>40</b> зад. 5</p>
+        <p style="margin:0;font-size:15px;color:#333">Препишете и заместете: вътрешни и външни земни сили.</p>
         <div class="row">
-          <button class="btn" id="openChp" type="button">📖 Виж задачата</button>
-          <button class="done" type="button" data-task="chp" aria-pressed="false">✓ Готово</button>
+          <button class="btn" id="openGeo" type="button">📖 Виж задачата</button>
+          <button class="done" type="button" data-task="geo40" aria-pressed="false">✓ Готово</button>
         </div>
       </article></div>
     </div>
@@ -176,8 +177,8 @@ button{font:inherit;color:inherit;cursor:pointer}
  var MAT={71:'Задачи от 1 до 5 (събиране)',73:'Задачи от 1 до 4 (изваждане)'};
  $('openMat').addEventListener('click',function(){pages('mat','Математика · Учебник',[71,73],
   function(n){return 'matematika-uchebnik-str'+n+'.jpg'},function(n){return 'Учебник по математика, страница '+n+': '+MAT[n]},function(n){return 'Стр. '+n+': '+MAT[n]})});
- $('openChp').addEventListener('click',function(){pages('chp','Човекът и природата · Учебна тетрадка',[18,19,20,21],
-  function(n){return 'chovekat-i-prirodata-str'+n+'.jpg'},function(n){return 'Учебна тетрадка по Човекът и природата, страница '+n})});
+ $('openGeo').addEventListener('click',function(){pages('geo40','География и икономика · Учебник',[40],
+  function(n){return 'geografia-uchebnik-str'+n+'.jpg'},function(n){return 'Учебник по география и икономика, страница '+n+', задача 5'},function(n){return 'Стр. '+n+': Задача 5'})});
  zoomBtn.addEventListener('click',function(){var z=view.classList.toggle('zoom');zoomBtn.textContent=z?'↩ Намали':'🔍 Увеличи'});
  $('vClose').addEventListener('click',close);
  view.addEventListener('click',function(e){if(e.target===view||e.target===body)close()});
