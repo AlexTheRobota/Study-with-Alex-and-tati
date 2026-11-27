@@ -105,15 +105,16 @@ button{font:inherit;color:inherit;cursor:pointer}
   <div class="band-in">
     <div class="head"><div class="bigpill">Задачи за консултации</div></div>
     <div class="tasks">
-      <div class="frame"><article class="card" id="geo">
+      <div class="frame"><article class="card" id="mat">
         <i class="star" style="right:18px;top:16px;--s:26px"></i>
-        <span class="subj">География</span>
-        <h2>Контурна карта</h2>
-        <p class="pages">Страница <b>5</b></p>
-        <p style="margin:0;font-size:15px;color:#333">Строеж на Земята и формиране на съвременните континенти.</p>
+        <span class="subj">Математика</span>
+        <h2>Учебник</h2>
+        <p class="pages">Стр. <b>71</b> от 1 до 5</p>
+        <p class="pages">Стр. <b>73</b> от 1 до 4</p>
+        <p style="margin:0;font-size:15px;color:#333">Събиране и изваждане на дроби.</p>
         <div class="row">
-          <button class="btn" id="openGeo" type="button">📷 Отвори страницата</button>
-          <button class="done" type="button" data-task="geo" aria-pressed="false">✓ Готово</button>
+          <button class="btn" id="openMat" type="button">📖 Виж задачите</button>
+          <button class="done" type="button" data-task="mat" aria-pressed="false">✓ Готово</button>
         </div>
       </article></div>
       <div class="frame"><article class="card" id="chp">
@@ -159,20 +160,24 @@ button{font:inherit;color:inherit;cursor:pointer}
  var view=$('view'),body=$('vBody'),zoomBtn=$('vZoom'),last=null;
  function open(title,html,zoomable){last=document.activeElement;$('vTitle').textContent=title;body.innerHTML=html;view.classList.remove('zoom');zoomBtn.hidden=!zoomable;zoomBtn.textContent='🔍 Увеличи';view.hidden=false;document.body.style.overflow='hidden';$('vClose').focus()}
  function close(){view.hidden=true;document.body.style.overflow='';if(last)last.focus()}
- $('openGeo').addEventListener('click',function(){open('География · Контурна карта · стр. 5','<img src="geografia-konturna-karta-str5.jpg" alt="Контурна карта, страница 5: Строеж на Земята и Формиране на съвременните континенти">',true)});
- var PAGES=[18,19,20,21];
- $('openChp').addEventListener('click',function(){
-  var pg=st.chpPages||{},cur=PAGES[0];
-  open('Човекът и природата · Учебна тетрадка','<div class="pgv"><div class="ptabs"><span class="lbl">Страница:</span>'+PAGES.map(function(n){return '<button type="button" data-p="'+n+'">'+n+'</button>'}).join('')+'<button type="button" class="mark" id="pMark">✓ Готова</button></div><img id="pImg" alt=""></div>',true);
-  var img=$('pImg'),mark=$('pMark');
-  function show(n){cur=n;img.src='chovekat-i-prirodata-str'+n+'.jpg';img.alt='Учебна тетрадка по Човекът и природата, страница '+n;
+ // page viewer with tabs; each page can be ticked off, and the card is done when all pages are
+ function pages(task,title,PAGES,file,alt,note){
+  var pg=st[task+'Pages']||{},cur=PAGES[0];
+  open(title,'<div class="pgv"><div class="ptabs"><span class="lbl">Страница:</span>'+PAGES.map(function(n){return '<button type="button" data-p="'+n+'">'+n+'</button>'}).join('')+'<button type="button" class="mark" id="pMark">✓ Готова</button></div><p class="pnote" id="pNote" style="margin:0 0 10px;font:800 18px Rubik,Arial,sans-serif;color:#fff;text-align:center"></p><img id="pImg" alt=""></div>',true);
+  var img=$('pImg'),mark=$('pMark'),nt=$('pNote');
+  function show(n){cur=n;img.src=file(n);img.alt=alt(n);nt.textContent=note?note(n):'';nt.hidden=!note;
    body.querySelectorAll('[data-p]').forEach(function(b){var p=+b.dataset.p;b.setAttribute('aria-current',p===n);b.classList.toggle('dn',!!pg[p])});
    mark.setAttribute('aria-pressed',!!pg[n]);mark.textContent=pg[n]?'✓ Стр. '+n+' е готова':'✓ Готова';body.scrollTop=0;body.scrollLeft=0;
    img.style.animation='none';void img.offsetWidth;img.style.animation=''}
   body.querySelectorAll('[data-p]').forEach(function(b){b.addEventListener('click',function(){show(+b.dataset.p)})});
-  mark.addEventListener('click',function(){pg[cur]=!pg[cur];st.chpPages=pg;st.chp=PAGES.every(function(n){return pg[n]});put(st);paint();show(cur)});
+  mark.addEventListener('click',function(){pg[cur]=!pg[cur];st[task+'Pages']=pg;st[task]=PAGES.every(function(n){return pg[n]});put(st);paint();show(cur)});
   show(cur);
- });
+ }
+ var MAT={71:'Задачи от 1 до 5 (събиране)',73:'Задачи от 1 до 4 (изваждане)'};
+ $('openMat').addEventListener('click',function(){pages('mat','Математика · Учебник',[71,73],
+  function(n){return 'matematika-uchebnik-str'+n+'.jpg'},function(n){return 'Учебник по математика, страница '+n+': '+MAT[n]},function(n){return 'Стр. '+n+': '+MAT[n]})});
+ $('openChp').addEventListener('click',function(){pages('chp','Човекът и природата · Учебна тетрадка',[18,19,20,21],
+  function(n){return 'chovekat-i-prirodata-str'+n+'.jpg'},function(n){return 'Учебна тетрадка по Човекът и природата, страница '+n})});
  zoomBtn.addEventListener('click',function(){var z=view.classList.toggle('zoom');zoomBtn.textContent=z?'↩ Намали':'🔍 Увеличи'});
  $('vClose').addEventListener('click',close);
  view.addEventListener('click',function(e){if(e.target===view||e.target===body)close()});
