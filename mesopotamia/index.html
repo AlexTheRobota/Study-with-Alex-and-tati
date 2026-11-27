@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Интерактивен урок по история за 5. клас: държавите в Месопотамия. Разкопки, карта, времева линия, 3D музей, законите на Хамурапи и клинопис.">
+<title>Държавите в Месопотамия</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23171512'/%3E%3Cpath d='M8 54h48v-9H8zM15 45h34v-9H15zM22 36h20v-9H22zM27 27h10v-8H27z' fill='%23E2552C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@700;900&family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* DIRECTION  archaeologist's field notebook — brutalist-editorial on squared paper
+   MOOD       curious, adventurous: "you are the archaeologist"
+   PALETTE    paper #F3EDE2 · ink #171512 · persimmon #E2552C (only for action/emphasis) · night #141210 sections.
+              Finds (lapis, shell, clay) bring their own colour.
+   TYPE       Fira Sans Extra Condensed 900 display · IBM Plex Sans body · IBM Plex Mono catalogue labels
+   LAYOUT     asymmetric 12-col grid, left-aligned giant heads, sharp corners, 2px rules, paper/night rhythm
+   SIGNATURE  the hero is a dig: brush the sand off with a finger to uncover a mosaic from Ur */
+:root{
+  --paper:#F3EDE2; --paper2:#E8DFCD; --ink:#171512; --mute:#625A50; --rule:#171512;
+  --pers:#E2552C; --pers-d:#B23A17; --night:#141210; --night2:#24201B; --bone:#EFE7D8; --bone-m:#B9AE9C;
+  --ok:#2E7D4F; --no:#C23B22;
+  --display:"Fira Sans Extra Condensed","Arial Narrow",sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --ease-out:cubic-bezier(.23,1,.32,1); --ease-spring:cubic-bezier(.34,1.56,.64,1); --ease-snap:cubic-bezier(.85,0,.15,1);
+  --t-sm:clamp(.86rem,.82rem + .2vw,.95rem); --t-base:clamp(1rem,.95rem + .25vw,1.15rem); --t-lg:clamp(1.25rem,1.1rem + .7vw,1.65rem);
+  --t-xl:clamp(1.6rem,1.3rem + 1.4vw,2.4rem); --t-2xl:clamp(2.6rem,1.8rem + 4vw,5.2rem); --t-hero:clamp(3.6rem,1.5rem + 9.5vw,10.5rem);
+  --sp-s:clamp(1rem,.9rem + .4vw,1.25rem); --sp-m:clamp(1.5rem,1.3rem + .7vw,1.9rem); --sp-l:clamp(2rem,1.7rem + 1.2vw,2.8rem); --sp-2xl:clamp(3.5rem,2.8rem + 3vw,6rem);
+  color-scheme:light;
+}
+*{box-sizing:border-box;min-width:0}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 var(--t-base)/1.6 var(--body);overflow-x:clip;
+  background-image:linear-gradient(rgba(23,21,18,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(23,21,18,.055) 1px,transparent 1px);background-size:24px 24px}
+::selection{background:var(--pers);color:#fff}
+h1,h2,h3{font-family:var(--display);font-weight:900;text-transform:uppercase;margin:0;line-height:.9;letter-spacing:-.01em;text-wrap:balance}
+p{text-wrap:pretty}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--pers);outline-offset:3px}
+[hidden]{display:none!important}
+b,strong{font-weight:700}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(4vw,16px,env(safe-area-inset-left,0px));padding-right:max(4vw,16px,env(safe-area-inset-right,0px))}
+.sec{padding-block:var(--sp-2xl) calc(var(--sp-2xl)*1.25);border-top:2px solid var(--rule);position:relative}
+.night{background:var(--night);color:var(--bone);background-image:none;border-top-color:var(--night)}
+.alt{background-color:var(--paper2)}
+.tag{font-family:var(--mono);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--pers-d)}
+.night .tag{color:var(--pers)}
+
+/* section head: asymmetric — catalogue number + giant title left, lead right */
+.head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--sp-s) var(--sp-m);align-items:end;margin-bottom:var(--sp-l)}
+.head .no{grid-column:1/-1;display:flex;gap:14px;align-items:center}
+.head .no::after{content:"";flex:1;height:2px;background:currentColor;opacity:.18}
+.head h2{grid-column:1/8;font-size:var(--t-2xl)}
+.head p{grid-column:8/-1;margin:0;color:var(--mute);max-width:42ch}
+.night .head p{color:var(--bone-m)}
+@media (max-width:860px){.head h2,.head p{grid-column:1/-1}}
+
+/* buttons: brutalist, fill-wipe hover, arrow slide */
+.btn{position:relative;overflow:hidden;z-index:0;display:inline-flex;align-items:center;gap:10px;min-height:50px;padding:12px 20px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);
+  font:700 1rem var(--body);border-radius:0;transition:color .35s var(--ease-out),transform .12s}
+.btn::before{content:"";position:absolute;inset:0;background:var(--pers);transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease-out);z-index:-1}
+.btn .ar{transition:transform .3s var(--ease-out)}
+@media (hover:hover){.btn:hover::before{transform:scaleX(1);transform-origin:left}.btn:hover .ar{transform:translateX(4px)}}
+.btn:active{transform:translate(2px,2px)}
+.btn:disabled{opacity:.6;cursor:default}
+.btn.line{background:transparent;color:var(--ink)}
+@media (hover:hover){.btn.line:not(:disabled):hover{color:#fff}}
+.night .btn{border-color:var(--bone);background:var(--bone);color:var(--night)}
+.night .btn.line{background:transparent;color:var(--bone)}
+.btn.hot{background:var(--pers);border-color:var(--pers);color:#fff}
+.btn.hot::before{background:var(--ink)}
+
+/* finds bar */
+.bar{position:sticky;top:0;z-index:40;background:var(--ink);color:var(--bone);display:flex;align-items:center;gap:14px;
+  padding:9px max(4vw,16px,env(safe-area-inset-right,0px)) 9px max(4vw,16px,env(safe-area-inset-left,0px));padding-top:calc(9px + env(safe-area-inset-top,0px))}
+.bar a{color:var(--bone);text-decoration:none;font:600 .82rem var(--mono);letter-spacing:.06em;text-transform:uppercase;position:relative}
+.bar a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease-out)}
+@media (hover:hover){.bar a:hover::after{transform:scaleX(1);transform-origin:left}}
+.bar .lbl{font:600 .78rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--bone-m);margin-left:auto}
+.slots{display:flex;gap:4px}
+.slot{width:22px;height:22px;border:1.5px solid rgba(239,231,216,.45);display:grid;place-items:center}
+.slot.on{background:var(--pers);border-color:var(--pers);animation:stamp .5s var(--ease-spring)}
+.slot.on::after{content:"";width:12px;height:12px;background:var(--night);clip-path:polygon(0 100%,100% 100%,100% 78%,82% 78%,82% 56%,64% 56%,64% 34%,36% 34%,36% 56%,18% 56%,18% 78%,0 78%)}
+@keyframes stamp{from{transform:scale(2.4) rotate(-20deg);opacity:0}}
+.bar .cnt{font:600 .82rem var(--mono);min-width:3.2em;text-align:right}
+@media (max-width:560px){.bar .lbl{display:none}.slot{width:18px;height:18px}.slots{margin-left:auto}}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,160%);visibility:hidden;z-index:60;background:var(--pers);color:#fff;
+  font:700 1rem var(--body);padding:13px 18px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink);transition:transform .45s var(--ease-spring),visibility 0s .45s;max-width:calc(100% - 32px)}
+.toast.show{transform:translate(-50%,0);visibility:visible;transition:transform .45s var(--ease-spring)}
+
+/* HERO — the dig */
+.hero{padding-block:var(--sp-l) var(--sp-2xl)}
+.hgrid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--sp-m);align-items:end}
+.htext{grid-column:1/-1;container-type:inline-size}
+.hlead{grid-column:1/5;align-self:start}
+.hdig{grid-column:5/-1}
+@media (max-width:960px){.hlead,.hdig{grid-column:1/-1}.hlead{order:2}.hero p.how{display:none}}
+@media (max-width:600px){.mtabs{gap:4px 18px}.mtabs button{font-size:1.45rem;-webkit-text-stroke-width:1.2px}}
+.hero h1{font-size:12vw;font-size:min(10.5rem,14.5cqi);line-height:.8;letter-spacing:-.02em;margin:14px 0 6px}
+.hero h1 .o{-webkit-text-fill-color:transparent;-webkit-text-stroke:2px var(--ink);color:transparent}
+.hero h1 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.04em}
+.hero h1 .w>span{display:inline-block;transform:translateY(105%);animation:rise .9s var(--ease-out) forwards}
+.hero h1 .w:nth-child(2)>span{animation-delay:.08s}.hero h1 .w:nth-child(3)>span{animation-delay:.16s}
+@keyframes rise{to{transform:none}}
+@media (max-width:480px){.hero h1 .o{-webkit-text-stroke-width:1.2px}}
+.hero .intro{font-size:var(--t-lg);line-height:1.4;max-width:30ch;margin:0 0 16px}
+.hero .how{display:flex;gap:10px;align-items:center;font-weight:700;margin:0}
+.hero .how svg{flex:none}
+.dig{position:relative;height:clamp(300px,40vw,540px);border:2px solid var(--ink);background:#0F1E45;overflow:hidden;box-shadow:10px 10px 0 var(--ink)}
+.dig svg,.dig canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.dig canvas{touch-action:none;cursor:crosshair;transition:opacity 1s var(--ease-out)}
+.dig.done canvas{opacity:0;pointer-events:none}
+.digbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;margin-top:22px}
+.meter{display:flex;align-items:center;gap:10px;font:600 .9rem var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.meter .tr{width:clamp(110px,22vw,220px);height:12px;border:2px solid var(--ink);background:var(--paper)}
+.meter .tr i{display:block;height:100%;width:0;background:var(--pers);transition:width .3s var(--ease-out)}
+.label{margin-top:16px;border:2px solid var(--ink);background:var(--paper);padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;opacity:.35;transition:opacity .6s var(--ease-out)}
+.label .v{filter:blur(4px);transition:filter .6s var(--ease-out)}
+.dig.done ~ .label{opacity:1}
+.dig.done ~ .label .v{filter:none}
+.label .k{font:600 .75rem var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--mute);padding-top:3px}
+.label .v{font-weight:500}
+.rivers{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));margin-top:var(--sp-2xl);border:2px solid var(--ink);background:var(--paper)}
+.rivers>div{padding:var(--sp-m)}
+.rv1{grid-column:1/5;border-right:2px solid var(--ink)}
+.rv2{grid-column:5/9;border-right:2px solid var(--ink);background:var(--ink);color:var(--paper)}
+.rv3{grid-column:9/-1}
+.rivers h3{font-size:var(--t-xl)}
+.rivers p{margin:8px 0 0}
+.rv2 h3{color:var(--pers)}
+.wave{display:block;width:100%;height:14px;margin-top:12px}
+@media (max-width:760px){.rv1,.rv2,.rv3{grid-column:1/-1;border-right:0}.rv1,.rv2{border-bottom:2px solid var(--ink)}.rv2{order:-1}}
+
+/* MAP */
+.mgrid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--sp-m);align-items:start}
+.mapc{grid-column:1/9}
+.minfo{grid-column:9/-1;position:sticky;top:64px}
+@media (max-width:900px){.mapc,.minfo{grid-column:1/-1;position:static}}
+.mapframe{border:2px solid var(--ink);background:#EDE3CF}
+#map{display:block;width:100%;height:auto;touch-action:manipulation}
+#map .city{cursor:pointer}
+#map .dot{fill:var(--paper);stroke:var(--ink);stroke-width:3;transition:fill .2s}
+#map .city text{font:700 16px var(--body);fill:var(--ink);paint-order:stroke;stroke:#EDE3CF;stroke-width:5px;stroke-linejoin:round;pointer-events:none}
+#map .hit{fill:transparent}
+#map .city.sel .dot{fill:var(--pers)}
+#map .city.ok .dot{fill:var(--ok)}
+#map .city.no .dot{fill:var(--no)}
+#map .lay{transition:opacity .45s var(--ease-out)}
+#map .lay.off{opacity:0}
+.legend{display:flex;flex-wrap:wrap;border:2px solid var(--ink);border-top:0}
+.legend button{flex:1 1 200px;display:flex;align-items:center;gap:10px;padding:12px 14px;border:0;border-right:2px solid var(--ink);background:var(--paper);font-weight:700;font-size:.95rem;text-align:left;min-height:52px}
+.legend button:last-child{border-right:0}
+.legend i{width:18px;height:18px;border:2px solid var(--ink);flex:none}
+.legend button[aria-pressed="false"]{color:var(--mute);background:transparent}
+.legend button[aria-pressed="false"] i{background:transparent!important}
+@media (max-width:640px){.legend button{border-right:0;border-bottom:2px solid var(--ink)}.legend button:last-child{border-bottom:0}}
+.card{border:2px solid var(--ink);background:var(--paper);padding:var(--sp-m)}
+.minfo h3{font-size:var(--t-xl);margin:6px 0 10px}
+.minfo p{margin:0 0 10px}
+.game{margin-top:var(--sp-m);padding-top:var(--sp-s);border-top:2px dashed var(--ink)}
+.game .q{font:900 var(--t-lg)/1 var(--display);text-transform:uppercase;margin:6px 0 8px}
+.game .msg{color:var(--mute);font-size:.95rem;margin:0 0 12px}
+.qs{list-style:none;margin:var(--sp-l) 0 0;padding:0;border-top:2px solid var(--ink)}
+.qs li{border-bottom:2px solid var(--ink)}
+.qs li>button{width:100%;display:flex;gap:16px;align-items:baseline;text-align:left;background:none;border:0;padding:16px 4px;font-weight:700;font-size:var(--t-base)}
+.qs .n{font:600 .8rem var(--mono);color:var(--pers-d);flex:none}
+.qs .pl{margin-left:auto;font:900 1.6rem/1 var(--display);transition:transform .35s var(--ease-out);flex:none}
+.qs li.open .pl{transform:rotate(45deg)}
+.qs .ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease-out)}
+.qs .ans>div{overflow:hidden;padding:0 4px 0 calc(4px + 2.4em);color:var(--mute)}
+.qs li.open .ans{grid-template-rows:1fr}
+.qs li.open .ans>div{padding-bottom:16px}
+
+/* TIMELINE (true time scale) */
+.sortrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:2px solid var(--ink);margin-bottom:var(--sp-l)}
+.sortrow button{min-height:76px;border:0;border-right:2px solid var(--ink);background:var(--paper);font:700 1rem/1.25 var(--body);padding:12px;text-align:left}
+.sortrow button:last-child{border-right:0}
+@media (hover:hover){.sortrow button:not(.done):hover{background:var(--paper2)}}
+.sortrow button.done{background:var(--ink);color:var(--paper)}
+.sortrow button .n{display:block;font:900 1.8rem/1 var(--display);color:var(--pers);margin-bottom:4px}
+@media (max-width:700px){.sortrow{grid-template-columns:1fr 1fr}.sortrow button:nth-child(2){border-right:0}.sortrow button:nth-child(-n+2){border-bottom:2px solid var(--ink)}}
+.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.tl{border:2px solid var(--ink);background:var(--paper);padding:var(--sp-m) var(--sp-m) var(--sp-s)}
+.tlrow{display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr);gap:14px;align-items:center;min-height:50px;border-bottom:1px dashed rgba(23,21,18,.25)}
+.tlrow .nm{font-weight:700;font-size:.95rem;line-height:1.2}
+.track{position:relative;height:30px}
+.track i{position:absolute;top:3px;bottom:3px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform 1s var(--ease-out)}
+.track i.on{transform:scaleX(1)}
+.track i.go::after{content:"";position:absolute;right:-12px;top:50%;margin-top:-12px;border:12px solid transparent;border-left-color:inherit;border-right:0}
+.track i.p{background:var(--pers)}
+.track i.go{border-left-color:var(--ink)}
+.track i.go.p{border-left-color:var(--pers)}
+.axis{display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr);gap:14px;margin-top:6px}
+.ticks{position:relative;height:44px;border-top:2px solid var(--ink)}
+.ticks span{position:absolute;top:0;transform:translateX(-50%);font:600 .74rem var(--mono);padding-top:8px;white-space:nowrap}
+.ticks span::before{content:"";position:absolute;left:50%;top:-2px;width:2px;height:8px;background:var(--ink)}
+.ticks span:last-child{transform:translateX(-100%)}
+.ticks span:last-child::before{left:auto;right:0}
+.pins{position:absolute;inset:0;pointer-events:none}
+.pin{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed var(--pers-d);opacity:0;transition:opacity .6s .8s}
+.tl.open .pin{opacity:1}
+.pin b{position:absolute;left:6px;top:4px;font:600 .72rem var(--mono);color:var(--pers-d);white-space:nowrap;text-transform:uppercase;background:var(--paper);padding:0 3px}
+.tlbody{position:relative}
+@media (max-width:600px){.tlrow,.axis{grid-template-columns:minmax(0,6.5em) minmax(0,1fr)}.tlrow .nm{font-size:.8rem}.ticks span:nth-child(even){display:none}}
+.eras{margin-top:var(--sp-l);border-top:2px solid var(--ink)}
+.era{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--sp-s) var(--sp-m);padding:var(--sp-m) 0;border-bottom:2px solid var(--ink);transition:opacity .5s,filter .5s}
+.era .yr{grid-column:1/4;font:900 var(--t-lg)/1 var(--display);text-transform:uppercase;color:var(--pers-d)}
+.era h3{grid-column:4/8;font-size:var(--t-xl)}
+.era ul{grid-column:8/-1;margin:0;padding-left:1.1em}
+.era li{margin:0 0 6px}
+@media (max-width:860px){.era .yr,.era h3,.era ul{grid-column:1/-1}}
+.eras.locked .era{filter:blur(7px);opacity:.55;pointer-events:none;user-select:none}
+.lockmsg{font:600 .9rem var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--pers-d);margin:var(--sp-s) 0 0}
+
+/* MUSEUM (night vitrine) */
+.mtabs{display:flex;flex-wrap:wrap;gap:6px 26px;margin-bottom:var(--sp-m)}
+.mtabs button{background:none;border:0;padding:4px 0;font:900 var(--t-xl)/1 var(--display);text-transform:uppercase;color:transparent;-webkit-text-stroke:1.5px var(--bone);transition:color .3s var(--ease-out)}
+.mtabs button[aria-selected="true"]{color:var(--pers);-webkit-text-stroke-color:var(--pers)}
+@media (hover:hover){.mtabs button:not([aria-selected="true"]):hover{color:var(--bone)}}
+.mtabs .i{font:600 .7rem var(--mono);-webkit-text-stroke:0;color:var(--bone-m);vertical-align:top;margin-right:6px}
+.mgrid2{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--sp-m)}
+.stage{grid-column:1/9;position:relative;height:min(66vh,600px);min-height:340px;border:1.5px solid rgba(239,231,216,.35);overflow:hidden;
+  background:radial-gradient(ellipse at 50% 30%,#3A322A 0%,#1C1915 60%,#141210 100%)}
+.stage canvas{display:block;width:100%;height:100%;touch-action:none}
+.placard{grid-column:9/-1;align-self:start;background:var(--bone);color:var(--ink);padding:var(--sp-m);border-left:8px solid var(--pers)}
+@media (max-width:900px){.stage,.placard{grid-column:1/-1}}
+.placard .cat{font:600 .75rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.placard h3{font-size:var(--t-xl);margin:8px 0 12px}
+.placard dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0 0 14px;font-size:.92rem}
+.placard dt{font:600 .74rem var(--mono);text-transform:uppercase;color:var(--mute);padding-top:3px}
+.placard dd{margin:0}
+.placard p{margin:0 0 12px}
+.placard details{border-top:2px solid var(--ink);padding-top:10px}
+.placard summary{cursor:pointer;font-weight:700}
+.placard summary::marker{color:var(--pers)}
+.placard details p{margin:8px 0 0;color:var(--mute)}
+.hs{position:absolute;left:0;top:0;width:32px;height:32px;padding:0;border:2px solid var(--bone);background:var(--pers);color:#fff;font:600 .85rem var(--mono);
+  display:grid;place-items:center;transform:translate(-50%,-50%) rotate(45deg)}
+.hs span{transform:rotate(-45deg)}
+.hs.seen{background:var(--night2)}
+.hs.act{background:var(--bone);color:var(--ink);border-color:var(--pers)}
+.hs::after{content:"";position:absolute;inset:-7px;border:1.5px solid var(--pers);animation:ping 2.2s var(--ease-out) infinite}
+.hs.seen::after{display:none}
+@keyframes ping{from{transform:scale(.7);opacity:1}to{transform:scale(1.5);opacity:0}}
+.sbar{position:absolute;left:12px;right:12px;bottom:12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;pointer-events:none;z-index:2}
+.sbar>*{pointer-events:auto}
+.hint{font:600 .74rem var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--bone);background:rgba(20,18,16,.75);padding:8px 10px}
+.nogl{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;font-weight:700}
+
+/* JUDGE */
+.jgrid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--sp-m);align-items:start}
+.case{grid-column:1/7;position:relative;min-height:360px;display:flex;flex-direction:column;overflow:hidden}
+.law{grid-column:7/-1}
+@media (max-width:900px){.case,.law{grid-column:1/-1}}
+.case .story{font:900 var(--t-xl)/1.02 var(--display);text-transform:uppercase;margin:10px 0 var(--sp-m);padding-right:3.5em}
+.verdicts{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--ink);margin-top:auto}
+.verdicts button{min-height:72px;border:0;background:var(--paper);padding:10px 12px;font:900 1.3rem/1 var(--display);text-transform:uppercase;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;text-align:left}
+.verdicts button:nth-child(odd){border-right:2px solid var(--ink)}
+.verdicts button:nth-child(-n+2){border-bottom:2px solid var(--ink)}
+.verdicts button small{font:500 .78rem var(--body);text-transform:none;color:var(--mute)}
+@media (hover:hover){.verdicts button:not(:disabled):hover{background:var(--ink);color:var(--paper)}.verdicts button:not(:disabled):hover small{color:var(--bone-m)}}
+.verdicts button:disabled{cursor:default}
+.verdicts button.no{background:#F3D3C9}
+.verdicts button.ok{background:#CFE5D5}
+.fb{margin-top:14px;font-size:.98rem}
+.fb:empty{display:none}
+.stampmk{position:absolute;right:16px;top:16px;border:4px solid var(--ok);color:var(--ok);font:900 1.5rem/1 var(--display);text-transform:uppercase;padding:6px 12px;transform:rotate(-12deg);
+  animation:stampin .45s var(--ease-spring);pointer-events:none;background:rgba(243,237,226,.85)}
+@keyframes stampin{from{transform:rotate(-12deg) scale(2.6);opacity:0}}
+.law blockquote{margin:0;font-size:1.02rem;line-height:1.7}
+.law mark{background:none;color:inherit;box-shadow:inset 0 -.45em 0 rgba(226,85,44,.25);transition:box-shadow .4s}
+.law mark.hit{box-shadow:inset 0 -1.3em 0 rgba(46,125,79,.28)}
+.law cite{display:block;margin-top:12px;font:600 .78rem var(--mono);font-style:normal;text-transform:uppercase;color:var(--mute)}
+
+/* NUMBERS */
+.ngrid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--sp-m)}
+.nl{grid-column:1/8}.nr{grid-column:8/-1}
+@media (max-width:900px){.nl,.nr{grid-column:1/-1}}
+.slab{background:#CDAA77;min-height:210px;display:flex;align-items:center;justify-content:center;padding:20px;border:2px solid var(--ink);
+  box-shadow:inset 0 8px 18px rgba(255,255,255,.3),inset 0 -10px 20px rgba(90,55,20,.35)}
+.slab svg{max-width:100%;height:auto;max-height:170px}
+.key{display:flex;gap:26px;margin:0 0 14px;font:600 .9rem var(--mono)}
+.key span{display:flex;align-items:center;gap:8px}
+.numin{display:flex;flex-wrap:wrap;margin-top:16px;border:2px solid var(--ink);width:max-content;max-width:100%;background:var(--paper)}
+.numin label{display:grid;place-items:center;padding:0 14px;font:600 .8rem var(--mono);text-transform:uppercase;border-right:2px solid var(--ink)}
+.numin input{width:120px;border:0;border-right:2px solid var(--ink);background:var(--paper);font:900 2rem var(--display);padding:6px 12px;color:var(--ink);border-radius:0}
+.numin button{width:54px;min-height:54px;border:0;background:var(--paper);font:900 1.6rem var(--display)}
+.numin button+button{border-left:2px solid var(--ink)}
+@media (hover:hover){.numin button:hover{background:var(--ink);color:var(--paper)}}
+.expl{color:var(--mute);margin:12px 0 0}
+.opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:2px solid var(--ink);margin-top:12px}
+.opts button{min-height:56px;border:0;border-right:2px solid var(--ink);background:var(--paper);font:900 1.6rem var(--display)}
+.opts button:last-child{border-right:0}
+@media (hover:hover){.opts button:not(:disabled):hover{background:var(--ink);color:var(--paper)}}
+.opts button.ok{background:#CFE5D5;color:var(--ink)}.opts button.no{background:#F3D3C9;color:var(--ink)}
+
+/* THINK — flip cards, offset grid */
+.think{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--sp-m)}
+.flip{grid-column:span 3;perspective:1000px;border:0;background:none;padding:0;text-align:left;min-height:340px}
+.flip:nth-child(even){margin-top:var(--sp-l)}
+@media (max-width:980px){.flip{grid-column:span 6}.flip:nth-child(even){margin-top:0}}
+@media (max-width:560px){.flip{grid-column:1/-1}}
+.flip .in{position:relative;height:100%;min-height:340px;transition:transform .7s var(--ease-out);transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .f,.flip .b{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;border:2px solid var(--ink);padding:var(--sp-s);display:flex;flex-direction:column;gap:10px}
+.flip .f{background:var(--paper)}
+.flip .b{background:var(--ink);color:var(--bone);transform:rotateY(180deg)}
+.flip .f svg{height:100px;width:auto;align-self:flex-start}
+.flip h3{font-size:var(--t-lg)}
+.flip .b h3{color:var(--pers)}
+.flip p{margin:0;font-size:.95rem}
+.flip .f .go{margin-top:auto;font:600 .75rem var(--mono);text-transform:uppercase;color:var(--pers-d)}
+@media (hover:hover){.flip:not(.on):hover .in{transform:rotateY(-10deg)}}
+
+/* QUIZ (night) */
+.qwrap{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--sp-l)}
+.qmain{grid-column:1/9}.qside{grid-column:9/-1}
+@media (max-width:900px){.qmain,.qside{grid-column:1/-1}}
+.qprog{display:flex;gap:4px;margin-bottom:var(--sp-s)}
+.qprog i{flex:1;height:8px;background:rgba(239,231,216,.18);transition:background .3s}
+.qprog i.d{background:var(--bone)}.qprog i.r{background:var(--pers)}
+.qcard .qn{font:600 .78rem var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--bone-m)}
+.qcard h3{font-size:var(--t-xl);margin:10px 0 var(--sp-m);line-height:1}
+.qopts{display:grid;border-top:1.5px solid rgba(239,231,216,.35)}
+.qopts button{display:flex;gap:16px;align-items:center;text-align:left;background:none;border:0;border-bottom:1.5px solid rgba(239,231,216,.35);color:var(--bone);padding:14px 4px;min-height:58px;font-size:var(--t-base);font-weight:500;transition:padding .25s var(--ease-out),background .25s}
+.qopts button .k{font:900 1.6rem/1 var(--display);color:var(--pers);width:1.2em;flex:none}
+@media (hover:hover){.qopts button:not(:disabled):hover{background:rgba(239,231,216,.07);padding-left:12px}}
+.qopts button:disabled{cursor:default}
+.qopts button.ok{background:rgba(46,125,79,.4)}
+.qopts button.no{background:rgba(194,59,34,.4)}
+.qnext{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:var(--sp-s)}
+.qwhy{flex:1 1 280px;margin:0;color:var(--bone-m)}
+.qend .big{font:900 var(--t-hero)/.85 var(--display);color:var(--pers)}
+.qend p{font-size:var(--t-lg)}
+.qside details{border-top:1.5px solid rgba(239,231,216,.35);padding:14px 0}
+.qside details:last-child{border-bottom:1.5px solid rgba(239,231,216,.35)}
+.qside summary{cursor:pointer;font-weight:700}
+.qside summary::marker{color:var(--pers)}
+.qside p{color:var(--bone-m);margin:10px 0 0;font-size:.95rem}
+
+/* POSTER */
+.pgrid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--sp-l);align-items:start}
+.pick{grid-column:1/6}.pwrap{grid-column:6/-1}
+@media (max-width:900px){.pick,.pwrap{grid-column:1/-1}}
+.pick h3{font-size:var(--t-lg);margin:0 0 10px}
+.pick .grp{margin-bottom:var(--sp-m)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:2px solid var(--ink);background:var(--paper);padding:8px 14px;min-height:46px;font-weight:700;border-radius:0}
+@media (hover:hover){.chips button[aria-pressed="false"]:hover{background:var(--paper2)}}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.chips button svg{width:34px;height:28px;display:block}
+.poster{position:relative;padding:var(--sp-m);background:var(--pbg,#F6E7C8);color:var(--pink,#171512);border:2px solid var(--ink);box-shadow:12px 12px 0 var(--pacc,#E2552C);transform:rotate(-1deg);margin-right:12px}
+.poster .pt{font:600 .74rem var(--mono);text-transform:uppercase;letter-spacing:.1em;display:flex;justify-content:space-between;gap:10px;border-bottom:2px solid currentColor;padding-bottom:8px}
+.poster h2{font-size:clamp(2rem,1.2rem + 3vw,3.4rem);margin:16px 0 0}
+.poster .pc{font:900 clamp(3.6rem,2rem + 7vw,7rem)/.82 var(--display);text-transform:uppercase;color:var(--pacc,#E2552C);margin:4px 0 8px}
+.poster .pic{float:right;width:42%;max-width:190px;margin:0 0 8px 12px}
+.poster .pic svg{width:100%;height:auto;display:block}
+.poster dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:14px 0 0;font-size:.95rem;clear:both}
+.poster dt{font:600 .72rem var(--mono);text-transform:uppercase;padding-top:3px}
+.poster dd{margin:0;outline:none}
+.poster dd:focus,.poster .sl:focus{box-shadow:inset 0 -2px 0 currentColor}
+.poster .sl{font:900 var(--t-lg)/1 var(--display);text-transform:uppercase;margin-top:16px;border-top:2px solid currentColor;padding-top:12px;outline:none}
+
+/* REMEMBER + footer destination */
+.rgrid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--sp-l)}
+.rsum{grid-column:1/8;font-size:var(--t-lg);line-height:1.45}
+.rsum p{margin:0}
+.gloss{grid-column:8/-1;margin:0;border-top:2px solid var(--ink)}
+.gloss div{border-bottom:2px solid var(--ink);padding:12px 0}
+.gloss dt{font:900 var(--t-lg)/1 var(--display);text-transform:uppercase}
+.gloss dd{margin:4px 0 0;color:var(--mute)}
+@media (max-width:900px){.rsum,.gloss{grid-column:1/-1}}
+footer{background:var(--night);color:var(--bone);padding:var(--sp-2xl) 0 calc(var(--sp-l) + env(safe-area-inset-bottom,0px))}
+footer .wrap{container-type:inline-size}
+footer .big{font:900 12vw/.8 var(--display);font-size:min(12rem,13cqi);text-transform:uppercase;letter-spacing:-.02em}
+footer .big span{color:var(--pers)}
+footer .row{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between;margin-top:var(--sp-l);font:600 .8rem var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--bone-m)}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.hero h1 .w>span{transform:none}}
+</style>
+</head>
+<body>
+
+<nav class="bar" aria-label="Находки">
+  <a href="../">← Начало</a>
+  <span class="lbl">Твоите находки</span>
+  <div class="slots" id="slots"></div>
+  <span class="cnt" id="cnt">0/8</span>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<main>
+<!-- HERO / DIG -->
+<header class="hero wrap">
+  <div class="hgrid">
+    <div class="htext">
+      <div class="tag">Терен: Двуречие · История, 5. клас · Урок 8</div>
+      <h1><span class="w"><span>Държавите</span></span> <span class="w"><span>в</span></span> <span class="o w"><span>Месопотамия</span></span></h1>
+    </div>
+    <div class="hlead">
+      <p class="intro">Преди 5000 години тук възникнали първите градове, първите писани закони и колелото. Днес ти си археологът.</p>
+      <p class="how"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><path d="M6 28l12-12M18 16l4-10 6 6-10 4z" fill="none" stroke="#E2552C" stroke-width="3" stroke-linejoin="round"/><path d="M4 31h12" stroke="#171512" stroke-width="2"/></svg>Изчисти пясъка с пръст и виж какво е заровено.</p>
+    </div>
+    <div class="hdig">
+      <div class="dig" id="dig">
+        <svg id="mosaic" viewBox="0 0 800 560" preserveAspectRatio="xMidYMid slice" aria-label="Мозайка: колесница от Ур"></svg>
+        <canvas id="sand" aria-label="Пясък. Плъзни пръст, за да го изчистиш."></canvas>
+      </div>
+      <div class="digbar">
+        <div class="meter"><span>Разкопано</span><span class="tr"><i id="digm"></i></span><span id="digp">0%</span></div>
+        <button class="btn line" type="button" id="brush">Използвай четката <span class="ar">→</span></button>
+      </div>
+      <div class="label">
+        <span class="k">Находка</span><span class="v">Мозайка от царска гробница в Ур: бойна колесница</span>
+        <span class="k">Възраст</span><span class="v">около 2600 г. пр. Хр., тоест над 4600 години</span>
+        <span class="k">От какво</span><span class="v">син камък лапис лазули, бели черупки и червен камък</span>
+      </div>
+    </div>
+  </div>
+  <div class="rivers">
+    <div class="rv1"><h3>Тигър</h3><p>Бързата река на изток. На нея е търговският град Ашур.</p><svg class="wave" viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true"><path d="M0 7q12-7 25 0t25 0 25 0 25 0 25 0 25 0 25 0 25 0" fill="none" stroke="#171512" stroke-width="2"/></svg></div>
+    <div class="rv2"><h3>Месопотамия</h3><p>На гръцки е „земя между реките“. На български е Двуречие.</p></div>
+    <div class="rv3"><h3>Ефрат</h3><p>Спокойната река на запад. Шумерите използвали разливите ѝ, за да напояват нивите.</p><svg class="wave" viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true"><path d="M0 7q12-7 25 0t25 0 25 0 25 0 25 0 25 0 25 0 25 0" fill="none" stroke="#171512" stroke-width="2"/></svg></div>
+  </div>
+</header>
+
+<!-- MAP -->
+<section class="sec alt" id="karta">
+ <div class="wrap">
+  <div class="head"><div class="no tag">Находка 02 · Карта</div><h2>Първите държави</h2><p>III – II хилядолетие пр. Хр. Докосни град, за да научиш нещо за него. Включвай и изключвай цветните области.</p></div>
+  <div class="mgrid">
+    <div class="mapc">
+      <div class="mapframe">
+        <svg id="map" viewBox="0 0 800 520" role="img" aria-label="Карта на Месопотамия">
+          <defs>
+            <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#7FA3BC"/><path d="M0 0v8" stroke="#6A8FA9" stroke-width="2"/></pattern>
+          </defs>
+          <rect width="800" height="520" fill="#EDE3CF"/>
+          <g class="lay" id="L-ext"><path d="M300 150 C360 110 470 95 560 120 C640 140 700 170 760 230 L780 280 C720 250 660 210 600 190 C520 165 430 160 360 200 C330 215 310 230 290 260 Z" fill="#A8A57A"/></g>
+          <g class="lay" id="L-akk"><path d="M300 210 C340 150 430 140 500 160 C560 175 600 230 620 300 C635 350 620 390 590 400 C540 395 480 360 430 330 C380 300 320 270 300 210 Z" fill="#D9C98F"/></g>
+          <g class="lay" id="L-sum"><ellipse cx="520" cy="320" rx="80" ry="34" transform="rotate(32 520 320)" fill="#E2552C" opacity=".85"/></g>
+          <path d="M0 125 C70 140 130 185 180 200 C215 210 240 225 252 248 C258 278 238 305 215 330 L190 358 C165 382 110 392 50 388 L0 384 Z" fill="url(#hatch)"/>
+          <path d="M70 0 L380 0 C350 30 300 46 236 44 C170 42 115 30 70 0 Z" fill="url(#hatch)"/>
+          <path d="M575 392 C610 380 650 392 690 416 C730 442 765 468 800 478 L800 520 L715 520 C690 485 650 450 612 432 C590 420 572 408 575 392 Z" fill="url(#hatch)"/>
+          <path d="M150 520 C160 470 150 430 140 395" fill="none" stroke="#5F87A3" stroke-width="4"/>
+          <path d="M330 80 C352 135 360 180 382 212 C410 252 428 286 455 300 C492 322 530 352 578 392" fill="none" stroke="#3E6E8E" stroke-width="6" stroke-linecap="round"/>
+          <path d="M425 70 C432 125 452 168 470 200 C490 240 502 272 522 302 C546 334 562 360 582 392" fill="none" stroke="#3E6E8E" stroke-width="6" stroke-linecap="round"/>
+          <g font-family="IBM Plex Mono,monospace" font-weight="600" fill="#171512" letter-spacing="2">
+            <text x="20" y="292" font-size="15" fill="#fff">СРЕДИЗЕМНО МОРЕ</text>
+            <text x="160" y="28" font-size="13" fill="#fff">ЧЕРНО МОРЕ</text>
+            <text x="650" y="474" font-size="13" fill="#fff" transform="rotate(30 650 474)" letter-spacing="1">ПЕРСИЙСКИ ЗАЛИВ</text>
+            <text x="140" y="110" font-size="12" fill="#625A50">П-В МАЛА АЗИЯ</text>
+            <text x="320" y="440" font-size="13" fill="#625A50">АРАБСКА ПУСТИНЯ</text>
+            <text x="30" y="460" font-size="13" fill="#625A50">АФРИКА</text>
+            <text x="650" y="80" font-size="13" fill="#625A50">АЗИЯ</text>
+            <text x="40" y="70" font-size="13" fill="#625A50">ЕВРОПА</text>
+            <text x="262" y="118" font-size="12" fill="#2C5672" letter-spacing="0">р. Ефрат</text>
+            <text x="436" y="94" font-size="12" fill="#2C5672" letter-spacing="0">р. Тигър</text>
+          </g>
+          <g font-family="Fira Sans Extra Condensed,Arial Narrow,sans-serif" font-weight="900" font-size="24" fill="#171512" letter-spacing="3">
+            <text x="490" y="152">АСИРИЯ</text><text x="356" y="250">АКАД</text><text x="592" y="342">ШУМЕР</text>
+          </g>
+          <g id="cities"></g>
+        </svg>
+      </div>
+      <div class="legend" id="legend">
+        <button type="button" data-l="L-sum" aria-pressed="true"><i style="background:#E2552C"></i>Шумерски градове държави</button>
+        <button type="button" data-l="L-akk" aria-pressed="true"><i style="background:#D9C98F"></i>Акадско царство при Саргон</button>
+        <button type="button" data-l="L-ext" aria-pressed="true"><i style="background:#A8A57A"></i>Разширение на царството</button>
+      </div>
+    </div>
+    <aside class="minfo card" aria-live="polite">
+      <div id="cinfo"><div class="tag">Избери град</div><h3>Шест града</h3><p>Шумерските градове са на юг, близо до Персийския залив. Акадците живеели на север от тях, а асирийците още по-на север, около Ашур на река Тигър.</p></div>
+      <div class="game">
+        <div class="tag">Игра</div>
+        <div class="q" id="gq">Намери града</div>
+        <p class="msg" id="gmsg">Казвам град, ти го докосваш на картата. 6 въпроса.</p>
+        <button class="btn" type="button" id="gstart"><span id="gstl">Започни</span> <span class="ar">→</span></button>
+      </div>
+    </aside>
+  </div>
+  <ul class="qs" id="mapqs">
+    <li><button type="button"><span class="n">В1</span>Опишете географското положение на Двуречието.<span class="pl">+</span></button><div class="ans"><div>В Западна Азия, между реките Тигър и Ефрат, които се вливат в Персийския залив. На запад е Средиземно море, на юг е Арабската пустиня.</div></div></li>
+    <li><button type="button"><span class="n">В2</span>В коя част на областта са шумерските градове?<span class="pl">+</span></button><div class="ans"><div>В южната част, близо до Персийския залив: Ур, Урук и Лагаш.</div></div></li>
+    <li><button type="button"><span class="n">В3</span>Къде живеели акадците? А асирийците?<span class="pl">+</span></button><div class="ans"><div>Акадците живеели на север от шумерите, около град Акад. Асирийците живеели в Северна Месопотамия, около град Ашур на река Тигър.</div></div></li>
+  </ul>
+ </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="sec" id="vreme">
+ <div class="wrap">
+  <div class="head"><div class="no tag">Находка 03 · Време</div><h2>Четири държави</h2><p>Подреди ги по време: докосни <b>най-старата</b> първа. Всяка ще легне на линията толкова дълга, колкото е траяла.</p></div>
+  <div class="sortrow" id="sortrow"></div>
+  <div class="tl" id="tl">
+    <div class="tlbody"><div id="tlrows"></div></div>
+    <div class="axis"><span></span><div class="ticks" id="ticks"></div></div>
+  </div>
+  <p class="lockmsg" id="lockmsg">Подреди държавите, за да отключиш записките за тях.</p>
+  <div class="eras locked" id="eras">
+    <article class="era"><div class="yr">Края на IV хил. пр. Хр.</div><h3>Шумерски градове държави</h3><ul>
+      <li>Шумерите основали първите градове: <b>Ур, Урук, Лагаш</b>.</li>
+      <li>Всеки град имал главен <b>храм</b> и свое божество.</li>
+      <li>В мирно време управителят се грижел за храма. За война избирали военен предводител.</li>
+      <li>Градовете воювали за земя и за важните канали.</li></ul></article>
+    <article class="era"><div class="yr">Около 2250 г. пр. Хр.</div><h3>Акадско царство</h3><ul>
+      <li><b>Саргон</b>, владетелят на град Акад, обединил градовете в <b>единна държава</b>.</li>
+      <li>Един от наследниците му се нарекъл „цар на четирите посоки на света“ и се обявил за бог.</li>
+      <li>След повече от век царството било завладяно от номади от изток.</li>
+      <li>Шумери и акадци се слели в един народ.</li></ul></article>
+    <article class="era"><div class="yr">Около 1750 г. пр. Хр.</div><h3>Старовавилонско царство</h3><ul>
+      <li>Нови племена от запад създали царство около град <b>Вавилон</b>.</li>
+      <li>Цар <b>Хамурапи</b> разширил границите и наложил <b>писани закони</b>.</li>
+      <li>Реформирал съда и армията и сложил ред в събирането на данъците.</li>
+      <li>Търговията и занаятите процъфтели. В края на XVI в. пр. Хр. царството било завладяно.</li></ul></article>
+    <article class="era"><div class="yr">От XV в. пр. Хр.</div><h3>Асирийско царство</h3><ul>
+      <li>Асирийците живеели в Северна Месопотамия около <b>Ашур</b> на р. Тигър.</li>
+      <li>Търгували със сребро, мед, тъкани и занаятчийски стоки.</li>
+      <li>Около век и половина след края на XV в. пр. Хр. станали <b>могъщо царство</b>.</li>
+      <li>Първи разделили армията на <b>родове войски</b>: пехота, стрелци, бойни колесници и конница.</li></ul></article>
+  </div>
+ </div>
+</section>
+
+<!-- MUSEUM -->
+<section class="sec night" id="muzei">
+ <div class="wrap">
+  <div class="head"><div class="no tag">Находка 04 · 3D музей</div><h2>Витрината</h2><p>Върти с пръст, щипни за увеличение. Докосни оранжевите ромбчета, за да прочетеш етикета. Разгледай и трите предмета.</p></div>
+  <div class="mtabs" role="tablist" id="mtabs">
+    <button role="tab" type="button" aria-selected="true" data-m="zig"><span class="i">А</span>Храмът на Ур</button>
+    <button role="tab" type="button" aria-selected="false" data-m="car"><span class="i">Б</span>Колесницата</button>
+    <button role="tab" type="button" aria-selected="false" data-m="ste"><span class="i">В</span>Стълбът на Хамурапи</button>
+  </div>
+  <div class="mgrid2">
+    <div class="stage" id="stage">
+      <div class="nogl" id="nogl" hidden>3D моделите не можаха да се заредят. Провери интернета и презареди страницата.</div>
+      <div class="sbar"><span class="hint" id="hint">Върти с пръст</span><button class="btn hot" type="button" id="act">Построй го <span class="ar">→</span></button></div>
+    </div>
+    <aside class="placard" id="placard" aria-live="polite"></aside>
+  </div>
+ </div>
+</section>
+
+<!-- JUDGE -->
+<section class="sec" id="zakoni">
+ <div class="wrap">
+  <div class="head"><div class="no tag">Находка 05 · От първо лице</div><h2>Ти си съдията на Вавилон</h2><p>Отсъди всеки случай точно както казва законът на Хамурапи, а не както би решил днешен съдия.</p></div>
+  <div class="jgrid">
+    <div class="card case" id="case"></div>
+    <div class="card law">
+      <div class="tag" style="margin-bottom:10px">Законите на Хамурапи</div>
+      <blockquote>„Ако човек е откраднал имущество на бога (храма) или двореца, <mark data-k="1">той трябва да бъде убит</mark>; <mark data-k="2">онзи, който е получил откраднатото, също трябва да бъде убит</mark>…<br>
+      Ако човек е откраднал вол, овца, магаре, свиня или лодка, които принадлежат на бога или двореца, <mark data-k="3">трябва да го заплати в тридесетократен размер</mark>, ако (откраднатото) е на непълноправен гражданин, <mark data-k="4">той трябва да го обезщети десетократно</mark>. <mark data-k="5">Ако крадецът няма с какво да плати – трябва да се убие.</mark><br>
+      Ако някой повреди окото на друг човек, <mark data-k="6">трябва да бъде повредено и неговото око</mark>…“</blockquote>
+      <cite>Из Законите на Хамурапи, около 1750 г. пр. Хр.</cite>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="sec alt" id="chisla">
+ <div class="wrap">
+  <div class="head"><div class="no tag">Находка 06 · Клинопис</div><h2>Числа от клинове</h2><p>Писали с тръстикова пръчица върху мокра глина. Знаците приличат на клинчета, затова писмото се казва клинопис.</p></div>
+  <div class="ngrid">
+    <div class="nl">
+      <div class="key"><span><svg width="18" height="36" viewBox="0 0 22 40" aria-hidden="true"><path d="M3 2h16l-8 9z" fill="#4A2E14"/><path d="M9.5 9h3l-.8 29h-1.4z" fill="#4A2E14"/></svg>= 1</span><span><svg width="30" height="26" viewBox="0 0 34 30" aria-hidden="true"><path d="M2 15L30 3l-8 12 8 12z" fill="#4A2E14"/></svg>= 10</span></div>
+      <div class="slab"><svg id="cuneo" viewBox="0 0 300 120" aria-label="Числото, написано с клинове"></svg></div>
+      <div class="numin"><label for="numv">Число</label><input id="numv" type="number" inputmode="numeric" min="1" max="3599" value="23"><button type="button" data-d="-1" aria-label="минус едно">−</button><button type="button" data-d="1" aria-label="плюс едно">+</button></div>
+      <p class="expl" id="numexpl"></p>
+    </div>
+    <div class="nr card">
+      <h3 style="font-size:var(--t-xl)">Броели по 60</h3>
+      <p>Вавилонците броели по 60, а не по 10. Затова и днес часът има <b>60 минути</b>, а минутата има <b>60 секунди</b>. Напиши число над 59 и ще видиш втора група клинове.</p>
+      <div class="game">
+        <div class="q">Какво число е това?</div>
+        <div class="slab" style="min-height:120px"><svg id="cuneq" viewBox="0 0 300 120" aria-label="Число с клинове за познаване"></svg></div>
+        <div class="opts" id="numopts"></div>
+        <p class="expl" id="nummsg">Познай 5 числа, за да получиш находката.</p>
+      </div>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- THINK -->
+<section class="sec" id="misli">
+ <div class="wrap">
+  <div class="head"><div class="no tag">Бележник · Мисли като историк</div><h2>Какво казват предметите?</h2><p>Първо помисли сам, после обърни картата.</p></div>
+  <div class="think">
+    <button class="flip" type="button"><div class="in">
+      <div class="f"><svg viewBox="0 0 80 100" aria-hidden="true"><rect x="22" y="4" width="36" height="12" fill="#171512"/><circle cx="40" cy="26" r="13" fill="#171512"/><path d="M18 98V52c0-10 10-16 22-16s22 6 22 16v46z" fill="#171512"/><path d="M28 58h24v10H28z" fill="#E2552C"/></svg><h3>Статуетка на Гудеа</h3><p>Владетел на Лагаш, около 2100 г. пр. Хр. Какво изразява позата на ръцете?</p><span class="go">Обърни ↻</span></div>
+      <div class="b"><h3>Молитва и уважение</h3><p>Ръцете са сключени пред гърдите, като при молитва. Гудеа показва, че почита боговете. Той строил храмове и канали и принасял жертви на боговете.</p></div>
+    </div></button>
+    <button class="flip" type="button"><div class="in">
+      <div class="f"><svg viewBox="0 0 80 100" aria-hidden="true"><path d="M18 98V30a22 22 0 0 1 44 0v68z" fill="#171512"/><circle cx="52" cy="26" r="7" fill="#E2552C"/><circle cx="30" cy="30" r="6" fill="#E2552C"/><path d="M24 62h32M24 70h32M24 78h32M24 86h32" stroke="#F3EDE2" stroke-width="2"/></svg><h3>Кой дава законите?</h3><p>Царят или божеството?</p><span class="go">Обърни ↻</span></div>
+      <div class="b"><h3>И двамата</h3><p>Богът на слънцето и справедливостта Шамаш подава на Хамурапи символа на царската власт. Царят пише законите, но показва, че боговете са му дали правото да ги налага. Затова никой не бива да ги нарушава.</p></div>
+    </div></button>
+    <button class="flip" type="button"><div class="in">
+      <div class="f"><svg viewBox="0 0 80 100" aria-hidden="true"><rect x="14" y="20" width="52" height="74" fill="#171512"/><path d="M14 36h52M14 50h52M14 64h52M14 78h52" stroke="#F3EDE2" stroke-width="3"/><path d="M60 4l10 18" stroke="#E2552C" stroke-width="6"/></svg><h3>Защо на камък?</h3><p>Законите били издълбани в черен камък, висок 2,25 м.</p><span class="go">Обърни ↻</span></div>
+      <div class="b"><h3>За да са вечни и за всички</h3><p>Камъкът не гние и не изгаря, и никой не може тайно да промени текста. Стълбът стоял на видно място, за да може всеки да научи правилата. И днес можеш да го видиш в музея Лувъра в Париж.</p></div>
+    </div></button>
+    <button class="flip" type="button"><div class="in">
+      <div class="f"><svg viewBox="0 0 80 100" aria-hidden="true"><circle cx="24" cy="76" r="14" fill="#171512"/><circle cx="58" cy="76" r="14" fill="#171512"/><path d="M24 64v24M58 64v24" stroke="#F3EDE2" stroke-width="2"/><path d="M12 58h52V30h7v34H12z" fill="#E2552C"/></svg><h3>Воини от Ур</h3><p>С какво са въоръжени? Кое е различно в колелата? Как разбираме, че се води война?</p><span class="go">Обърни ↻</span></div>
+      <div class="b"><h3>Копия, брадви, колесници</h3><p>Воините имат копия и брадви, а в колесницата има колчан с копия. Колелата са <b>плътни</b>, от дървени дъски, без спици. Теглят ги диви магарета (онагри), не коне. Под копитата им лежи повален враг, затова знаем, че е битка.</p></div>
+    </div></button>
+  </div>
+ </div>
+</section>
+
+<!-- QUIZ -->
+<section class="sec night" id="test">
+ <div class="wrap">
+  <div class="head"><div class="no tag">Находка 07 · Помислете, обсъдете</div><h2>Изпит при писаря</h2><p>10 въпроса. С поне 8 верни отговора печелиш находката.</p></div>
+  <div class="qwrap">
+    <div class="qmain"><div class="qprog" id="qprog"></div><div class="qcard" id="qcard"></div></div>
+    <div class="qside">
+      <div class="tag" style="margin-bottom:8px">Въпроси за обсъждане</div>
+      <details><summary>5.* Сравнете ролята на царя в Месопотамия и в Египет.</summary><p>И в двете страни царят управлява, води войската и се грижи за храмовете и каналите. В Египет фараонът се смятал за <b>жив бог</b>. В Месопотамия царят обикновено бил <b>служител на боговете</b>, и само някои, като наследника на Саргон, се обявили за богове. В Месопотамия дълго имало много отделни градове държави, а Египет рано станал единна държава.</p></details>
+      <details><summary>6.* Каква е ролята на писаните закони за развитието на държавата?</summary><p>Когато законите са записани, всички знаят правилата и наказанията, а съдиите отсъждат еднакво. Собствеността, търговията и семейството са защитени. Редът в държавата помага на търговията и занаятите да процъфтяват, както станало във Вавилон.</p></details>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- POSTER -->
+<section class="sec alt" id="mashina">
+ <div class="wrap">
+  <div class="head"><div class="no tag">Находка 08 · Машина на времето</div><h2>Елате в моя град държава!</h2><p>Живееш в Месопотамия преди 5000 години. Направи плакат, който кани хората да дойдат в твоя град. Можеш да пишеш направо върху него.</p></div>
+  <div class="pgrid">
+    <div class="pick">
+      <div class="grp"><h3>1 · Град</h3><div class="chips" id="pcity"></div></div>
+      <div class="grp"><h3>2 · Картинка</h3><div class="chips" id="ppic"></div></div>
+      <div class="grp"><h3>3 · Цветове</h3><div class="chips" id="pcol"><button type="button" data-c="0" aria-pressed="true">Пясък</button><button type="button" data-c="1" aria-pressed="false">Лазур</button><button type="button" data-c="2" aria-pressed="false">Нощ</button></div></div>
+      <p style="color:var(--mute);margin:0 0 14px">Докосни текст на плаката, за да го промениш. Когато е готов, направи снимка на екрана и я покажи в час.</p>
+      <button class="btn" type="button" id="pdone">Плакатът е готов <span class="ar">→</span></button>
+    </div>
+    <div class="pwrap">
+      <div class="poster" id="poster">
+        <div class="pt"><span>Глашатаят съобщава</span><span>~3000 г. пр. Хр.</span></div>
+        <h2>Елате в моя град държава</h2>
+        <div class="pc" id="pc">Ур</div>
+        <div class="pic" id="ppicbox"></div>
+        <p style="margin:0" contenteditable="true">Нивите са зелени, каналите са пълни, а храмът се вижда отдалеч!</p>
+        <dl>
+          <dt>Река</dt><dd contenteditable="true" id="pr"></dd>
+          <dt>Земеделие</dt><dd contenteditable="true" id="pf"></dd>
+          <dt>Управление</dt><dd contenteditable="true" id="pg"></dd>
+          <dt>Търговия</dt><dd contenteditable="true" id="pt"></dd>
+          <dt>Да видиш</dt><dd contenteditable="true" id="ps"></dd>
+        </dl>
+        <div class="sl" contenteditable="true" id="psl"></div>
+      </div>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- REMEMBER -->
+<section class="sec" id="zapomni">
+ <div class="wrap">
+  <div class="head"><div class="no tag">Запомни</div><h2>Записката на урока</h2></div>
+  <div class="rgrid">
+    <div class="rsum"><p>Първата форма на държава в Шумер бил <b>градът държава</b>. В Месопотамия често нахлували номадски племена, които се заселвали трайно и създавали свои държави. Цар <b>Саргон</b> обединил шумери и акадци в единна държава. Вавилонският цар <b>Хамурапи</b> наложил ред в обществото с едни от първите писани закони. <b>Асирийците</b> създали мощна държава и армия.</p></div>
+    <dl class="gloss">
+      <div><dt>Град държава</dt><dd>Малка по територия държава, създадена около градски център.</dd></div>
+      <div><dt>Храм</dt><dd>Специална сграда за почитане на бог или богове.</dd></div>
+      <div><dt>Зикурат</dt><dd>Стъпаловидна пирамида от тухли с храм на върха.</dd></div>
+    </dl>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="big">Край на<br><span>разкопките</span></div>
+  <div class="row"><span id="fcount">Намерени находки: 0 от 8</span><span>Учене с Алекс и тати · История, 5. клас · учебник стр. 34–35</span></div>
+ </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+'use strict';
+var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function shake(el){el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- keep the giant title inside its column, whatever font loads ---------- */
+(function(){var h=$('.hero h1'),box=$('.htext');
+  function fit(){h.style.fontSize='';var cs=parseFloat(getComputedStyle(h).fontSize),w=box.clientWidth,max=0;
+    $$('.w',h).forEach(function(s){max=Math.max(max,s.scrollWidth)});if(max>w)h.style.fontSize=Math.floor(cs*w/max*0.98)+'px'}
+  fit();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);window.addEventListener('resize',fit)})();
+
+/* ---------- finds ---------- */
+var FINDS=[['dig','Мозайката от Ур'],['map','Картата'],['time','Времевата линия'],['museum','3D музея'],['judge','Съдията'],['num','Клинописа'],['quiz','Изпита'],['poster','Плаката']];
+var got={};try{got=JSON.parse(localStorage.getItem('meso2-finds'))||{}}catch(e){got={}}
+FINDS.forEach(function(f){var d=document.createElement('span');d.className='slot'+(got[f[0]]?' on':'');d.title=f[1];d.id='f-'+f[0];$('#slots').appendChild(d)});
+function count(){var n=FINDS.filter(function(f){return got[f[0]]}).length;$('#cnt').textContent=n+'/8';$('#fcount').textContent='Намерени находки: '+n+' от 8';return n}
+count();
+var tt;function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show')},2800)}
+function award(id){if(got[id])return;got[id]=1;try{localStorage.setItem('meso2-finds',JSON.stringify(got))}catch(e){}
+  $('#f-'+id).classList.add('on');var n=count();
+  toast(n===8?'Всички 8 находки! Ти си истински археолог.':'Нова находка: '+FINDS.filter(function(f){return f[0]===id})[0][1]+' ('+n+'/8)')}
+
+/* ---------- mosaic under the sand ---------- */
+(function(){
+  var s=7,rand=function(){s=s*16807%2147483647;return s/2147483647};
+  var L=['#1F3F8F','#24479C','#1B377E','#2A4FA8','#20428F'],g='<rect width="800" height="560" fill="#0F1E45"/>';
+  for(var y=40;y<520;y+=20)for(var x=0;x<800;x+=20)g+='<rect x="'+(x+1)+'" y="'+(y+1)+'" width="18" height="18" fill="'+L[Math.floor(rand()*L.length)]+'"/>';
+  var B=['#B4432A','#EFE3C6','#1D3577','#EFE3C6'];
+  for(var bx=0;bx<800;bx+=20){var c=B[(bx/20)%4];g+='<rect x="'+bx+'" y="0" width="20" height="40" fill="'+c+'"/><rect x="'+bx+'" y="520" width="20" height="40" fill="'+c+'"/>'}
+  g+='<path d="M0 40h800M0 520h800" stroke="#171512" stroke-width="3"/>';
+  var sh='#EFE3C6',ol='#2E2015';
+  g+='<rect x="-4" y="452" width="808" height="12" fill="'+sh+'" stroke="'+ol+'" stroke-width="2"/>';
+  function onager(dx,dy,f){return '<g transform="translate('+dx+','+dy+')" stroke-linejoin="round">'+
+    '<path d="M560 352l-34 46M572 356l-20 58M652 354l44 50M640 358l30 56" stroke-width="11" stroke-linecap="round" fill="none" stroke="'+ol+'"/>'+
+    '<path d="M560 352l-34 46M572 356l-20 58M652 354l44 50M640 358l30 56" stroke-width="6" stroke-linecap="round" fill="none" stroke="'+f+'"/>'+
+    '<g fill="'+f+'" stroke="'+ol+'" stroke-width="3"><ellipse cx="606" cy="330" rx="70" ry="32"/><path d="M656 312l34-52 18 10-16 58z"/><path d="M688 254l46 20-6 18-44-14z"/><path d="M694 258l-6-24 14 20z"/></g>'+
+    '<path d="M540 322l-26 30" stroke-width="5" stroke="'+ol+'" fill="none"/><circle cx="712" cy="268" r="3" fill="'+ol+'"/></g>'}
+  g+=onager(36,-18,'#B9AB8C')+onager(24,-12,'#CDBF9F')+onager(12,-6,'#DED1B3')+onager(0,0,sh);
+  g+='<g fill="'+sh+'" stroke="'+ol+'" stroke-width="3" stroke-linejoin="round">'+
+    '<path d="M470 335l92-30" stroke-width="7" fill="none"/>'+
+    '<rect x="318" y="356" width="156" height="14"/><rect x="452" y="248" width="20" height="122"/>'+
+    '<rect x="330" y="314" width="122" height="42" fill="#B4432A"/><path d="M340 324h102M340 346h102" stroke="'+sh+'" stroke-width="3"/>'+
+    '<circle cx="360" cy="414" r="40"/><path d="M346 376v76M374 376v76" stroke-width="2"/><circle cx="360" cy="414" r="34" fill="none" stroke-dasharray="2 9" stroke-width="5"/><circle cx="360" cy="414" r="7" fill="'+ol+'"/>'+
+    '<circle cx="446" cy="414" r="40"/><path d="M432 376v76M460 376v76" stroke-width="2"/><circle cx="446" cy="414" r="34" fill="none" stroke-dasharray="2 9" stroke-width="5"/><circle cx="446" cy="414" r="7" fill="'+ol+'"/>'+
+    '<path d="M462 256l14-40M468 258l16-38M474 260l18-36" stroke-width="3"/>'+
+    '<path d="M318 330l-40-190" stroke-width="5"/><path d="M272 116l14 28-14 4z" fill="#B4432A"/>'+
+    '<path d="M330 314l8-66h40l8 66z"/><circle cx="356" cy="228" r="17"/><path d="M339 224a17 17 0 0 1 34 0z" fill="#B4432A"/>'+
+    '<path d="M384 314l10-72h38l10 72z"/><circle cx="412" cy="222" r="17"/><path d="M395 218a17 17 0 0 1 34 0z" fill="#B4432A"/><path d="M430 268l120 52" stroke-width="2" fill="none"/>'+
+    '</g>';
+  $('#mosaic').innerHTML=g;
+})();
+
+/* ---------- the dig ---------- */
+(function(){
+  var dig=$('#dig'),cv=$('#sand'),ctx=cv.getContext('2d'),W=0,H=0,dpr=1,done=false,started=false,last=null,lastCheck=0;
+  function paintSand(){
+    var r=dig.getBoundingClientRect();dpr=Math.min(window.devicePixelRatio||1,2);W=r.width;H=r.height;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.globalCompositeOperation='source-over';
+    var gr=ctx.createLinearGradient(0,0,0,H);gr.addColorStop(0,'#E4C995');gr.addColorStop(1,'#CFAE73');ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);
+    for(var i=0;i<W*H/40;i++){ctx.fillStyle=Math.random()<.5?'rgba(150,110,60,.35)':'rgba(255,240,205,.45)';ctx.fillRect(Math.random()*W,Math.random()*H,1.5,1.5)}
+    ctx.strokeStyle='rgba(140,100,55,.28)';ctx.lineWidth=2;
+    for(var y=20;y<H;y+=26){ctx.beginPath();ctx.moveTo(0,y);for(var x=0;x<=W;x+=20)ctx.lineTo(x,y+Math.sin(x/38+y)*5);ctx.stroke()}
+    for(var k=0;k<24;k++){ctx.fillStyle=['#A88A5E','#9C7E55','#BFA27A'][k%3];ctx.beginPath();ctx.ellipse(Math.random()*W,Math.random()*H,3+Math.random()*7,2+Math.random()*5,Math.random()*3,0,7);ctx.fill()}
+    ctx.strokeStyle='rgba(23,21,18,.35)';ctx.lineWidth=1;ctx.setLineDash([6,6]);
+    for(var gx=W/4;gx<W-1;gx+=W/4){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,H);ctx.stroke()}
+    for(var gy=H/3;gy<H-1;gy+=H/3){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(W,gy);ctx.stroke()}
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(23,21,18,.55)';ctx.font='600 12px "IBM Plex Mono",monospace';ctx.textAlign='left';ctx.fillText('КВАДРАТ А-3 · УР',12,22);
+    // the instruction, written in the sand like a trowel mark
+    var fs=Math.max(18,Math.min(34,W/16));ctx.font='900 '+fs+'px "Fira Sans Extra Condensed","Arial Narrow",sans-serif';ctx.textAlign='center';
+    var lab='ИЗЧИСТИ ПЯСЪКА С ПРЪСТ',tw=ctx.measureText(lab).width,bx=W/2-tw/2-18,by=H/2-fs*.9;
+    ctx.fillStyle='#171512';ctx.fillRect(bx,by,tw+36,fs*1.8);ctx.fillStyle='#F3EDE2';ctx.fillText(lab,W/2,by+fs*1.25);
+    ctx.fillStyle='#E2552C';ctx.beginPath();ctx.moveTo(W/2-10,by+fs*1.8+8);ctx.lineTo(W/2+10,by+fs*1.8+8);ctx.lineTo(W/2,by+fs*1.8+20);ctx.fill();
+  }
+  function brush(x,y){ctx.globalCompositeOperation='destination-out';
+    var rad=Math.max(26,W/16),g=ctx.createRadialGradient(x,y,0,x,y,rad);g.addColorStop(0,'rgba(0,0,0,1)');g.addColorStop(.6,'rgba(0,0,0,.85)');g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,rad,0,7);ctx.fill()}
+  function line(a,b){var d=Math.hypot(b.x-a.x,b.y-a.y),n=Math.max(1,Math.ceil(d/8));for(var i=1;i<=n;i++)brush(a.x+(b.x-a.x)*i/n,a.y+(b.y-a.y)*i/n)}
+  function show(p){var v=Math.min(100,Math.round(p/0.6));$('#digm').style.width=v+'%';$('#digp').textContent=v+'%'}
+  function progress(){if(done)return;var data=ctx.getImageData(0,0,cv.width,cv.height).data,clear=0,tot=0,step=12;
+    for(var y=0;y<cv.height;y+=step)for(var x=0;x<cv.width;x+=step){tot++;if(data[(y*cv.width+x)*4+3]<60)clear++}
+    var p=clear/tot*100;show(p);if(p>=60)finish()}
+  function finish(){if(done)return;done=true;dig.classList.add('done');show(100);award('dig');var b=$('#brush');b.innerHTML='Разкопано!';b.disabled=true}
+  function pos(e){var r=cv.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}}
+  cv.addEventListener('pointerdown',function(e){if(done)return;started=true;try{cv.setPointerCapture(e.pointerId)}catch(_){}last=pos(e);brush(last.x,last.y)});
+  cv.addEventListener('pointermove',function(e){if(!last||done)return;var p=pos(e);line(last,p);last=p;var now=performance.now();if(now-lastCheck>250){lastCheck=now;progress()}});
+  function up(){if(last){last=null;progress()}}
+  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+  $('#brush').addEventListener('click',function(){
+    if(done)return;started=true;var rows=6,t0=performance.now(),dur=reduce?1:2200,prev=null;
+    (function step(now){var k=Math.min(1,(now-t0)/dur),tot=k*rows,r=Math.min(rows-1,Math.floor(tot)),f=tot-r,y=(r+.5)/rows*H,x=(r%2?1-f:f)*W,p={x:x,y:y};
+      if(prev&&Math.abs(prev.y-y)<1)line(prev,p);else brush(x,y);prev=p;show(k*60);
+      if(k<1)requestAnimationFrame(step);else{ctx.globalCompositeOperation='destination-out';ctx.fillRect(0,0,W,H);finish()}})(t0);
+  });
+  paintSand();
+  var rw=W;window.addEventListener('resize',function(){var r=dig.getBoundingClientRect();if(!started&&Math.abs(r.width-rw)>40){rw=r.width;paintSand()}});
+})();
+
+/* ---------- map ---------- */
+var CITIES=[
+ {id:'ashur',n:'Ашур',x:466,y:190,dx:14,dy:-8,tag:'Асирия · р. Тигър',t:'Търговски град на река Тигър. Около него живеели асирийците, които търгували със сребро, мед, тъкани и занаятчийски стоки. По-късно Ашур станал център на могъщото Асирийско царство.'},
+ {id:'akad',n:'Акад',x:420,y:282,dx:-56,dy:4,tag:'Акад · р. Ефрат',t:'Градът на цар Саргон. Около 2250 г. пр. Хр. Саргон обединил градовете в единна държава, Акадското царство.'},
+ {id:'babil',n:'Вавилон',x:452,y:300,dx:-24,dy:28,tag:'Вавилон · р. Ефрат',t:'Столица на Старовавилонското царство. Тук цар Хамурапи наложил писаните си закони около 1750 г. пр. Хр. Търговията и занаятите процъфтели.'},
+ {id:'uruk',n:'Урук',x:522,y:342,dx:-50,dy:18,tag:'Шумер',t:'Един от първите шумерски градове държави, основан в края на IV хил. пр. Хр. Имал главен храм и свое божество.'},
+ {id:'lagash',n:'Лагаш',x:560,y:318,dx:14,dy:-8,tag:'Шумер',t:'Шумерски град държава. Негов владетел бил Гудеа (около 2100 г. пр. Хр.), който строил храмове и канали и принасял жертви на боговете.'},
+ {id:'ur',n:'Ур',x:562,y:374,dx:-32,dy:12,tag:'Шумер · близо до залива',t:'Шумерски град близо до Персийския залив. Тук бил големият зикурат с храма на бога на луната Нана. В царските гробници археолозите намерили мозайката, която разкопа най-горе.'}
+];
+CITIES.forEach(function(c){
+  var g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('class','city');g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label',c.n);
+  g.innerHTML='<circle class="hit" cx="'+c.x+'" cy="'+c.y+'" r="24"/><circle class="dot" cx="'+c.x+'" cy="'+c.y+'" r="9"/><text x="'+(c.x+c.dx)+'" y="'+(c.y+c.dy)+'">'+c.n+'</text>';
+  $('#cities').appendChild(g);
+  g.addEventListener('click',function(){cityTap(c,g)});
+  g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();cityTap(c,g)}});
+});
+var game=null;
+function cityTap(c,g){
+  if(game){var want=game.order[game.i];
+    if(c.id===want.id){g.classList.add('ok');if(!game.miss)game.score++;setTimeout(function(){g.classList.remove('ok')},700);game.i++;game.miss=0;nextQ()}
+    else{g.classList.add('no');game.miss=1;setTimeout(function(){g.classList.remove('no')},600);$('#gmsg').textContent='Това е '+c.n+'. Опитай пак!'}
+    return}
+  $$('#cities .city').forEach(function(x){x.classList.remove('sel')});g.classList.add('sel');
+  $('#cinfo').innerHTML='<div class="tag">'+c.tag+'</div><h3>'+c.n+'</h3><p>'+c.t+'</p>';
+}
+function nextQ(){
+  if(game.i>=game.order.length){$('#gq').textContent=game.score+' от 6 от първия път';$('#gmsg').textContent=game.score>=4?'Браво, знаеш картата!':'Разгледай пак градовете и опитай отново.';
+    if(game.score>=4)award('map');game=null;$('#gstart').hidden=false;$('#gstl').textContent='Още веднъж';return}
+  $('#gq').textContent='Къде е '+game.order[game.i].n+'?';$('#gmsg').textContent='Въпрос '+(game.i+1)+' от 6';
+}
+$('#gstart').addEventListener('click',function(){game={order:shuffle(CITIES),i:0,score:0,miss:0};this.hidden=true;$$('#cities .city').forEach(function(x){x.classList.remove('sel')});nextQ()});
+$$('#legend button').forEach(function(b){b.addEventListener('click',function(){var on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);$('#'+b.dataset.l).classList.toggle('off',!on)})});
+$$('#mapqs li>button').forEach(function(b){b.addEventListener('click',function(){b.parentNode.classList.toggle('open')})});
+
+/* ---------- timeline on a true time scale ---------- */
+var Y0=3300,Y1=1000;function xp(y){return (Y0-y)/(Y0-Y1)*100}
+var ERAS=[{n:'Шумерски градове държави',a:3200,b:2250},{n:'Акадско царство',a:2250,b:2130},{n:'Старовавилонско царство',a:1900,b:1550},{n:'Асирийско царство',a:1500,b:1030,go:1}];
+$('#tlrows').innerHTML=ERAS.map(function(e,i){return '<div class="tlrow"><span class="nm" id="nm'+i+'">?</span><div class="track"><i id="bar'+i+'" class="'+(i%2?'p':'')+(e.go?' go':'')+'" style="left:'+xp(e.a)+'%;width:'+(xp(e.b)-xp(e.a))+'%"></i></div></div>'}).join('');
+$('#ticks').innerHTML=[3000,2500,2000,1500,1000].map(function(y){return '<span style="left:'+xp(y)+'%">'+y+' пр. Хр.</span>'}).join('');
+(function(){var tb=$('.tlbody'),pins=document.createElement('div');pins.className='pins';
+  function place(){var row=$('.tlrow .track');if(!row)return;var off=row.getBoundingClientRect().left-tb.getBoundingClientRect().left,w=row.clientWidth;
+    pins.innerHTML=[[2250,'Саргон'],[1750,'Хамурапи']].map(function(p){return '<div class="pin" style="left:'+(off+xp(p[0])/100*w)+'px"><b>'+p[1]+'</b></div>'}).join('')}
+  tb.appendChild(pins);place();window.addEventListener('resize',place)})();
+var step=0;
+shuffle(ERAS.map(function(e,i){return {n:e.n,i:i}})).forEach(function(e){
+  var b=document.createElement('button');b.type='button';b.innerHTML='<span class="n">?</span>'+e.n;
+  b.addEventListener('click',function(){
+    if(b.classList.contains('done'))return;
+    if(e.i===step){b.classList.add('done');$('.n',b).textContent=step+1;$('#bar'+step).classList.add('on');$('#nm'+step).textContent=e.n;step++;
+      if(step===4){$('#tl').classList.add('open');$('#eras').classList.remove('locked');$('#lockmsg').textContent='Отключено. Прочети записките за всяка държава.';award('time')}}
+    else{shake(b);toast(step===0?'Не е най-старата. Кои са първите градове?':'Не е тази. Коя държава идва след „'+ERAS[step-1].n+'“?')}
+  });$('#sortrow').appendChild(b)});
+
+/* ---------- judge ---------- */
+var CASES=[
+ {s:'Набу открадна златна чаша от храма на бога.',a:0,k:1,w:'Имуществото на бога (храма) е най-строго пазено: крадецът трябва да бъде убит.'},
+ {s:'Зимри купи евтино гривна, но тя беше открадната от двореца на царя.',a:0,k:2,w:'Който е получил откраднатото от храма или двореца, също трябва да бъде убит.'},
+ {s:'Шамшу открадна вол на двореца и има с какво да плати.',a:1,k:3,w:'Вол на бога или двореца се плаща в тридесетократен размер, тоест 30 вола!'},
+ {s:'Лу открадна овца на непълноправен гражданин и има с какво да плати.',a:2,k:4,w:'Щом откраднатото е на непълноправен гражданин, обезщетението е десетократно: 10 овце.'},
+ {s:'Илум открадна магаре на двореца, но е беден и няма с какво да плати.',a:0,k:5,w:'Ако крадецът няма с какво да плати, трябва да се убие. Много сурово!'},
+ {s:'При кавга Аби удари съседа си и му повреди окото.',a:3,k:6,w:'„Око за око“: и неговото око трябва да бъде повредено.'}
+];
+var V=[['Смърт','по закона'],['Плаща ×30','тридесетократно'],['Плаща ×10','десетократно'],['Око за око','същата вреда']];
+var ci=0,cscore=0,cfirst=true;
+function renderCase(){
+  var box=$('#case');$$('.law mark').forEach(function(m){m.classList.remove('hit')});
+  if(ci>=CASES.length){
+    box.innerHTML='<div class="tag">Присъдите са готови</div><div class="story">'+cscore+' от '+CASES.length+' верни от първия път</div>'+
+     '<p style="margin:0 0 10px"><b>Защо обезщетението за кражба е различно?</b> Зависи <b>чие</b> е откраднатото. Имуществото на бога и на двореца се пазело най-строго, а това на непълноправния гражданин се ценяло по-малко.</p>'+
+     '<p style="margin:0 0 16px"><b>А днес?</b> В България няма смъртно наказание от 1998 г. За кражба се плаща глоба или се лежи в затвора, и законът е еднакъв за богати и бедни. Всички са <b>равни пред закона</b>.</p>'+
+     '<button class="btn" type="button" id="cagain" style="align-self:flex-start;margin-top:auto">Съди отново <span class="ar">→</span></button>';
+    if(cscore>=4)award('judge');
+    $('#cagain').addEventListener('click',function(){ci=0;cscore=0;renderCase()});return}
+  var c=CASES[ci];cfirst=true;
+  box.innerHTML='<div class="tag">Дело '+(ci+1)+' от '+CASES.length+'</div><div class="story">'+c.s+'</div><div class="verdicts"></div><div class="fb"></div>';
+  var vv=$('.verdicts',box);
+  V.forEach(function(v,i){var b=document.createElement('button');b.type='button';b.innerHTML=v[0]+'<small>'+v[1]+'</small>';
+    b.addEventListener('click',function(){var fb=$('.fb',box);
+      if(i===c.a){b.classList.add('ok');if(cfirst)cscore++;$$('button',vv).forEach(function(x){x.disabled=true});
+        var st=document.createElement('div');st.className='stampmk';st.textContent=cfirst?'Правилно':'Вярно';box.appendChild(st);
+        var m=$('.law mark[data-k="'+c.k+'"]');if(m)m.classList.add('hit');
+        fb.innerHTML='<p style="margin:0 0 12px">'+c.w+'</p>';var n=document.createElement('button');n.className='btn';n.type='button';n.innerHTML=(ci<CASES.length-1?'Следващо дело':'Виж резултата')+' <span class="ar">→</span>';
+        n.addEventListener('click',function(){ci++;renderCase()});fb.appendChild(n)}
+      else{b.classList.add('no');cfirst=false;fb.innerHTML='<p style="margin:0">Не. Прочети пак закона. <b>Чие</b> е откраднатото и може ли крадецът да плати?</p>';shake(b)}
+    });vv.appendChild(b)});
+}
+renderCase();
+
+/* ---------- cuneiform numbers ---------- */
+var WC='#4A2E14';
+function wedgeOne(x,y,s){return '<path d="M'+(x-8*s)+' '+y+'h'+(16*s)+'l'+(-8*s)+' '+(9*s)+'z" fill="'+WC+'"/><path d="M'+(x-1.6*s)+' '+(y+7*s)+'h'+(3.2*s)+'l'+(-.8*s)+' '+(26*s)+'h'+(-1.6*s)+'z" fill="'+WC+'"/>'}
+function wedgeTen(x,y,s){return '<path d="M'+x+' '+(y+16*s)+'L'+(x+26*s)+' '+(y+4*s)+'l'+(-7*s)+' '+(12*s)+'l'+(7*s)+' '+(12*s)+'z" fill="'+WC+'"/>'}
+function group(n,s){var t=Math.floor(n/10),o=n%10,out='',x=0;
+  for(var i=0;i<t;i++){var row=i<3?0:1,col=i<3?i:i-3;out+=wedgeTen(x+col*22*s,row*30*s-(t>3?6*s:0)+(t>3?0:4*s),s)}
+  if(t)x+=(Math.min(t,3)*22+12)*s;
+  if(o){var rows=o<=3?1:(o<=6?2:3),per=Math.ceil(o/rows),k=0;
+    for(var r=0;r<rows;r++)for(var c=0;c<per&&k<o;c++,k++)out+=wedgeOne(x+8*s+c*17*s,r*(rows>1?20*s:0)+(rows===1?2*s:0),s*(rows===3?.75:rows===2?.85:1));
+    x+=per*17*s+4*s}
+  return {svg:out,w:Math.max(x,10*s)}}
+function drawCune(el,n,s){s=s||1.4;var parts=n>=60?[Math.floor(n/60),n%60]:[n],x=10,g='';
+  parts.forEach(function(p){if(p===0){g+='<rect x="'+x+'" y="10" width="'+(30*s)+'" height="'+(50*s)+'" fill="none" stroke="'+WC+'" stroke-dasharray="4 5" stroke-opacity=".5"/>';x+=30*s+26;return}
+    var r=group(p,s);g+='<g transform="translate('+x+',14)">'+r.svg+'</g>';x+=r.w+26});
+  el.setAttribute('viewBox','0 0 '+Math.max(x,120)+' '+(Math.round(70*s)+10));el.innerHTML=g}
+var numv=$('#numv');
+function updNum(){var n=parseInt(numv.value,10);if(isNaN(n))return;n=Math.max(1,Math.min(3599,n));drawCune($('#cuneo'),n);var e;
+  if(n<60){var t=Math.floor(n/10),o=n%10;e=n+' = '+(t?t+' × десет (ъгълче)':'')+(t&&o?' и ':'')+(o?o+' × едно (клинче)':'')+'.'}
+  else{var a=Math.floor(n/60),b=n%60;e=n+' = '+a+' × 60 + '+b+'. Лявата група са шестдесетиците, дясната са единиците.'+(b===0?' Вавилонците нямали нула, затова оставяли празно място!':'')}
+  $('#numexpl').textContent=e}
+numv.addEventListener('input',updNum);
+$$('.numin button').forEach(function(b){b.addEventListener('click',function(){numv.value=Math.max(1,Math.min(3599,(parseInt(numv.value,10)||1)+(+b.dataset.d)));updNum()})});
+updNum();
+var nq={right:0,ans:0};
+function newNumQ(){var a=1+Math.floor(Math.random()*59),set=[a];
+  while(set.length<4){var d=a+[-10,10,-1,1,-11,11,9,-9][Math.floor(Math.random()*8)];if(d>0&&d<60&&set.indexOf(d)<0)set.push(d)}
+  nq.ans=a;drawCune($('#cuneq'),a,1.2);var box=$('#numopts');box.innerHTML='';
+  shuffle(set).forEach(function(v){var b=document.createElement('button');b.type='button';b.textContent=v;
+    b.addEventListener('click',function(){if(v===nq.ans){b.classList.add('ok');nq.right++;$('#nummsg').textContent='Правилно! '+nq.right+' / 5';$$('button',box).forEach(function(x){x.disabled=true});
+        if(nq.right>=5){award('num');$('#nummsg').textContent='Браво, четеш вавилонски числа!';nq.right=0}setTimeout(newNumQ,900)}
+      else{b.classList.add('no');shake(b)}});box.appendChild(b)})}
+newNumQ();
+
+$$('.flip').forEach(function(f){f.addEventListener('click',function(){f.classList.toggle('on')})});
+
+/* ---------- quiz ---------- */
+var Q=[
+ ['Коя е била първата форма на държава в Двуречието?',['Град държава','Огромна империя','Република','Номадско племе'],'Всеки шумерски град бил отделна малка държава около градски център.'],
+ ['Каква роля играели храмовете?',['Били център на стопанския и държавния живот на града','Служели само за молитва','Били пазари за коне','Били училища за воини'],'Всеки град имал главен храм, за който се грижел управителят. Там се събирали богатствата и се решавали важни неща.'],
+ ['Какво уреждали законите на Хамурапи?',['Правата и собствеността, земеделието, търговията и семейството','Само войните','Само религиозните празници','Само цената на хляба'],'Законите уреждали реда в държавата и живота на обществото.'],
+ ['С какво се отличавала Асирия от шумерските градове държави?',['Била могъщо царство със силна армия, разделена на родове войски','Била малък град без армия','Нямала търговия','Била на юг, до залива'],'Асирийците първи разделили армията на пехота, стрелци, бойни колесници и конница.'],
+ ['Кой обединил градовете в единна държава около 2250 г. пр. Хр.?',['Саргон','Хамурапи','Гудеа','Ашур'],'Саргон, владетелят на град Акад, създал Акадското царство.'],
+ ['Между кои реки се намира Месопотамия?',['Тигър и Ефрат','Нил и Ефрат','Дунав и Тигър','Нил и Йордан'],'Месопотамия означава „земя между реките“, между Тигър и Ефрат.'],
+ ['Какво е зикурат?',['Стъпаловидна пирамида от тухли с храм на върха','Гробница на фараон','Бойна колесница','Каменен стълб със закони'],'Например зикуратът в Ур, с храма на бога на луната Нана.'],
+ ['Кой бог дава на Хамурапи символа на царската власт?',['Шамаш, богът на слънцето и справедливостта','Нана, богът на луната','Ашур','Ра'],'Така Хамурапи показва, че боговете стоят зад неговите закони.'],
+ ['Кое НЕ е вярно за колесницата от Ур?',['Колелата ѝ са със спици','Колелата ѝ са плътни','Теглят я диви магарета','В нея има копия'],'Колелата са плътни дървени дискове. Спиците се появили по-късно.'],
+ ['Около кой град живеели асирийците?',['Ашур на река Тигър','Ур до Персийския залив','Вавилон','Урук'],'Ашур е търговски град на река Тигър в Северна Месопотамия.']
+];
+var qi=0,qs=0,qorder=shuffle(Q),qres=[];
+function prog(){$('#qprog').innerHTML=Q.map(function(_,i){return '<i class="'+(i<qres.length?(qres[i]?'d':'r'):'')+'"></i>'}).join('')}
+function renderQ(){var c=$('#qcard');prog();
+  if(qi>=Q.length){c.innerHTML='<div class="qend"><div class="qn">Резултат</div><div class="big">'+qs+'/'+Q.length+'</div><p>'+(qs>=8?'Писарят е доволен. Находката е твоя!':'Почти! Разгледай пак урока и опитай отново.')+'</p><button class="btn" type="button" id="qagain">Нов изпит <span class="ar">→</span></button></div>';
+    if(qs>=8)award('quiz');$('#qagain').addEventListener('click',function(){qi=0;qs=0;qres=[];qorder=shuffle(Q);renderQ()});return}
+  var q=qorder[qi],opts=shuffle(q[1].map(function(t,i){return {t:t,ok:i===0}}));
+  c.innerHTML='<div class="qn">Въпрос '+(qi+1)+' от '+Q.length+'</div><h3>'+q[0]+'</h3><div class="qopts"></div><div class="qnext" hidden><p class="qwhy"></p><button class="btn" type="button">Напред <span class="ar">→</span></button></div>';
+  var box=$('.qopts',c);
+  opts.forEach(function(o,i){var b=document.createElement('button');b.type='button';b.innerHTML='<span class="k">'+'АБВГ'[i]+'</span>'+o.t;
+    b.addEventListener('click',function(){$$('button',box).forEach(function(x,j){x.disabled=true;if(opts[j].ok)x.classList.add('ok')});
+      if(o.ok)qs++;else{b.classList.add('no');shake(b)}qres.push(o.ok);prog();
+      var nx=$('.qnext',c);nx.hidden=false;$('.qwhy',nx).innerHTML=(o.ok?'<b>Вярно.</b> ':'<b>Не съвсем.</b> ')+q[2];
+      var nb=$('button',nx);nb.addEventListener('click',function(){qi++;renderQ()});nb.focus({preventScroll:true})});box.appendChild(b)})}
+renderQ();
+
+/* ---------- poster ---------- */
+var PICS={
+ zig:['Зикурат','<svg viewBox="0 0 150 110"><path d="M5 104h140v-22H5zM22 82h106v-22H22zM40 60h70v-20H40zM58 40h34v-18H58z" fill="currentColor"/><path d="M71 104V40h8v64z" fill="#fff" opacity=".4"/></svg>'],
+ palm:['Палми и ечемик','<svg viewBox="0 0 150 110"><rect x="44" y="40" width="7" height="66" fill="currentColor"/><path d="M47 42C30 26 12 30 4 40c14-6 28-4 43 4zM47 42C64 26 82 30 90 40 76 34 62 36 47 44zM47 40C40 20 26 12 16 12c14 6 24 16 31 30zM47 40C54 20 68 12 78 12 64 18 54 28 47 42z" fill="currentColor"/><path d="M100 106V60M112 106V54M124 106V62M136 106V56M100 60l-4-6M100 60l4-6M112 54l-4-6M112 54l4-6M124 62l-4-6M124 62l4-6M136 56l-4-6M136 56l4-6" stroke="currentColor" stroke-width="3"/></svg>'],
+ boat:['Търговски кораб','<svg viewBox="0 0 150 110"><path d="M10 72q65 40 130 0l-10-8H20z" fill="currentColor"/><rect x="72" y="8" width="5" height="58" fill="currentColor"/><path d="M77 12l44 50H77z" fill="currentColor" opacity=".7"/><path d="M0 100q20-8 40 0t40 0 40 0 30-2" stroke="currentColor" stroke-width="3" fill="none"/></svg>'],
+ car:['Колесница','<svg viewBox="0 0 150 110"><circle cx="40" cy="80" r="22" fill="currentColor"/><circle cx="100" cy="80" r="22" fill="currentColor"/><path d="M33 60v40M47 60v40M93 60v40M107 60v40" stroke="#fff" stroke-width="2" opacity=".5"/><path d="M20 58h86V22h10v40H20z" fill="currentColor"/><path d="M116 50l30-20" stroke="currentColor" stroke-width="5"/></svg>']
+};
+var PCITY={
+ 'Ур':{r:'Ефрат, близо до Персийския залив',f:'Ечемик, фурми и лук. Напояваме нивите с канали.',g:'Управителят се грижи за храма на бога Нана.',t:'Кораби до далечни земи: мед, скъпоценни камъни, дърво.',s:'Огромният зикурат със 100 стъпала!',l:'Ела под закрилата на бога на луната!'},
+ 'Урук':{r:'Ефрат',f:'Ечемик и пшеница от плодородните разливи.',g:'Градът има главен храм и свое божество.',t:'Глинени съдове, тъкани и инструменти.',s:'Един от първите градове в света!',l:'Най-старият град, най-новото начало!'},
+ 'Лагаш':{r:'Между Тигър и Ефрат, с много канали',f:'Ниви и градини, напоявани от нови канали.',g:'Владетелят Гудеа строи храмове и канали.',t:'Зърно и занаятчийски стоки.',s:'Новите храмове на Гудеа.',l:'При нас каналите никога не пресъхват!'},
+ 'Акад':{r:'Ефрат',f:'Ечемик, фурми и стада овце.',g:'Цар Саргон, който обедини градовете.',t:'Стоки от цялото царство.',s:'Столицата на първото единно царство!',l:'Живей в столицата на цар Саргон!'},
+ 'Вавилон':{r:'Ефрат',f:'Ечемик, фурми и градини покрай каналите.',g:'Цар Хамурапи и неговите писани закони.',t:'Търговията и занаятите процъфтяват!',s:'Каменният стълб със законите.',l:'При нас има ред и справедливост!'},
+ 'Ашур':{r:'Тигър',f:'Зърно и стада по бреговете на Тигър.',g:'Владетелят е и военен, и религиозен водач.',t:'Сребро, мед, тъкани и занаятчийски стоки.',s:'Най-силната армия: пехота, стрелци, колесници!',l:'Ела в града на търговците!'}
+};
+var COLS=[{bg:'#F6E7C8',ink:'#171512',acc:'#E2552C'},{bg:'#1F3F8F',ink:'#F3EDE2',acc:'#F2B33D'},{bg:'#171512',ink:'#EFE7D8',acc:'#E2552C'}];
+var poster=$('#poster');
+function setCity(n){var d=PCITY[n];$('#pc').textContent=n;$('#pr').textContent=d.r;$('#pf').textContent=d.f;$('#pg').textContent=d.g;$('#pt').textContent=d.t;$('#ps').textContent=d.s;$('#psl').textContent=d.l;
+  $$('#pcity button').forEach(function(b){b.setAttribute('aria-pressed',b.textContent===n)})}
+Object.keys(PCITY).forEach(function(n,i){var b=document.createElement('button');b.type='button';b.textContent=n;b.setAttribute('aria-pressed',i===0);b.addEventListener('click',function(){setCity(n)});$('#pcity').appendChild(b)});
+Object.keys(PICS).forEach(function(k,i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-pressed',i===0);b.setAttribute('aria-label',PICS[k][0]);b.title=PICS[k][0];b.innerHTML=PICS[k][1];
+  b.addEventListener('click',function(){$('#ppicbox').innerHTML=PICS[k][1];$$('#ppic button').forEach(function(x){x.setAttribute('aria-pressed',x===b)})});$('#ppic').appendChild(b)});
+$('#ppicbox').innerHTML=PICS.zig[1];
+$$('#pcol button').forEach(function(b){b.addEventListener('click',function(){var c=COLS[+b.dataset.c];poster.style.setProperty('--pbg',c.bg);poster.style.setProperty('--pink',c.ink);poster.style.setProperty('--pacc',c.acc);
+  $$('#pcol button').forEach(function(x){x.setAttribute('aria-pressed',x===b)})})});
+setCity('Ур');
+$('#pdone').addEventListener('click',function(){award('poster');if(poster.animate&&!reduce)poster.animate([{transform:'rotate(-1deg)'},{transform:'rotate(1.5deg) scale(1.03)'},{transform:'rotate(-1deg)'}],{duration:600,easing:'cubic-bezier(.34,1.56,.64,1)'})});
+
+/* ---------- 3D museum ---------- */
+var MODELS={
+ zig:{cat:'Витрина А · Кат. № MES-2100',t:'Храмът на Ур',when:'около 2100 г. пр. Хр.',what:'тухли от глина, сушени на слънце и печени',where:'Ур, Южна Месопотамия',p:'Зикуратът е стъпаловидна пирамида от тухли. На върха е светилището на бога на луната Нана, покровител на Ур. Около храма има канали, ниви, къщи и пазар. Натисни „Построй го“, за да видиш как расте тераса по тераса.',
+   q:'Защо са строили храма толкова високо?',a:'Колкото по-високо, толкова по-близо до боговете. Храмът се виждал отдалеч и показвал колко силен и богат е градът. Високият храм бил и в безопасност от наводненията.',act:'Построй го'},
+ car:{cat:'Витрина Б · Кат. № MES-2600',t:'Колесница от Ур',when:'около 2600 г. пр. Хр.',what:'по мозайката върху ковчеже от царска гробница',where:'Ур, Южна Месопотамия',p:'Така изглежда бойната колесница от мозайката „Воини от Ур“: колесничарят кара, а воинът до него държи копие. Натисни „Тръгни“.',
+   q:'Кое е различно в колелата?',a:'Колелата са плътни, направени от дървени дъски, без спици. Затова са тежки и бавни. Теглят ги диви магарета (онагри), защото конете дошли по-късно.',act:'Тръгни'},
+ ste:{cat:'Витрина В · Кат. № MES-1750',t:'Стълбът на Хамурапи',when:'около 1750 г. пр. Хр.',what:'черен камък (базалт), висок 2,25 м',where:'днес е в музея Лувъра, Париж',p:'Върху стълба са издълбани 282 закона с клинопис. Горе Хамурапи стои пред бога Шамаш. До стълба стои ученик от 5. клас, за да видиш колко е висок.',
+   q:'Защо законите са записани на камък?',a:'За да са вечни, никой да не може да ги промени и всеки да може да ги прочете.',act:'Завърти'}
+};
+var placard=$('#placard'),stage=$('#stage'),actBtn=$('#act');
+function placardFor(id,hs){var m=MODELS[id];
+  placard.innerHTML='<div class="cat">'+m.cat+(hs?' · детайл':'')+'</div><h3>'+(hs?hs.t:m.t)+'</h3>'+
+   (hs?'<p>'+hs.d+'</p><button class="btn line" type="button" id="pback">← Целият предмет</button>':
+   '<dl><dt>Кога</dt><dd>'+m.when+'</dd><dt>От какво</dt><dd>'+m.what+'</dd><dt>Къде</dt><dd>'+m.where+'</dd></dl><p>'+m.p+'</p><details><summary>'+m.q+'</summary><p>'+m.a+'</p></details>');
+  var pb=$('#pback');if(pb)pb.addEventListener('click',function(){$$('.hs').forEach(function(h){h.classList.remove('act')});placardFor(id)})}
+placardFor('zig');
+function setAct(t){actBtn.innerHTML=t+' <span class="ar">→</span>'}
+
+if(typeof THREE==='undefined'){$('#nogl').hidden=false;actBtn.hidden=true;$$('#mtabs button').forEach(function(b){b.addEventListener('click',function(){$$('#mtabs button').forEach(function(x){x.setAttribute('aria-selected',x===b)});placardFor(b.dataset.m)})})}
+else{try{initMuseum()}catch(err){console.error(err);$('#nogl').hidden=false}}
+
+function initMuseum(){
+var T=THREE;
+var renderer=new T.WebGLRenderer({antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
+if('outputEncoding' in renderer)renderer.outputEncoding=T.sRGBEncoding;
+stage.insertBefore(renderer.domElement,stage.firstChild);
+var camera=new T.PerspectiveCamera(40,1,.1,200);
+var controls=new T.OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true;controls.dampingFactor=.08;controls.enablePan=false;controls.maxPolarAngle=Math.PI*.47;controls.autoRotate=!reduce;controls.autoRotateSpeed=.8;
+controls.addEventListener('start',function(){controls.autoRotate=false;$('#hint').hidden=true});
+function canvasTex(w,h,draw){var c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);var t=new T.CanvasTexture(c);if('encoding' in t)t.encoding=T.sRGBEncoding;t.anisotropy=4;return t}
+function rnd(a,b){return a+Math.random()*(b-a)}
+var brickTex=canvasTex(256,256,function(g,w,h){g.fillStyle='#B98552';g.fillRect(0,0,w,h);var bh=16,bw=40;
+  for(var y=0;y<h;y+=bh){var off=(y/bh)%2?bw/2:0;for(var x=-bw;x<w+bw;x+=bw){var l=rnd(-14,14);g.fillStyle='rgb('+(205+l)+','+(150+l)+','+(95+l)+')';g.fillRect(x+off+1,y+1,bw-2,bh-2)}}
+  g.fillStyle='rgba(90,55,25,.25)';for(var i=0;i<400;i++)g.fillRect(rnd(0,w),rnd(0,h),2,2)});
+brickTex.wrapS=brickTex.wrapT=T.RepeatWrapping;brickTex.repeat.set(3,1.5);
+var M=function(o){return new T.MeshStandardMaterial(Object.assign({roughness:.85,metalness:0},o))};
+var mBrick=M({map:brickTex}),mSand=M({color:0xE6C892}),mWater=M({color:0x3D86C0,roughness:.3}),mField=M({color:0x7FA34A}),mField2=M({color:0xA7B65A}),
+    mPalmT=M({color:0x8A6236}),mPalmL=M({color:0x3E8A3F,side:T.DoubleSide}),mHouse=M({color:0xD8B98A}),mBlue=M({color:0x2B4FA0,roughness:.4}),mGold=M({color:0xD9A21B,metalness:.4,roughness:.4}),mPlinth=M({color:0x2A2520});
+function box(w,h,d,mat,x,y,z,parent){var m=new T.Mesh(new T.BoxGeometry(w,h,d),mat);m.position.set(x||0,y||0,z||0);m.castShadow=m.receiveShadow=true;if(parent)parent.add(m);return m}
+function frustum(wb,db,wt,dt,h,mat){var g=new T.BoxGeometry(wb,h,db);var p=g.attributes.position;for(var i=0;i<p.count;i++){if(p.getY(i)>0){p.setX(i,p.getX(i)*wt/wb);p.setZ(i,p.getZ(i)*dt/db)}}g.computeVertexNormals();var m=new T.Mesh(g,mat);m.castShadow=m.receiveShadow=true;return m}
+function palm(x,z,s,parent){var g=new T.Group();var tr=new T.Mesh(new T.CylinderGeometry(.04,.07,1.3,6),mPalmT);tr.position.y=.65;tr.castShadow=true;g.add(tr);
+  for(var i=0;i<7;i++){var lf=new T.Mesh(new T.PlaneGeometry(.18,.75),mPalmL);lf.geometry.translate(0,.37,0);lf.position.y=1.3;lf.rotation.x=1.1;lf.castShadow=true;var p=new T.Group();p.add(lf);p.rotation.y=i/7*Math.PI*2;g.add(p)}
+  g.position.set(x,0,z);g.scale.setScalar(s);parent.add(g);return g}
+function lights(scene){scene.add(new T.HemisphereLight(0xFFF1D6,0x3A2E22,.7));var d=new T.DirectionalLight(0xFFE2B0,1.05);d.position.set(8,14,9);d.castShadow=true;
+  d.shadow.mapSize.set(1024,1024);var c=d.shadow.camera;c.left=-12;c.right=12;c.top=12;c.bottom=-12;c.near=1;c.far=50;scene.add(d)}
+function plinth(scene,r){var p=new T.Mesh(new T.CylinderGeometry(r,r+.3,.6,64),mPlinth);p.position.y=-.31;p.receiveShadow=true;scene.add(p)}
+
+function makeZig(){
+  var s=new T.Scene();lights(s);plinth(s,16);
+  var ground=new T.Mesh(new T.CircleGeometry(16,64),mSand);ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;s.add(ground);
+  box(30,.04,.6,mWater,0,.02,8.2,s);box(.6,.04,14,mWater,9,.02,1,s);box(.6,.04,14,mWater,-9,.02,1,s);
+  [[11.5,-3,mField],[11.5,2,mField2],[11.5,6,mField],[-11.5,-3,mField2],[-11.5,2,mField],[-11.5,6,mField2],[4,10.5,mField],[-4,10.5,mField2]].forEach(function(f){box(3.4,.03,3.6,f[2],f[0],.015,f[1],s)});
+  var wm=M({color:0xC8A06A});
+  box(14,.7,.3,wm,0,.35,-5,s);box(.3,.7,12.6,wm,-7,.35,1.3,s);box(.3,.7,12.6,wm,7,.35,1.3,s);box(5.6,.7,.3,wm,-4.2,.35,7.5,s);box(5.6,.7,.3,wm,4.2,.35,7.5,s);
+  box(.9,1.1,.6,wm,-1.4,.55,7.5,s);box(.9,1.1,.6,wm,1.4,.55,7.5,s);
+  for(var i=0;i<16;i++){var hh=rnd(.35,.7);box(rnd(.5,.9),hh,rnd(.5,.9),mHouse,rnd(-6.3,-3.4),hh/2,rnd(4,7),s)}
+  for(var j=0;j<10;j++){var ih=rnd(.35,.6);box(rnd(.5,.8),ih,rnd(.5,.8),mHouse,rnd(3.6,6.3),ih/2,rnd(4.6,7),s)}
+  [[-7.8,-6],[-8.4,4],[8,-5.5],[8.3,5],[-2.5,9.3],[2.8,9.4],[-5,-6.3],[5.4,-6.4],[-10.2,8.5],[10.4,8.8]].forEach(function(p){palm(p[0],p[1],rnd(.9,1.25),s)});
+  var stages=[],mStair=M({map:brickTex,color:0xF0D9B5});
+  var t1=new T.Group();var b1=frustum(6.4,4.6,6.0,4.2,1.5,mBrick);b1.position.y=.75;t1.add(b1);
+  for(var k=-2;k<=2;k++){if(!k)continue;var bt=box(.24,1.45,.12,mBrick,k*1.2,.73,2.22,t1);bt.rotation.x=-Math.atan(.2/1.5)}
+  for(var n=0;n<16;n++){var h2=(n+1)*1.5/16;box(.8,h2,.2,mStair,0,h2/2,5.3-n*.2,t1)}
+  for(var m=0;m<12;m++){var h3=(m+1)*1.5/12;box(.24,h3,.55,mStair,-3.3+m*.24,h3/2,2.6,t1);box(.24,h3,.55,mStair,3.3-m*.24,h3/2,2.6,t1)}
+  stages.push(t1);
+  var t2=new T.Group();var b2=frustum(4.4,3.0,4.1,2.7,.9,mBrick);b2.position.set(0,1.95,-.3);t2.add(b2);
+  for(var n2=0;n2<6;n2++){var h4=(n2+1)*.9/6;box(.6,h4,.18,mStair,0,1.5+h4/2,1.7-n2*.18,t2)}
+  box(.9,.6,.7,mBrick,0,1.8,1.95,t2);var dome=new T.Mesh(new T.SphereGeometry(.32,16,10,0,Math.PI*2,0,Math.PI/2),M({color:0xD9874A}));dome.position.set(0,2.1,1.95);dome.castShadow=true;t2.add(dome);
+  stages.push(t2);
+  var t3=new T.Group();var b3=frustum(2.8,2.0,2.6,1.8,.7,mBrick);b3.position.set(0,2.75,-.5);t3.add(b3);stages.push(t3);
+  var t4=new T.Group();box(1.4,.9,1.0,mBlue,0,3.55,-.5,t4);box(1.5,.1,1.1,mGold,0,4.02,-.5,t4);for(var q=-2;q<=2;q++)box(.12,.5,.12,mGold,q*.3,4.3,-.5,t4);stages.push(t4);
+  stages.forEach(function(g){s.add(g)});
+  return {scene:s,cam:[9,7.5,13],target:[0,1.6,0],min:6,max:28,stages:stages,hs:[
+    {p:[0,4.6,-.5],t:'Светилище на Нана',d:'Най-горе е малкият храм на <b>Нана</b>, бога на луната и покровител на Ур. Там влизали само жреците.'},
+    {p:[2.6,1.6,.4],t:'Първа тераса',d:'Зикуратът има няколко тераси една над друга, като стъпала на великан. Първата е най-голяма: около 64 на 46 метра в истинския храм!'},
+    {p:[0,.9,4.4],t:'Парадно стълбище от 100 стъпала',d:'Три стълбища се срещат пред портата. Средното има <b>100 стъпала</b>. По него се изкачвали тържествените шествия.'},
+    {p:[-3.15,.6,.6],t:'Тухли, сушени на слънце',d:'Камък почти нямало, затова строели с <b>плътно подредени тухли</b> от глина, сушени на слънце. Отвън слагали печени тухли, които дъждът не разтапя.'},
+    {p:[0,2.45,1.95],t:'Порта',d:'Тук се срещат трите стълбища. През портата се минавало към горните тераси.'},
+    {p:[8.6,.2,-2],t:'Канали и ниви',d:'Шумерите копаели <b>канали</b>, за да напояват нивите с вода от Ефрат. Градовете дори воювали помежду си за важните канали.'},
+    {p:[-5,1,5.6],t:'Къщи и пазар',d:'Около храма хората живеели в къщи от кирпич с плоски покриви. На пазара разменяли зърно, фурми, съдове и тъкани.'}]};
+}
+
+function makeCar(){
+  var s=new T.Scene();lights(s);plinth(s,7);
+  var gtex=canvasTex(256,256,function(g,w,h){g.fillStyle='#E1C38C';g.fillRect(0,0,w,h);for(var i=0;i<900;i++){g.fillStyle='rgba(140,100,55,'+rnd(.1,.35)+')';g.fillRect(rnd(0,w),rnd(0,h),rnd(1,4),rnd(1,3))}
+    g.strokeStyle='rgba(120,85,45,.35)';g.lineWidth=3;for(var y=20;y<h;y+=64){g.beginPath();g.moveTo(0,y);g.bezierCurveTo(w*.3,y+10,w*.6,y-10,w,y);g.stroke()}});
+  gtex.wrapS=gtex.wrapT=T.RepeatWrapping;gtex.repeat.set(4,4);
+  var ground=new T.Mesh(new T.CircleGeometry(7,64),M({map:gtex}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;s.add(ground);
+  var car=new T.Group();s.add(car);
+  var red=M({color:0x9A3A26}),wood=M({color:0x7A5130}),dark=M({color:0x3B2A1E}),lap=M({color:0x24448E,roughness:.5}),shell=M({color:0xF1E6CC}),skin=M({color:0xE0AE7E}),bronze=M({color:0xB98A3E,metalness:.5,roughness:.4});
+  box(1.2,.08,.9,wood,0,.78,0,car);box(.08,1.0,.9,red,.6,1.28,0,car);box(.05,.12,.94,mGold,.62,1.8,0,car);
+  box(1.2,.45,.05,red,0,1.02,.45,car);box(1.2,.45,.05,red,0,1.02,-.45,car);
+  for(var i=0;i<6;i++){box(.16,.12,.02,i%2?lap:shell,-.5+i*.2,1.1,.48,car);box(.16,.12,.02,i%2?shell:lap,-.5+i*.2,1.1,-.48,car)}
+  var quiver=new T.Group();box(.12,.55,.16,M({color:0x5A3A22}),0,0,0,quiver);
+  for(var j=0;j<4;j++){var jv=new T.Mesh(new T.CylinderGeometry(.012,.012,1.2,5),wood);jv.position.set(0,.3,-.05+j*.035);quiver.add(jv);var tp=new T.Mesh(new T.ConeGeometry(.03,.1,6),bronze);tp.position.set(0,.95,-.05+j*.035);quiver.add(tp)}
+  quiver.position.set(.7,1.45,.32);quiver.rotation.z=-.25;car.add(quiver);
+  var wtex=canvasTex(256,256,function(g,w,h){g.fillStyle='#8B5A2B';g.fillRect(0,0,w,h);g.fillStyle='#7A4E25';g.fillRect(0,0,w,h*.3);g.fillRect(0,h*.7,w,h*.3);
+    g.strokeStyle='#4A2E14';g.lineWidth=6;g.beginPath();g.moveTo(0,h*.3);g.lineTo(w,h*.3);g.moveTo(0,h*.7);g.lineTo(w,h*.7);g.stroke();
+    for(var k=0;k<30;k++){g.strokeStyle='rgba(60,35,15,.25)';g.lineWidth=1;g.beginPath();var yy=rnd(0,h);g.moveTo(0,yy);g.lineTo(w,yy+rnd(-6,6));g.stroke()}
+    g.strokeStyle='#3B2A1E';g.lineWidth=18;g.beginPath();g.arc(w/2,h/2,w/2-9,0,Math.PI*2);g.stroke();
+    g.fillStyle='#C9A24A';for(var a=0;a<16;a++){g.beginPath();g.arc(w/2+Math.cos(a/16*Math.PI*2)*(w/2-9),h/2+Math.sin(a/16*Math.PI*2)*(w/2-9),5,0,7);g.fill()}});
+  var faceM=M({map:wtex}),wheels=[];
+  [[-.38,.52],[.38,.52],[-.38,-.52],[.38,-.52]].forEach(function(p){var wg=new T.Mesh(new T.CylinderGeometry(.42,.42,.1,32),[dark,faceM,faceM]);wg.rotation.x=Math.PI/2;wg.castShadow=true;
+    var holder=new T.Group();holder.position.set(p[0],.42,p[1]);holder.add(wg);var hub=new T.Mesh(new T.CylinderGeometry(.07,.07,.16,12),dark);hub.rotation.x=Math.PI/2;holder.add(hub);car.add(holder);wheels.push(holder)});
+  [-.38,.38].forEach(function(x){var ax=new T.Mesh(new T.CylinderGeometry(.03,.03,1.1,8),dark);ax.rotation.x=Math.PI/2;ax.position.set(x,.42,0);car.add(ax)});
+  var pole=new T.Mesh(new T.CylinderGeometry(.035,.035,2.3,8),wood);pole.rotation.z=Math.PI/2-.12;pole.position.set(1.65,.95,0);pole.castShadow=true;car.add(pole);
+  box(.08,.06,1.9,wood,2.75,1.0,0,car);
+  var coat=M({color:0x9A6B3F}),mane=M({color:0x3A2416}),legs=[];
+  [-.75,-.25,.25,.75].forEach(function(z,ii){var o=new T.Group();
+    var body=new T.Mesh(new T.SphereGeometry(.5,20,14),coat);body.scale.set(1.1,.48,.36);body.position.y=1.0;body.castShadow=true;o.add(body);
+    var neck=new T.Mesh(new T.CylinderGeometry(.09,.14,.55,10),coat);neck.position.set(.5,1.3,0);neck.rotation.z=-.7;o.add(neck);
+    var head=new T.Mesh(new T.BoxGeometry(.34,.15,.13),coat);head.position.set(.82,1.45,0);head.rotation.z=-.55;head.castShadow=true;o.add(head);
+    var mn=box(.3,.04,.03,mane,.47,1.44,0,o);mn.rotation.z=-.7;
+    [-.05,.05].forEach(function(ez){var e=new T.Mesh(new T.ConeGeometry(.04,.18,6),coat);e.position.set(.66,1.62,ez);o.add(e)});
+    [[.36,.1],[.36,-.1],[-.36,.1],[-.36,-.1]].forEach(function(l){var lg=new T.Group();lg.position.set(l[0],.95,l[1]);var leg=new T.Mesh(new T.CylinderGeometry(.045,.035,.9,6),coat);leg.position.y=-.45;leg.castShadow=true;lg.add(leg);
+      var hoof=new T.Mesh(new T.CylinderGeometry(.05,.05,.07,6),mane);hoof.position.y=-.9;lg.add(hoof);o.add(lg);legs.push({g:lg,ph:(l[0]>0?0:Math.PI)+ii*.6+(l[1]>0?.4:0)})});
+    var tail=new T.Mesh(new T.CylinderGeometry(.02,.04,.5,6),mane);tail.position.set(-.6,.85,0);tail.rotation.z=-.4;o.add(tail);
+    o.position.set(2.75,0,z);o.scale.setScalar(.7);car.add(o)});
+  function person(x,z,spear){var p=new T.Group();
+    var skirt=new T.Mesh(new T.CylinderGeometry(.14,.24,.55,14),shell);skirt.position.y=1.1;p.add(skirt);
+    for(var r=0;r<3;r++){var f=new T.Mesh(new T.TorusGeometry(.17+r*.03,.02,6,16),M({color:0xD8CCB0}));f.rotation.x=Math.PI/2;f.position.y=1.0+r*.12;p.add(f)}
+    var torso=new T.Mesh(new T.CylinderGeometry(.13,.14,.45,12),skin);torso.position.y=1.58;p.add(torso);
+    var head=new T.Mesh(new T.SphereGeometry(.13,16,12),skin);head.position.y=1.92;p.add(head);
+    var helm=new T.Mesh(new T.SphereGeometry(.14,16,10,0,Math.PI*2,0,Math.PI/2),bronze);helm.position.y=1.94;p.add(helm);
+    var beard=new T.Mesh(new T.ConeGeometry(.08,.16,8),dark);beard.position.set(.08,1.8,0);beard.rotation.z=Math.PI;p.add(beard);
+    if(spear){var sp=new T.Mesh(new T.CylinderGeometry(.015,.015,1.8,6),wood);sp.position.set(.18,1.9,0);sp.rotation.z=-.25;p.add(sp);var tip=new T.Mesh(new T.ConeGeometry(.04,.16,6),bronze);tip.position.set(.4,2.75,0);tip.rotation.z=-.25;p.add(tip);
+      box(.03,.5,.03,wood,.1,1.4,-.18,p);box(.12,.08,.02,bronze,.15,1.62,-.18,p)}
+    else{var rein=new T.Mesh(new T.CylinderGeometry(.008,.008,2.2,4),dark);rein.rotation.z=Math.PI/2-.28;rein.position.set(1.15,1.38,0);p.add(rein)}
+    p.traverse(function(c){if(c.isMesh)c.castShadow=true});p.position.set(x,0,z);car.add(p);return p}
+  person(.15,.18,false);person(-.3,-.2,true);
+  car.position.x=-1.0;
+  return {scene:s,cam:[3.5,3.2,6.5],target:[.4,1.0,0],min:3,max:14,wheels:wheels,legs:legs,ground:gtex,hs:[
+    {p:[-1.38,.42,.6],t:'Плътни колела',d:'Колелата са <b>плътни</b>, направени от три дървени дъски, без спици. Обковани са с кожа и медни гвоздеи. Тежки са, но здрави.'},
+    {p:[-.3,1.45,.65],t:'Колесничарят',d:'Колесничарят държи юздите и кара колесницата. Облечен е в пола от вълнени кичури, наречена каунакес.'},
+    {p:[-1.5,2.45,-.2],t:'Воин с копие',d:'Воинът стои отзад и хвърля копия. В колана му има и <b>брадва</b>, а главата му пази меден шлем.'},
+    {p:[-.3,2.0,.4],t:'Колчан с копия',d:'В колчана отпред има още копия за хвърляне. Значи колесницата отива в битка.'},
+    {p:[1.75,1.55,.55],t:'Диви магарета (онагри)',d:'Колесницата я теглят четири <b>онагри</b>, диви магарета. Конете стигнали до Месопотамия чак около 2000 г. пр. Хр.'}]};
+}
+
+function makeSte(){
+  var s=new T.Scene();lights(s);plinth(s,6);
+  var floor=new T.Mesh(new T.CircleGeometry(6,64),M({color:0xCDB48A}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;s.add(floor);
+  var stex=canvasTex(512,1280,function(g,w,h){g.fillStyle='#2C2C30';g.fillRect(0,0,w,h);
+    for(var i=0;i<4000;i++){var l=rnd(30,70)|0;g.fillStyle='rgba('+l+','+l+','+(l+4)+',.5)';g.fillRect(rnd(0,w),rnd(0,h),2,2)}
+    var top=h*.38;g.fillStyle='#4A4A50';g.fillRect(40,top-10,w-80,10);
+    g.fillStyle='#57575E';g.fillRect(300,top-150,130,140);g.beginPath();g.moveTo(320,top-150);g.lineTo(440,top-150);g.lineTo(460,top-10);g.lineTo(300,top-10);g.fill();
+    g.fillRect(325,top-300,80,160);g.beginPath();g.arc(365,top-330,34,0,7);g.fill();
+    g.beginPath();g.moveTo(325,top-360);g.lineTo(405,top-360);g.lineTo(395,top-420);g.lineTo(335,top-420);g.fill();
+    g.strokeStyle='#6A6A72';g.lineWidth=4;for(var c=0;c<4;c++){g.beginPath();g.moveTo(330,top-372-c*13);g.lineTo(400,top-372-c*13);g.stroke()}
+    for(var r=0;r<4;r++){g.beginPath();g.moveTo(330,top-280+r*10);g.lineTo(295-r*10,top-300+r*14);g.stroke();g.beginPath();g.moveTo(400,top-280+r*10);g.lineTo(440+r*8,top-300+r*14);g.stroke()}
+    g.lineWidth=6;g.beginPath();g.moveTo(325,top-250);g.lineTo(265,top-240);g.stroke();
+    g.fillStyle='#8A8A92';g.fillRect(240,top-262,22,40);g.beginPath();g.arc(251,top-228,12,0,7);g.fill();
+    g.fillStyle='#57575E';g.beginPath();g.moveTo(120,top-10);g.lineTo(220,top-10);g.lineTo(205,top-260);g.lineTo(135,top-260);g.fill();
+    g.beginPath();g.arc(170,top-290,32,0,7);g.fill();g.fillRect(140,top-335,60,22);
+    g.lineWidth=12;g.strokeStyle='#57575E';g.beginPath();g.moveTo(195,top-230);g.lineTo(215,top-275);g.lineTo(200,top-295);g.stroke();
+    for(var y=top+30;y<h-40;y+=34){g.fillStyle='rgba(150,150,160,.55)';g.fillRect(40,y+26,w-80,2);
+      for(var x=50;x<w-60;x+=rnd(14,26)){g.fillStyle='#97979F';var t=Math.random();
+        if(t<.5){g.beginPath();g.moveTo(x,y+4);g.lineTo(x+10,y+4);g.lineTo(x+5,y+10);g.fill();g.fillRect(x+4,y+9,2,14)}
+        else if(t<.8){g.beginPath();g.moveTo(x,y+12);g.lineTo(x+12,y+6);g.lineTo(x+8,y+12);g.lineTo(x+12,y+18);g.fill()}
+        else{g.beginPath();g.moveTo(x,y+8);g.lineTo(x,y+16);g.lineTo(x+5,y+12);g.fill();g.fillRect(x+4,y+11,14,2)}}}});
+  stex.repeat.set(.5,.2);stex.offset.set(.5,0);
+  var shape=new T.Shape();shape.moveTo(-1,0);shape.lineTo(1,0);shape.lineTo(1,4);shape.absarc(0,4,1,0,Math.PI,false);shape.lineTo(-1,0);
+  var geo=new T.ExtrudeGeometry(shape,{depth:.55,bevelEnabled:true,bevelThickness:.06,bevelSize:.05,bevelSegments:3,curveSegments:32});geo.translate(0,0,-.275);
+  var stele=new T.Mesh(geo,[new T.MeshStandardMaterial({map:stex,bumpMap:stex,bumpScale:.04,roughness:.55,metalness:.05}),M({color:0x2E2E33,roughness:.5})]);stele.castShadow=true;stele.position.y=.3;
+  var grp=new T.Group();grp.add(stele);box(2.6,.3,1.1,M({color:0x6E5A44}),0,.15,0,grp);s.add(grp);
+  var kid=new T.Group(),km=M({color:0xE2552C}),jeans=M({color:0x1D3577}),skinK=M({color:0xE0AE7E});
+  [-.13,.13].forEach(function(x){var lg=new T.Mesh(new T.CylinderGeometry(.11,.1,.95,10),jeans);lg.position.set(x,.48,0);kid.add(lg)});
+  var kb=new T.Mesh(new T.CylinderGeometry(.26,.3,.95,16),km);kb.position.y=1.42;kid.add(kb);
+  [-1,1].forEach(function(sd){var ar=new T.Mesh(new T.CylinderGeometry(.075,.07,.85,8),km);ar.position.set(sd*.36,1.45,0);ar.rotation.z=sd*.12;kid.add(ar);var hd=new T.Mesh(new T.SphereGeometry(.08,10,8),skinK);hd.position.set(sd*.41,1.02,0);kid.add(hd)});
+  var nk=new T.Mesh(new T.CylinderGeometry(.09,.09,.12,10),skinK);nk.position.y=1.94;kid.add(nk);
+  var khd=new T.Mesh(new T.SphereGeometry(.32,20,14),skinK);khd.position.y=2.2;kid.add(khd);
+  var khair=new T.Mesh(new T.SphereGeometry(.34,20,10,0,Math.PI*2,0,Math.PI/2),M({color:0x3B2A1E}));khair.position.y=2.26;kid.add(khair);
+  kid.scale.setScalar(3.22/2.55);kid.position.set(2.1,0,.4);kid.traverse(function(c){if(c.isMesh)c.castShadow=true});s.add(kid);
+  return {scene:s,cam:[4.5,3.6,8.5],target:[.4,2.6,0],min:4,max:16,grp:grp,hs:[
+    {p:[.45,4.2,.36],t:'Бог Шамаш',d:'Седи на трон, с корона с рога и лъчи от раменете. Той е бог на <b>слънцето и справедливостта</b> и подава на царя символа на властта.'},
+    {p:[-.45,4.0,.36],t:'Цар Хамурапи',d:'Царят стои прав и вдига ръка с уважение пред бога. Така показва, че боговете стоят зад неговите закони.'},
+    {p:[0,1.9,.36],t:'Законите с клинопис',d:'Тук са издълбани <b>282 закона</b> за собствеността, търговията, земеделието, семейството и наказанията.'},
+    {p:[2.1,3.4,.4],t:'Ти до стълба',d:'Ученик от 5. клас е висок около 1,45 м. Стълбът е <b>2,25 м</b>, по-висок от възрастен човек!'}]};
+}
+
+var builders={zig:makeZig,car:makeCar,ste:makeSte},built={},cur=null,curId='zig',seen={},labels=[],anim=null;
+function setModel(id){
+  if(!built[id])built[id]=builders[id]();cur=built[id];curId=id;seen[id]=1;
+  camera.position.set(cur.cam[0],cur.cam[1],cur.cam[2]);controls.target.set(cur.target[0],cur.target[1],cur.target[2]);
+  controls.minDistance=cur.min;controls.maxDistance=cur.max;controls.autoRotate=!reduce;controls.update();
+  labels.forEach(function(l){l.el.remove()});labels=[];
+  cur.hs.forEach(function(h,i){var b=document.createElement('button');b.type='button';b.className='hs';b.innerHTML='<span>'+(i+1)+'</span>';b.setAttribute('aria-label',h.t);
+    b.addEventListener('click',function(){$$('.hs').forEach(function(x){x.classList.remove('act')});b.classList.add('act','seen');placardFor(id,h)});
+    stage.appendChild(b);labels.push({el:b,v:new T.Vector3(h.p[0],h.p[1],h.p[2])})});
+  setAct(MODELS[id].act);placardFor(id);anim=null;if(id==='car')cur.moving=false;
+  if(Object.keys(seen).length===3)award('museum');
+}
+function buildZig(){var st=cur.stages;anim={t0:performance.now(),f:function(t){st.forEach(function(g,i){var k=Math.max(0,Math.min(1,(t-i*.7)/.7));g.scale.y=Math.max(.001,1-Math.pow(1-k,3))});return t>st.length*.7}}}
+actBtn.addEventListener('click',function(){
+  if(curId==='zig')buildZig();
+  else if(curId==='car'){cur.moving=!cur.moving;setAct(cur.moving?'Спри':'Тръгни')}
+  else{var g=cur.grp,s0=g.rotation.y;anim={t0:performance.now(),f:function(t){var k=Math.min(1,t/1.6);g.rotation.y=s0+(1-Math.pow(1-k,3))*Math.PI*2;return k>=1}}}
+});
+$$('#mtabs button').forEach(function(b){b.addEventListener('click',function(){$$('#mtabs button').forEach(function(x){x.setAttribute('aria-selected',x===b)});setModel(b.dataset.m);resize()})});
+function resize(){var w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+window.addEventListener('resize',resize);
+setModel('zig');resize();
+if(!reduce)cur.stages.forEach(function(g){g.scale.y=.001});
+var started=false,visible=false,last=performance.now(),tmp=new T.Vector3();
+var io=new IntersectionObserver(function(es){visible=es[0].isIntersecting;if(visible&&!started&&!reduce&&curId==='zig'){started=true;buildZig()}},{threshold:.25});io.observe(stage);
+function loop(now){requestAnimationFrame(loop);var dt=Math.min(.05,(now-last)/1000);last=now;if(!visible)return;
+  controls.update();if(anim&&anim.f((now-anim.t0)/1000))anim=null;
+  if(curId==='car'&&cur.moving){cur.wheels.forEach(function(w){w.rotation.z-=dt*4});cur.ground.offset.x-=dt*.35;var tt=now/1000;cur.legs.forEach(function(l){l.g.rotation.z=Math.sin(tt*9+l.ph)*.5})}
+  renderer.render(cur.scene,camera);
+  var w=stage.clientWidth,h=stage.clientHeight;
+  labels.forEach(function(l){tmp.copy(l.v).project(camera);if(tmp.z>1){l.el.style.display='none';return}l.el.style.display='';l.el.style.left=((tmp.x+1)/2*w)+'px';l.el.style.top=((1-tmp.y)/2*h)+'px'})}
+requestAnimationFrame(loop);
+}
+})();
+</script>
+</body>
+</html>
