@@ -4,125 +4,144 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Задачи за консултации · Учене с Алекс и тати</title>
-<meta name="description" content="Какво да направите за консултации: география и човекът и природата.">
+<meta name="description" content="Какво да направите за консултации: математика и география.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;800;900&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
 <style>
-/* Consultations look: white page, purple band, blue→pink gradient pills, black outlines, cyan/pink glitch accents */
-:root{--kp:#6a1fb0;--kb:#0b4bb3;--kpk:#c56ee6;--kg:linear-gradient(90deg,#0b4bb3,#c56ee6);--kcy:#00e6ff;--kmg:#ff2bd6;--ink:#000;--yel:#ffd83f;color-scheme:light;
+/* Consultations look, now animated with GSAP + Lenis:
+   white page, purple "mission board" band, blue→pink gradient, black outlines, cyan/pink glitch accents.
+   Motion (React Bits ideas rebuilt in plain JS): blur-in title, shiny pill, count-up progress,
+   cards that flip up with a spinning gradient border, tilt + spotlight on hover, click sparks and confetti on "Готово",
+   scroll-revealed "Каквото Алекс иска", magnetic back button, viewer that grows out of the button. */
+:root{--kp:#6a1fb0;--kp2:#4c1285;--kb:#0b4bb3;--kpk:#c56ee6;--kg:linear-gradient(90deg,#0b4bb3,#c56ee6);--kcy:#00e6ff;--kmg:#ff2bd6;--ink:#000;--yel:#ffd83f;color-scheme:light;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:#fff;color:#000;font-family:"Noto Sans",Arial,sans-serif;overflow-x:hidden}
-button{font:inherit;color:inherit;cursor:pointer}
+::selection{background:var(--kmg);color:#fff}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 :focus-visible{outline:3px solid var(--kcy);outline-offset:3px;border-radius:8px}
+[hidden]{display:none!important}
 
-/* hero: reuses the consultations artwork with a live title */
+/* hero: the consultations artwork with a live title */
 .hero{max-width:1100px;margin:0 auto;padding:12px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
-.art{position:relative;width:100%;aspect-ratio:1366/768;overflow:hidden;animation:fade .9s ease both}
+.art{position:relative;width:100%;aspect-ratio:1366/768;overflow:hidden}
 .kd{position:absolute;left:0;top:0;width:1366px;height:768px;transform-origin:top left}
 .kd img{position:absolute;left:0;top:0;width:1366px;height:768px;display:block}
 .ttl{position:absolute;left:436px;top:296px;margin:0;transform:translate(-50%,-50%) rotate(-7.6deg);text-align:center;font:900 90px/1 Rubik,Arial,sans-serif;white-space:nowrap}
-.ttl span{display:inline-block;animation:blurIn 1.9s .4s cubic-bezier(.2,.7,.2,1) both}
-.ttl small{display:block;font-size:.5em;margin-top:.15em;color:var(--kp)}
-@keyframes fade{from{opacity:0;transform:scale(1.02)}}
-@keyframes blurIn{0%{filter:blur(18px);opacity:0;letter-spacing:.14em}35%{opacity:.6}100%{filter:blur(0);opacity:1;letter-spacing:0}}
+.ttl .ch{display:inline-block;will-change:transform,filter}
 
-/* tasks band */
-.band{background:var(--kp);padding:40px max(16px,env(safe-area-inset-right,0px)) 50px max(16px,env(safe-area-inset-left,0px))}
+/* the band: a mission board with drifting light behind it */
+.band{position:relative;overflow:hidden;background:var(--kp);padding:44px max(16px,env(safe-area-inset-right,0px)) 56px max(16px,env(safe-area-inset-left,0px));isolation:isolate}
+.band::before{content:"";position:absolute;inset:0;z-index:-2;background-image:radial-gradient(rgba(255,255,255,.16) 1.4px,transparent 1.6px);background-size:22px 22px}
+.blob{position:absolute;z-index:-1;width:46vmax;height:46vmax;border-radius:50%;filter:blur(60px);opacity:.55;pointer-events:none}
+.blob.b1{background:#0b4bb3;left:-14vmax;top:-18vmax}
+.blob.b2{background:#c56ee6;right:-16vmax;bottom:-20vmax}
+.blob.b3{background:#ff2bd6;left:40%;top:30%;width:22vmax;height:22vmax;opacity:.28}
 .band-in{max-width:1000px;margin:0 auto}
-.head{display:flex;justify-content:center;margin-bottom:28px}
-.bigpill{background:var(--kg);color:#fff;border:2px solid #000;border-radius:16px;padding:10px 26px;font:800 clamp(24px,4.4vw,40px) Rubik,Arial,sans-serif;text-align:center;box-shadow:0 6px 0 #000;animation:drop .7s .2s cubic-bezier(.2,1.5,.35,1) both}
-@keyframes drop{from{opacity:0;transform:translateY(-30px) scale(.8)}}
-.tasks{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-.frame{background:var(--kg);border:2px solid #000;border-radius:22px;padding:12px;animation:rise .7s cubic-bezier(.2,1.3,.4,1) both}
-.frame:nth-child(2){animation-delay:.15s}
-@keyframes rise{from{opacity:0;transform:translateY(40px)}}
-.card{background:#fff;border:2px solid #000;border-radius:14px;padding:22px 20px 20px;height:100%;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.head{display:flex;flex-direction:column;align-items:center;gap:16px;margin-bottom:30px}
+.bigpill{position:relative;overflow:hidden;background:var(--kg);color:#fff;border:2px solid #000;border-radius:16px;padding:10px 26px;font:800 clamp(24px,4.4vw,40px) Rubik,Arial,sans-serif;text-align:center;box-shadow:0 6px 0 #000}
+.bigpill .shine{position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-120%) skewX(-18deg);pointer-events:none}
+.prog{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid #000;border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 4px 0 #000;font:800 17px Rubik,Arial,sans-serif}
+.prog .num{font-size:22px;min-width:1.2em;text-align:center}
+.prog .track{display:inline-block;width:clamp(90px,22vw,180px);height:14px;border:2px solid #000;border-radius:999px;overflow:hidden;background:#f1eaf8}
+.prog .fill{display:block;height:100%;width:100%;background:var(--kg);transform:scaleX(0);transform-origin:left}
+.prog .msg{background:var(--yel);border:2px solid #000;border-radius:999px;padding:3px 12px;font-size:15px}
+
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:26px;perspective:1200px}
+/* spinning gradient border (React Bits "StarBorder" idea) */
+.frame{--a:0deg;position:relative;border:2px solid #000;border-radius:22px;padding:12px;transform-style:preserve-3d;will-change:transform;
+  background:conic-gradient(from var(--a),#0b4bb3,#c56ee6,#ff2bd6,#00e6ff,#0b4bb3)}
+.card{position:relative;overflow:hidden;background:#fff;border:2px solid #000;border-radius:14px;padding:22px 20px 20px;height:100%;display:flex;flex-direction:column;gap:10px}
+/* spotlight that follows the finger or mouse */
+.card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(197,110,230,.20),transparent 70%)}
+.frame:hover .card::before{opacity:1}
 .subj{align-self:flex-start;background:var(--kg);color:#fff;border:2px solid #000;border-radius:10px;padding:3px 12px;font:800 16px Rubik,Arial,sans-serif}
 .card h2{font:900 clamp(26px,3.6vw,36px)/1.1 Rubik,Arial,sans-serif;margin:4px 0 0;text-wrap:balance}
 .pages{font:800 20px Rubik,Arial,sans-serif;margin:0;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .pages b{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:0 10px;border:2px solid #000;border-radius:12px;background:#fff;font:900 20px Rubik,Arial,sans-serif;box-shadow:3px 3px 0 var(--kmg),-2px -2px 0 var(--kcy)}
+.note{margin:0;font-size:15px;color:#333}
 .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:10px}
-.btn{border:3px solid #000;border-radius:16px;padding:12px 18px;font:800 18px Rubik,Arial,sans-serif;background:var(--kg);color:#fff;box-shadow:0 5px 0 #000;transition:transform .12s,box-shadow .12s;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
-.btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 #000}
-.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #000}
+.btn{position:relative;border:3px solid #000;border-radius:16px;padding:12px 18px;font:800 18px Rubik,Arial,sans-serif;background:var(--kg);color:#fff;box-shadow:0 5px 0 #000;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
 .btn.w{background:#fff;color:#000}
 .done{border:3px solid #000;border-radius:16px;padding:12px 14px;font:800 16px Rubik,Arial,sans-serif;background:#fff;color:#000;box-shadow:0 5px 0 #000}
 .done[aria-pressed="true"]{background:var(--yel)}
-.card.ok::after{content:"Готово!";position:absolute;right:-34px;top:20px;transform:rotate(35deg);background:var(--yel);border:2px solid #000;padding:4px 40px;font:900 15px Rubik,Arial,sans-serif;animation:stamp .5s cubic-bezier(.2,1.6,.4,1)}
-@keyframes stamp{from{transform:rotate(35deg) scale(2.4);opacity:0}}
-.star{position:absolute;width:var(--s,30px);height:var(--s,30px);background:var(--yel);clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);animation:tw 2.8s var(--d,0s) ease-in-out infinite;pointer-events:none}
-@keyframes tw{0%,100%{transform:scale(.6) rotate(0);opacity:.6}50%{transform:scale(1.1) rotate(45deg);opacity:1}}
+.btn:active,.done:active{box-shadow:0 1px 0 #000;transform:translateY(4px)}
+.ribbon{position:absolute;right:-38px;top:20px;transform:rotate(35deg);background:var(--yel);border:2px solid #000;padding:4px 44px;font:900 15px Rubik,Arial,sans-serif;pointer-events:none}
+.card:not(.ok) .ribbon{display:none}
+.star{position:absolute;width:var(--s,26px);height:var(--s,26px);background:var(--yel);clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);pointer-events:none}
+.spark{position:fixed;left:0;top:0;width:10px;height:3px;border-radius:2px;pointer-events:none;z-index:80}
+.conf{position:fixed;left:0;top:0;width:9px;height:14px;pointer-events:none;z-index:80}
 
-/* «Каквото Алекс иска» strip */
-.alex{padding:40px 16px 30px;text-align:center;overflow:hidden}
-.alex p{display:inline-block;margin:0;transform:rotate(-6deg) skewX(-8deg);font:900 clamp(30px,7vw,64px)/1 Rubik,Arial,sans-serif;color:#1c1c1c;text-shadow:-3px -2px 0 var(--kmg),3px 3px 0 var(--kcy);animation:jit 4s 1s steps(1) infinite}
-@keyframes jit{0%,88%,100%{transform:rotate(-6deg) skewX(-8deg)}90%{transform:rotate(-6deg) skewX(-8deg) translate(-5px,2px)}93%{transform:rotate(-6deg) skewX(-2deg) translate(4px,-2px)}}
-.back{display:flex;justify-content:center;padding:0 16px 40px}
+/* «Каквото Алекс иска»: letters light up as you scroll */
+.alex{padding:56px 16px 30px;text-align:center;overflow:hidden}
+.alex p{display:inline-block;margin:0;transform:rotate(-6deg) skewX(-8deg);font:900 clamp(30px,7vw,64px)/1 Rubik,Arial,sans-serif;color:#1c1c1c;text-shadow:-3px -2px 0 var(--kmg),3px 3px 0 var(--kcy)}
+.alex .ch{display:inline-block}
+.back{display:flex;justify-content:center;padding:6px 16px 48px}
 
 /* page viewer */
-#view{position:fixed;inset:0;z-index:50;background:rgba(20,6,40,.88);display:flex;flex-direction:column}
-#view[hidden]{display:none}
+#view{position:fixed;inset:0;z-index:50;background:rgba(20,6,40,.9);display:flex;flex-direction:column}
 .vbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 10px) max(12px,env(safe-area-inset-right,0px)) 10px max(12px,env(safe-area-inset-left,0px));background:var(--kg);border-bottom:2px solid #000;flex-wrap:wrap}
 .vbar h3{margin:0;color:#fff;font:800 17px Rubik,Arial,sans-serif;min-width:0}
 .vbar .row{margin:0;padding:0}
 .vbar .btn{padding:8px 14px;font-size:15px;box-shadow:0 3px 0 #000}
-.vscroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:14px;display:flex;justify-content:center;align-items:flex-start}
-.vscroll img{width:100%;max-width:900px;height:auto;display:block;border:3px solid #000;border-radius:10px;background:#fff;animation:fade .4s ease both}
+.vscroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:14px;display:flex;justify-content:center;align-items:flex-start}
+.vscroll img{width:100%;max-width:900px;height:auto;display:block;border:3px solid #000;border-radius:10px;background:#fff}
 #view.zoom .vscroll{justify-content:flex-start}
 #view.zoom .vscroll img{width:220%;max-width:none}
 .pgv{width:100%;max-width:900px}
 #view.zoom .pgv{max-width:none}
-.ptabs{position:sticky;top:-14px;left:0;z-index:2;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;padding:12px 0;margin:-14px 0 10px;background:rgba(20,6,40,.88)}
+.ptabs{position:sticky;top:-14px;left:0;z-index:2;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;padding:12px 0;margin:-14px 0 10px;background:rgba(20,6,40,.9)}
 .ptabs .lbl{color:#fff;font:800 15px Rubik,Arial,sans-serif}
 .ptabs button{min-width:56px;height:52px;padding:0 10px;font:900 21px Rubik,Arial,sans-serif;border:3px solid #000;border-radius:14px;background:#fff;color:#000;box-shadow:3px 3px 0 var(--kmg),-2px -2px 0 var(--kcy)}
-.ptabs button[aria-current="true"]{background:var(--kg);color:#fff;transform:translateY(-2px)}
+.ptabs button[aria-current="true"]{background:var(--kg);color:#fff}
 .ptabs button.dn::after{content:" ✓"}
-.ptabs .mark{background:#fff;font-size:15px;height:52px}
+.ptabs .mark{font-size:15px}
 .ptabs .mark[aria-pressed="true"]{background:var(--yel)}
-.pagelist{background:#fff;border:3px solid #000;border-radius:18px;padding:22px;max-width:520px;width:100%;margin:auto;animation:fade .4s ease both}
-.pagelist p{font:700 17px/1.45 "Noto Sans",Arial,sans-serif;margin:0 0 16px}
-.pagelist .pages{gap:12px}
-.pagelist .pages button{min-width:64px;height:64px;font:900 24px Rubik,Arial,sans-serif;border:3px solid #000;border-radius:14px;background:#fff;box-shadow:4px 4px 0 var(--kmg),-3px -3px 0 var(--kcy)}
-.pagelist .pages button[aria-pressed="true"]{background:var(--yel)}
-.pagelist small{display:block;margin-top:14px;color:#555;font-weight:700}
+.pnote{margin:0 0 10px;font:800 18px Rubik,Arial,sans-serif;color:#fff;text-align:center}
 
 @media (max-width:760px){.tasks{grid-template-columns:1fr}}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <header class="hero">
   <div class="art" id="art"><div class="kd" id="kd">
     <img src="../kons/k1.webp" alt="">
-    <h1 class="ttl"><span>Консултации</span></h1>
+    <h1 class="ttl" id="ttl">Консултации</h1>
   </div></div>
 </header>
 
-<main class="band">
+<main class="band" id="band">
+  <i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
   <div class="band-in">
-    <div class="head"><div class="bigpill">Задачи за консултации</div></div>
-    <div class="tasks">
+    <div class="head">
+      <div class="bigpill" id="pill">Задачи за консултации<i class="shine"></i></div>
+      <div class="prog" id="prog" aria-live="polite">Готови <span class="num" id="pNum">0</span>/ <span id="pTot">2</span><span class="track"><span class="fill" id="pFill"></span></span><span class="msg" id="pMsg" hidden>Всичко е готово!</span></div>
+    </div>
+    <div class="tasks" id="tasks">
       <div class="frame"><article class="card" id="mat">
-        <i class="star" style="right:18px;top:16px;--s:26px"></i>
+        <i class="star" style="right:18px;top:16px"></i>
+        <span class="ribbon">Готово!</span>
         <span class="subj">Математика</span>
         <h2>Учебник</h2>
         <p class="pages">Стр. <b>71</b> от 1 до 5</p>
         <p class="pages">Стр. <b>73</b> от 1 до 4</p>
-        <p style="margin:0;font-size:15px;color:#333">Събиране и изваждане на дроби.</p>
+        <p class="note">Събиране и изваждане на дроби.</p>
         <div class="row">
           <button class="btn" id="openMat" type="button">📖 Виж задачите</button>
           <button class="done" type="button" data-task="mat" aria-pressed="false">✓ Готово</button>
         </div>
       </article></div>
       <div class="frame"><article class="card" id="geo40">
-        <i class="star" style="right:18px;top:16px;--s:26px;--d:1s"></i>
+        <i class="star" style="right:18px;top:16px"></i>
+        <span class="ribbon">Готово!</span>
         <span class="subj">География и икономика</span>
         <h2>Учебник</h2>
         <p class="pages">Стр. <b>40</b> зад. 5</p>
-        <p style="margin:0;font-size:15px;color:#333">Препишете и заместете: вътрешни и външни земни сили.</p>
+        <p class="note">Препишете и заместете: вътрешни и външни земни сили.</p>
         <div class="row">
           <button class="btn" id="openGeo" type="button">📖 Виж задачата</button>
           <button class="done" type="button" data-task="geo40" aria-pressed="false">✓ Готово</button>
@@ -132,10 +151,10 @@ button{font:inherit;color:inherit;cursor:pointer}
   </div>
 </main>
 
-<section class="alex" aria-label="Каквото Алекс иска"><p>КАКВОТО АЛЕКС ИСКА</p></section>
-<div class="back"><a class="btn w" href="../">← Към Учене с Алекс и тати</a></div>
+<section class="alex" aria-label="Каквото Алекс иска"><p id="alex">КАКВОТО АЛЕКС ИСКА</p></section>
+<div class="back"><a class="btn w" id="backBtn" href="../">← Към Учене с Алекс и тати</a></div>
 
-<div id="view" hidden role="dialog" aria-modal="true" aria-labelledby="vTitle">
+<div id="view" hidden role="dialog" aria-modal="true" aria-labelledby="vTitle" data-lenis-prevent>
   <div class="vbar">
     <h3 id="vTitle"></h3>
     <div class="row">
@@ -143,35 +162,76 @@ button{font:inherit;color:inherit;cursor:pointer}
       <button class="btn" id="vClose" type="button">✕ Затвори</button>
     </div>
   </div>
-  <div class="vscroll" id="vBody"></div>
+  <div class="vscroll" id="vBody" data-lenis-prevent></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
 <script>
 (function(){
- var $=function(id){return document.getElementById(id)};
+ var $=function(id){return document.getElementById(id)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+ var G=window.gsap||null,REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches,FX=!!G&&!REDUCE,HOVER=matchMedia('(hover: hover)').matches;
+
+ /* ---- hero artwork scales with the page ---- */
  function fitArt(){$('kd').style.transform='scale('+($('art').clientWidth/1366)+')'}
  fitArt();addEventListener('resize',fitArt);
- var KEY='uchene-zadachi';
+
+ /* ---- saved state (same keys as before, so earlier ticks are kept) ---- */
+ var KEY='uchene-zadachi',TASKS=['mat','geo40'];
  function get(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}}
  function put(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
- var st=get();
- function paint(){document.querySelectorAll('.done').forEach(function(b){var on=!!st[b.dataset.task];b.setAttribute('aria-pressed',on);$(b.dataset.task).classList.toggle('ok',on)})}
- document.querySelectorAll('.done').forEach(function(b){b.addEventListener('click',function(){st[b.dataset.task]=!st[b.dataset.task];put(st);paint()})});
- paint();
- var view=$('view'),body=$('vBody'),zoomBtn=$('vZoom'),last=null;
- function open(title,html,zoomable){last=document.activeElement;$('vTitle').textContent=title;body.innerHTML=html;view.classList.remove('zoom');zoomBtn.hidden=!zoomable;zoomBtn.textContent='🔍 Увеличи';view.hidden=false;document.body.style.overflow='hidden';$('vClose').focus()}
- function close(){view.hidden=true;document.body.style.overflow='';if(last)last.focus()}
- // page viewer with tabs; each page can be ticked off, and the card is done when all pages are
+ var st=get(),shown=0;
+
+ /* ---- progress: count-up number and filling bar ---- */
+ $('pTot').textContent=TASKS.length;
+ function progress(animate){
+  var n=TASKS.filter(function(t){return st[t]}).length,all=n===TASKS.length;
+  $('pMsg').hidden=!all;
+  if(FX&&animate){var o={v:shown};G.to(o,{v:n,duration:.6,ease:'power2.out',onUpdate:function(){$('pNum').textContent=Math.round(o.v)}});
+    G.to('#pFill',{scaleX:n/TASKS.length,duration:.8,ease:'power3.out'});
+    if(all)G.fromTo('#pMsg',{scale:.4,rotate:-12},{scale:1,rotate:0,duration:.7,ease:'elastic.out(1,.45)'})}
+  else{$('pNum').textContent=n;$('pFill').style.transform='scaleX('+(n/TASKS.length)+')'}
+  shown=n;return all;
+ }
+ function paint(){$$('.done').forEach(function(b){var on=!!st[b.dataset.task];b.setAttribute('aria-pressed',on);$(b.dataset.task).classList.toggle('ok',on)})}
+
+ /* ---- click sparks (React Bits "ClickSpark") and confetti ---- */
+ var COL=['#00e6ff','#ff2bd6','#ffd83f','#c56ee6','#0b4bb3'];
+ function sparks(x,y){if(!FX)return;for(var i=0;i<12;i++){var s=document.createElement('i');s.className='spark';s.style.background=COL[i%COL.length];document.body.appendChild(s);
+  var a=i/12*Math.PI*2,d=40+Math.random()*30;G.fromTo(s,{x:x,y:y,rotate:a*180/Math.PI,opacity:1},{x:x+Math.cos(a)*d,y:y+Math.sin(a)*d,opacity:0,duration:.6,ease:'power2.out',onComplete:s.remove.bind(s)})}}
+ function confetti(){if(!FX)return;var r=$('tasks').getBoundingClientRect();for(var i=0;i<60;i++){var c=document.createElement('i');c.className='conf';c.style.background=COL[i%COL.length];document.body.appendChild(c);
+  var x=r.left+Math.random()*r.width;G.fromTo(c,{x:x,y:r.top-20,rotate:Math.random()*360},{x:x+(Math.random()-.5)*200,y:r.bottom+80,rotate:'+=720',duration:1.4+Math.random(),ease:'power1.in',delay:Math.random()*.3,onComplete:c.remove.bind(c)})}}
+
+ $$('.done').forEach(function(b){b.addEventListener('click',function(e){
+  st[b.dataset.task]=!st[b.dataset.task];put(st);paint();
+  if(st[b.dataset.task]){var r=b.getBoundingClientRect();sparks(e.clientX||r.left+r.width/2,e.clientY||r.top+r.height/2);
+   if(FX)G.fromTo($(b.dataset.task).querySelector('.ribbon'),{scale:2.4,opacity:0},{scale:1,opacity:1,duration:.55,ease:'back.out(2)'})}
+  if(progress(true)&&st[b.dataset.task])confetti();
+ })});
+ paint();progress(false);
+
+ /* ---- page viewer ---- */
+ var view=$('view'),body=$('vBody'),zoomBtn=$('vZoom'),last=null,lenis=null;
+ function open(title,html,zoomable){last=document.activeElement;$('vTitle').textContent=title;body.innerHTML=html;view.classList.remove('zoom');zoomBtn.hidden=!zoomable;zoomBtn.textContent='🔍 Увеличи';
+  view.hidden=false;document.body.style.overflow='hidden';if(lenis)lenis.stop();
+  if(FX&&last&&last.getBoundingClientRect){var r=last.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+   G.fromTo(view,{clipPath:'circle(0px at '+cx+'px '+cy+'px)'},{clipPath:'circle(150% at '+cx+'px '+cy+'px)',duration:.6,ease:'power3.inOut',clearProps:'clipPath'})}
+  $('vClose').focus()}
+ function close(){function done(){view.hidden=true;document.body.style.overflow='';if(lenis)lenis.start();if(last)last.focus()}
+  if(FX)G.to(view,{opacity:0,duration:.2,onComplete:function(){G.set(view,{clearProps:'opacity'});done()}});else done()}
  function pages(task,title,PAGES,file,alt,note){
   var pg=st[task+'Pages']||{},cur=PAGES[0];
-  open(title,'<div class="pgv"><div class="ptabs"><span class="lbl">Страница:</span>'+PAGES.map(function(n){return '<button type="button" data-p="'+n+'">'+n+'</button>'}).join('')+'<button type="button" class="mark" id="pMark">✓ Готова</button></div><p class="pnote" id="pNote" style="margin:0 0 10px;font:800 18px Rubik,Arial,sans-serif;color:#fff;text-align:center"></p><img id="pImg" alt=""></div>',true);
-  var img=$('pImg'),mark=$('pMark'),nt=$('pNote');
-  function show(n){cur=n;img.src=file(n);img.alt=alt(n);nt.textContent=note?note(n):'';nt.hidden=!note;
-   body.querySelectorAll('[data-p]').forEach(function(b){var p=+b.dataset.p;b.setAttribute('aria-current',p===n);b.classList.toggle('dn',!!pg[p])});
+  open(title,'<div class="pgv"><div class="ptabs"><span class="lbl">Страница:</span>'+PAGES.map(function(n){return '<button type="button" data-p="'+n+'">'+n+'</button>'}).join('')+'<button type="button" class="mark" id="pMark">✓ Готова</button></div><p class="pnote" id="pNote"></p><img id="pImg" alt=""></div>',true);
+  var img=$('pImg'),mark=$('pMark'),nt=$('pNote'),first=true;
+  function show(n){var dir=n>cur?1:-1;cur=n;img.src=file(n);img.alt=alt(n);nt.textContent=note?note(n):'';nt.hidden=!note;
+   $$('[data-p]',body).forEach(function(b){var p=+b.dataset.p;b.setAttribute('aria-current',p===n);b.classList.toggle('dn',!!pg[p])});
    mark.setAttribute('aria-pressed',!!pg[n]);mark.textContent=pg[n]?'✓ Стр. '+n+' е готова':'✓ Готова';body.scrollTop=0;body.scrollLeft=0;
-   img.style.animation='none';void img.offsetWidth;img.style.animation=''}
-  body.querySelectorAll('[data-p]').forEach(function(b){b.addEventListener('click',function(){show(+b.dataset.p)})});
-  mark.addEventListener('click',function(){pg[cur]=!pg[cur];st[task+'Pages']=pg;st[task]=PAGES.every(function(n){return pg[n]});put(st);paint();show(cur)});
+   if(FX)G.fromTo(img,{x:first?0:40*dir,opacity:0,scale:first?.96:1},{x:0,opacity:1,scale:1,duration:.45,ease:'power3.out'});first=false}
+  $$('[data-p]',body).forEach(function(b){b.addEventListener('click',function(){if(+b.dataset.p!==cur)show(+b.dataset.p)})});
+  mark.addEventListener('click',function(e){pg[cur]=!pg[cur];st[task+'Pages']=pg;var was=!!st[task];st[task]=PAGES.every(function(n){return pg[n]});put(st);paint();
+   if(pg[cur])sparks(e.clientX,e.clientY);if(FX)G.fromTo(mark,{scale:.85},{scale:1,duration:.5,ease:'elastic.out(1,.4)'});
+   if(progress(true)&&!was&&st[task])confetti();show(cur)});
   show(cur);
  }
  var MAT={71:'Задачи от 1 до 5 (събиране)',73:'Задачи от 1 до 4 (изваждане)'};
@@ -183,6 +243,63 @@ button{font:inherit;color:inherit;cursor:pointer}
  $('vClose').addEventListener('click',close);
  view.addEventListener('click',function(e){if(e.target===view||e.target===body)close()});
  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!view.hidden)close()});
+
+ if(!FX)return; /* everything below is motion only */
+
+ /* ---- Lenis smooth scroll wired to GSAP ---- */
+ G.registerPlugin(ScrollTrigger);
+ if(window.Lenis){lenis=new Lenis({autoRaf:false,lerp:.1});lenis.on('scroll',ScrollTrigger.update);G.ticker.add(function(t){lenis.raf(t*1000)});G.ticker.lagSmoothing(0)}
+
+ /* split a heading into letter spans (no SplitText needed for short words) */
+ function letters(el){var t=el.textContent;el.setAttribute('aria-label',t);el.innerHTML=t.split('').map(function(c){return '<span class="ch" aria-hidden="true">'+(c===' '?'&nbsp;':c)+'</span>'}).join('');return $$('.ch',el)}
+
+ /* hero: artwork settles in, title letters blur in (React Bits "BlurText"), gentle parallax */
+ G.from('#art',{opacity:0,scale:1.03,duration:.9,ease:'power2.out'});
+ G.from(letters($('ttl')),{opacity:0,filter:'blur(14px)',y:-24,duration:.9,ease:'power3.out',stagger:.05,delay:.3});
+ G.to('#kd img',{yPercent:6,ease:'none',scrollTrigger:{trigger:'#art',start:'top top',end:'bottom top',scrub:true}});
+
+ /* band: drifting light, pill drops in and shines, progress pops */
+ G.to('.b1',{x:'8vmax',y:'6vmax',duration:9,ease:'sine.inOut',yoyo:true,repeat:-1});
+ G.to('.b2',{x:'-10vmax',y:'-5vmax',duration:11,ease:'sine.inOut',yoyo:true,repeat:-1});
+ G.to('.b3',{x:'-12vmax',y:'4vmax',scale:1.3,duration:7,ease:'sine.inOut',yoyo:true,repeat:-1});
+ var tlb=G.timeline({scrollTrigger:{trigger:'#band',start:'top 80%',once:true}});
+ tlb.from('#pill',{y:-40,scale:.8,opacity:0,duration:.7,ease:'back.out(1.8)'})
+    .to('#pill .shine',{x:'360%',duration:1.1,ease:'power2.inOut'},'-=.1')
+    .from('#prog',{y:20,opacity:0,duration:.5,ease:'power3.out'},'-=.8')
+    .add(function(){shown=0;$('pNum').textContent=0;G.set('#pFill',{scaleX:0});progress(true)},'-=.4');
+ G.to('#pill .shine',{x:'360%',duration:1.1,ease:'power2.inOut',repeat:-1,repeatDelay:4,delay:3,immediateRender:false,startAt:{x:'-120%'}});
+
+ /* cards flip up one after another, then their borders keep spinning slowly */
+ var frames=$$('.frame');
+ G.from(frames,{rotateX:-55,y:80,opacity:0,transformOrigin:'50% 100%',duration:.9,ease:'power3.out',stagger:.15,scrollTrigger:{trigger:'#tasks',start:'top 85%',once:true}});
+ frames.forEach(function(f,i){G.to(f,{'--a':'360deg',duration:8,ease:'none',repeat:-1,delay:i*-4});
+  G.from($$('.pages b',f),{scale:0,rotate:-20,duration:.5,ease:'back.out(2.5)',stagger:.08,scrollTrigger:{trigger:f,start:'top 80%',once:true}})});
+ $$('.star').forEach(function(s,i){G.to(s,{rotate:90,scale:1.25,duration:1.4,ease:'sine.inOut',yoyo:true,repeat:-1,delay:i*.7})});
+
+ /* tilt + spotlight on mouse (React Bits "TiltedCard" / "SpotlightCard"); touch screens get a press instead */
+ frames.forEach(function(f){var card=f.querySelector('.card');
+  if(HOVER){f.addEventListener('pointermove',function(e){var r=f.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+     card.style.setProperty('--mx',(px+.5)*100+'%');card.style.setProperty('--my',(py+.5)*100+'%');
+     G.to(f,{rotateY:px*10,rotateX:-py*10,duration:.4,ease:'power2.out'})});
+   f.addEventListener('pointerleave',function(){G.to(f,{rotateY:0,rotateX:0,duration:.6,ease:'elastic.out(1,.5)'})})}
+  else{f.addEventListener('pointerdown',function(){G.to(f,{scale:.98,duration:.12})});
+   ['pointerup','pointercancel','pointerleave'].forEach(function(ev){f.addEventListener(ev,function(){G.to(f,{scale:1,duration:.4,ease:'elastic.out(1,.5)'})})})}});
+
+ /* buttons spring a little when hovered */
+ if(HOVER)$$('.btn,.done').forEach(function(b){b.addEventListener('pointerenter',function(){G.to(b,{y:-3,duration:.25,ease:'power2.out'})});b.addEventListener('pointerleave',function(){G.to(b,{y:0,duration:.4,ease:'elastic.out(1,.5)'})})});
+
+ /* «Каквото Алекс иска»: letters jump in one by one when it comes into view, then a glitch twitch now and then */
+ var ach=letters($('alex'));
+ G.from(ach,{opacity:0,y:40,rotate:12,stagger:.045,duration:.6,ease:'back.out(2)',scrollTrigger:{trigger:'.alex',start:'top 92%',once:true}});
+ G.timeline({repeat:-1,repeatDelay:3.5,delay:2}).to('#alex',{x:-5,y:2,duration:.05}).to('#alex',{x:4,y:-2,duration:.05}).to('#alex',{x:0,y:0,duration:.05});
+
+ /* magnetic back button (React Bits "Magnet") */
+ var bb=$('backBtn');
+ if(HOVER){bb.addEventListener('pointermove',function(e){var r=bb.getBoundingClientRect();G.to(bb,{x:(e.clientX-r.left-r.width/2)*.3,y:(e.clientY-r.top-r.height/2)*.4,duration:.3,ease:'power2.out'})});
+  bb.addEventListener('pointerleave',function(){G.to(bb,{x:0,y:0,duration:.6,ease:'elastic.out(1,.4)'})})}
+ G.from(bb,{y:30,opacity:0,duration:.6,ease:'power3.out',scrollTrigger:{trigger:'.back',start:'top 95%',once:true}});
+
+ addEventListener('load',function(){ScrollTrigger.refresh()});
 })();
 </script>
 </body>
